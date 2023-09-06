@@ -1,4 +1,7 @@
 using IntegratorSofttek.DataAccess;
+using IntegratorSofttek.DataAccess.DatabaseSeeding;
+using IntegratorSofttek.Entities;
+using IntegratorSofttek.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +17,12 @@ builder.Services.AddDbContext<ContextDB>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+//Add some registers 
+
+
+
+//Apply  dependency injection
+builder.Services.AddScoped<IUnitOfWork,UnitOfWorkService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

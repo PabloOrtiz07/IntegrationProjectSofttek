@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntegratorSofttek.Migrations
 {
     [DbContext(typeof(ContextDB))]
-    [Migration("20230906025306_Integrator")]
-    partial class Integrator
+    [Migration("20230906145237_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,12 +36,12 @@ namespace IntegratorSofttek.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -96,6 +96,32 @@ namespace IntegratorSofttek.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Dni = 212,
+                            Name = "Pablo",
+                            Password = "123",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Dni = 213,
+                            Name = "Alice",
+                            Password = "456",
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Dni = 214,
+                            Name = "Bob",
+                            Password = "789",
+                            Type = 1
+                        });
                 });
 
             modelBuilder.Entity("IntegratorSofttek.Entities.Work", b =>
