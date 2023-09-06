@@ -13,7 +13,7 @@ namespace IntegratorSofttek.Entities
 
         public string Adress { get; set; }
 
-        public int Estado { get; set; }
+        public int Status { get; set; }
         
     }
 }

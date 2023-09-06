@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IntegratorSofttek.Migrations
 {
-    public partial class Integrator : Migration
+    public partial class MyFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,7 @@ namespace IntegratorSofttek.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,6 +81,21 @@ namespace IntegratorSofttek.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "Id", "Dni", "Name", "Password", "Type" },
+                values: new object[] { 1, 212, "Pablo", "123", 1 });
+
+            migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "Id", "Dni", "Name", "Password", "Type" },
+                values: new object[] { 2, 213, "Alice", "456", 2 });
+
+            migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "Id", "Dni", "Name", "Password", "Type" },
+                values: new object[] { 3, 214, "Bob", "789", 1 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

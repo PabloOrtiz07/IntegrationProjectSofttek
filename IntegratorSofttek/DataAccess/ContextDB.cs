@@ -1,4 +1,5 @@
-﻿using IntegratorSofttek.Entities;
+﻿using IntegratorSofttek.DataAccess.DatabaseSeeding;
+using IntegratorSofttek.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntegratorSofttek.DataAccess
@@ -17,8 +18,18 @@ namespace IntegratorSofttek.DataAccess
         public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            var seeders = new List<IEntitySeeder>
+            {
+                new UserSeeder()
+            };
 
+            foreach (var seeder in seeders)
+            {
+
+                seeder.SeedDatabase(modelBuilder);
+            }
+
+            base.OnModelCreating(modelBuilder);
 
         }
     }
