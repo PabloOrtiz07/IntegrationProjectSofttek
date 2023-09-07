@@ -9,7 +9,8 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         protected readonly ContextDB _contextDB;
 
-        public Repository(ContextDB contextDB) {
+        public Repository(ContextDB contextDB)
+        {
             _contextDB = contextDB;
         }
 
@@ -43,47 +44,50 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 _contextDB.Set<T>().Add(entity);
-                await _contextDB.SaveChangesAsync();
+                SaveChangesAsync();
                 return true;
-            }catch (Exception) {
+            }
+            catch (Exception)
+            {
                 return false;
             }
-          
+
         }
 
-        public virtual async Task<bool> Delete(int id)
+        public virtual async Task<bool> DeleteById(int id)
         {
-            var user = await _contextDB.Set<T>().FindAsync(id);
-            if(user != null)
+            var user = await GetById(id);
+            if (user != null)
             {
                 _contextDB.Set<T>().Remove(user);
-                await _contextDB.SaveChangesAsync();
+                SaveChangesAsync();
                 return true;
             }
-       
+
             return false;
         }
 
-        public async Task<bool> Update(T entity, int id)
+        public virtual async Task<bool> Update(T entity)
+        {
+            throw new NotSupportedException("Specifics update methods for each Repository");
+
+
+        }
+
+
+        protected async Task<bool> SaveChangesAsync()
         {
             try
             {
-                var user = await _contextDB.Set<T>().FindAsync(id);
-                if (user != null)
-                {
-                    _contextDB.Set<T>().Update(entity);
-                    await _contextDB.SaveChangesAsync();
-                    return true;
-                }
-
-                return false;
-              
+                await _contextDB.SaveChangesAsync();
+                return true;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return false;
             }
-        
         }
+
 
 
 

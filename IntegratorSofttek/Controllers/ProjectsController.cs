@@ -62,7 +62,7 @@ namespace IntegratorSofttek.Controllers
         public async Task<IActionResult> UpdateProject(ProjectDTO projectDTO, int id)
         {
             var project = _projectMapper.MapProjectDTOToProject(projectDTO);
-            var projectReturn = await _unitOfWork.ProjectRepository.Update(project, id);
+            var projectReturn = await _unitOfWork.ProjectRepository.Update(project);
 
             if (projectReturn != false)
             {
@@ -75,11 +75,11 @@ namespace IntegratorSofttek.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {
-            var project = await _unitOfWork.ProjectRepository.GetById(id);
+            var project = await _unitOfWork.ProjectRepository.DeleteById(id); ;
 
             if (project != null)
             {
-                await _unitOfWork.ProjectRepository.Delete(id);
+                
                 return Ok("The project has been eliminated");
             }
 

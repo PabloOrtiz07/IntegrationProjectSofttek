@@ -22,7 +22,7 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAll()
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             var users = await _unitOfWork.UserRepository.GetAll();
 
@@ -30,7 +30,7 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _unitOfWork.UserRepository.GetById(id);
 
@@ -44,7 +44,7 @@ namespace IntegratorSofttek.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Insert(UserDTO userDTO)
+        public async Task<IActionResult> InsertUser(UserDTO userDTO)
         {
             
             var user = _userMapper.MapUserDTOToUser(userDTO);
@@ -58,10 +58,10 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UserDTO userDTO, int id)
+        public async Task<IActionResult> UpdateUser(User user)
         {
-            var user = _userMapper.MapUserDTOToUser(userDTO);
-            var userReturn = await _unitOfWork.UserRepository.Update(user,id);
+         
+            var userReturn = await _unitOfWork.UserRepository.Update(user);
             if (userReturn != false)
             {
                 return Ok("The update operation was successful");
@@ -70,14 +70,13 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _unitOfWork.UserRepository.GetById(id);
+            var user = await _unitOfWork.UserRepository.DeleteById(id);
 
             if (user != null)
             {
-                await _unitOfWork.UserRepository.Delete(id);
-                return Ok("This user has been elimited: "+user);
+                return Ok("This user has been elimited: ");
             }
             else
             {

@@ -60,7 +60,7 @@ namespace IntegratorSofttek.Controllers
         public async Task<IActionResult> UpdateService(ServiceDTO serviceDTO, int id)
         {
             var service = _serviceMapper.MapServiceDTOToService(serviceDTO);
-            var serviceReturn = await _unitOfWork.ServiceRepository.Update(service, id);
+            var serviceReturn = await _unitOfWork.ServiceRepository.Update(service);
 
             if (serviceReturn != false)
             {
@@ -73,11 +73,10 @@ namespace IntegratorSofttek.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteService(int id)
         {
-            var service = await _unitOfWork.ServiceRepository.GetById(id);
+            var service = await _unitOfWork.ServiceRepository.DeleteById(id);
 
             if (service != null)
             {
-                await _unitOfWork.ServiceRepository.Delete(id);
                 return Ok("The service has been eliminated");
             }
 
