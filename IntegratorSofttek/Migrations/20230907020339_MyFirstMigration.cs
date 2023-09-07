@@ -45,7 +45,7 @@ namespace IntegratorSofttek.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Dni = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -83,19 +83,49 @@ namespace IntegratorSofttek.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "users",
-                columns: new[] { "Id", "Dni", "Name", "Password", "Type" },
-                values: new object[] { 1, 212, "Pablo", "123", 1 });
+                table: "projects",
+                columns: new[] { "Id", "Adress", "Name", "Status" },
+                values: new object[,]
+                {
+                    { 1, "123 Main St", "Project 1", 1 },
+                    { 2, "456 Elm St", "Project 2", 2 },
+                    { 3, "789 Oak St", "Project 3", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "services",
+                columns: new[] { "Id", "Description", "HourlyRate", "Status" },
+                values: new object[,]
+                {
+                    { 1, "Service 1", 25.0, true },
+                    { 2, "Service 2", 30.0, true },
+                    { 3, "Service 3", 20.0, false }
+                });
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "Id", "Dni", "Name", "Password", "Type" },
-                values: new object[] { 2, 213, "Alice", "456", 2 });
+                columns: new[] { "Id", "Dni", "FirstName", "Password", "Type" },
+                values: new object[,]
+                {
+                    { 1, 212, "Pablo", "123", 1 },
+                    { 2, 213, "Alice", "456", 2 },
+                    { 3, 214, "Bob", "789", 1 }
+                });
 
             migrationBuilder.InsertData(
-                table: "users",
-                columns: new[] { "Id", "Dni", "Name", "Password", "Type" },
-                values: new object[] { 3, 214, "Bob", "789", 1 });
+                table: "works",
+                columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
+                values: new object[] { 1, 1000.0, new DateTime(2023, 9, 6, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3330), 25.0, 40 });
+
+            migrationBuilder.InsertData(
+                table: "works",
+                columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
+                values: new object[] { 2, 900.0, new DateTime(2023, 9, 5, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3344), 30.0, 30 });
+
+            migrationBuilder.InsertData(
+                table: "works",
+                columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
+                values: new object[] { 3, 1000.0, new DateTime(2023, 9, 4, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3351), 20.0, 50 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

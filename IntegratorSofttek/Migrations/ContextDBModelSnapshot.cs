@@ -44,6 +44,29 @@ namespace IntegratorSofttek.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adress = "123 Main St",
+                            Name = "Project 1",
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adress = "456 Elm St",
+                            Name = "Project 2",
+                            Status = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Adress = "789 Oak St",
+                            Name = "Project 3",
+                            Status = 1
+                        });
                 });
 
             modelBuilder.Entity("IntegratorSofttek.Entities.Service", b =>
@@ -67,6 +90,29 @@ namespace IntegratorSofttek.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("services");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Service 1",
+                            HourlyRate = 25.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Service 2",
+                            HourlyRate = 30.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Service 3",
+                            HourlyRate = 20.0,
+                            Status = false
+                        });
                 });
 
             modelBuilder.Entity("IntegratorSofttek.Entities.User", b =>
@@ -80,7 +126,7 @@ namespace IntegratorSofttek.Migrations
                     b.Property<int>("Dni")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -100,7 +146,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Dni = 212,
-                            Name = "Pablo",
+                            FirstName = "Pablo",
                             Password = "123",
                             Type = 1
                         },
@@ -108,7 +154,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 2,
                             Dni = 213,
-                            Name = "Alice",
+                            FirstName = "Alice",
                             Password = "456",
                             Type = 2
                         },
@@ -116,7 +162,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 3,
                             Dni = 214,
-                            Name = "Bob",
+                            FirstName = "Bob",
                             Password = "789",
                             Type = 1
                         });
@@ -142,6 +188,32 @@ namespace IntegratorSofttek.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("works");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cost = 1000.0,
+                            Date = new DateTime(2023, 9, 6, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3330),
+                            HourlyRate = 25.0,
+                            HoursQuantity = 40
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cost = 900.0,
+                            Date = new DateTime(2023, 9, 5, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3344),
+                            HourlyRate = 30.0,
+                            HoursQuantity = 30
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Cost = 1000.0,
+                            Date = new DateTime(2023, 9, 4, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3351),
+                            HourlyRate = 20.0,
+                            HoursQuantity = 50
+                        });
                 });
 
             modelBuilder.Entity("IntegratorSofttek.Entities.Work", b =>

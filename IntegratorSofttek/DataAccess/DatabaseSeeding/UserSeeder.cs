@@ -11,7 +11,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                      new User
                      {
                          Id = 1,
-                         Name = "Pablo",
+                         FirstName = "Pablo",
                          Dni = 212,
                          Type = 1,
                          Password = "123"
@@ -19,7 +19,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     new User
                     {
                         Id = 2,
-                        Name = "Alice",
+                        FirstName = "Alice",
                         Dni = 213,
                         Type = 2,
                         Password = "456"
@@ -27,7 +27,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     new User
                     {
                         Id = 3,
-                        Name = "Bob",
+                        FirstName = "Bob",
                         Dni = 214,
                         Type = 1,
                         Password = "789"
