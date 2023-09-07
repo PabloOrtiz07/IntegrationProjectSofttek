@@ -1,6 +1,7 @@
 using IntegratorSofttek.DataAccess;
 using IntegratorSofttek.DataAccess.DatabaseSeeding;
 using IntegratorSofttek.Entities;
+using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,10 @@ builder.Services.AddDbContext<ContextDB>(options =>
 
 //Apply  dependency injection
 builder.Services.AddScoped<IUnitOfWork,UnitOfWorkService>();
+builder.Services.AddScoped<UserMapper>();
+builder.Services.AddScoped<WorkMapper>();
+builder.Services.AddScoped<ProjectMapper>();
+builder.Services.AddScoped<ServiceMapper>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

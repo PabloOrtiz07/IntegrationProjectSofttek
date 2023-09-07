@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ehHTL12/JRrCPEpWEwhtyQdp4on6pao3l/757GKqGdq85275UAehWvNFOvx4521c0XXcCKki+CtCSMebCCaFRg==",
+  "dgSpecHash": "/cHm35m0DSkhulp7H/dHzyeSl6kCIRoJDUfdwU3g+CcY0YPsuz/U12QWJwfvSUpLyB+W/spVSM9W44vwBzppvQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Pablo\\Desktop\\Sofftek\\IntegratorSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj",
+  "projectFilePath": "C:\\Users\\Pablo\\Desktop\\IntegratorSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Pablo\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Pablo\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
