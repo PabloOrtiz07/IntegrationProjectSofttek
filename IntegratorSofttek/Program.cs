@@ -18,7 +18,7 @@ builder.Services.AddDbContext<ContextDB>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-//Add some registers 
+//Add some registers and new features
 
 
 

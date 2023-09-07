@@ -62,7 +62,7 @@ namespace IntegratorSofttek.Controllers
         public async Task<IActionResult> UpdateWork(WorkDTO workDTO, int id)
         {
             var work = _workMapper.MapWorkDTOToWork(workDTO);
-            var workReturn = await _unitOfWork.WorkRepository.Update(work, id);
+            var workReturn = await _unitOfWork.WorkRepository.Update(work);
 
             if (workReturn != false)
             {
@@ -75,11 +75,11 @@ namespace IntegratorSofttek.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteWork(int id)
         {
-            var work = await _unitOfWork.WorkRepository.GetById(id);
+            var work = await _unitOfWork.WorkRepository.DeleteById(id);
 
             if (work != null)
             {
-                await _unitOfWork.WorkRepository.Delete(id);
+                
                 return Ok("The work has been eliminated");
             }
 

@@ -8,5 +8,27 @@ namespace IntegratorSofttek.DataAccess.Repositories
         public WorkRepository(ContextDB contextDB) : base(contextDB)
         {
         }
+        public virtual async Task<bool> Update(Work updatedWork)
+        {
+            try
+            {
+                var workFinding = await GetById(updatedWork.Id);
+
+                if (workFinding != null)
+                {
+                    _contextDB.Update(updatedWork); 
+                    await SaveChangesAsync();
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+              
+                return false;
+            }
+        }
+
     }
 }

@@ -9,6 +9,28 @@ namespace IntegratorSofttek.DataAccess.Repositories
     {
         public ServiceRepository(ContextDB contextDB) : base(contextDB)
         {
+
         }
+        public virtual async Task<bool> Update(Service updatedService)
+        {
+            try
+            {
+                var serviceFinding = await GetById(updatedService.Id);
+
+                if (serviceFinding != null)
+                {
+                    _contextDB.Update(updatedService); 
+                    await SaveChangesAsync();
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
 }
