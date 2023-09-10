@@ -2,6 +2,7 @@
 using IntegratorSofttek.Entities;
 using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegratorSofttek.Controllers
@@ -20,6 +21,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+
         public async Task<ActionResult<IEnumerable<Service>>> GetAllServices()
         {
             var services = await _unitOfWork.ServiceRepository.GetAll();
@@ -28,6 +31,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> GetServiceById(int id)
         {
             var service = await _unitOfWork.ServiceRepository.GetById(id);
@@ -42,7 +47,9 @@ namespace IntegratorSofttek.Controllers
             }
         }
 
-        [HttpPost("insert")]
+        [HttpPost]
+        [Authorize]
+
         public async Task<IActionResult> InsertService(ServiceDTO serviceDTO)
         {
             var service = _serviceMapper.MapServiceDTOToService(serviceDTO);
@@ -56,7 +63,9 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut]
+        [Authorize]
+
         public async Task<IActionResult> UpdateService(ServiceDTO serviceDTO, int id)
         {
             var service = _serviceMapper.MapServiceDTOToService(serviceDTO);
@@ -70,7 +79,9 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete]
+        [Authorize]
+
         public async Task<IActionResult> DeleteService(int id)
         {
             var service = await _unitOfWork.ServiceRepository.DeleteById(id);

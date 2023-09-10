@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IntegratorSofttek.Migrations
 {
-    public partial class MyFirstMigration : Migration
+    public partial class MyFirstProject : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,7 @@ namespace IntegratorSofttek.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Dni = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -104,28 +105,28 @@ namespace IntegratorSofttek.Migrations
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "Id", "Dni", "FirstName", "Password", "Type" },
+                columns: new[] { "Id", "Dni", "FirstName", "LastName", "Password", "Type" },
                 values: new object[,]
                 {
-                    { 1, 212, "Pablo", "123", 1 },
-                    { 2, 213, "Alice", "456", 2 },
-                    { 3, 214, "Bob", "789", 1 }
+                    { 1, 1001010, "Pablo", "Ortiz", "123", 1 },
+                    { 2, 213, "Alice", "Johnson", "456", 2 },
+                    { 3, 214, "Bob", "Smith", "789", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "works",
                 columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
-                values: new object[] { 1, 1000.0, new DateTime(2023, 9, 6, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3330), 25.0, 40 });
+                values: new object[] { 1, 1000.0, new DateTime(2023, 9, 10, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(480), 25.0, 40 });
 
             migrationBuilder.InsertData(
                 table: "works",
                 columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
-                values: new object[] { 2, 900.0, new DateTime(2023, 9, 5, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3344), 30.0, 30 });
+                values: new object[] { 2, 900.0, new DateTime(2023, 9, 9, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(492), 30.0, 30 });
 
             migrationBuilder.InsertData(
                 table: "works",
                 columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
-                values: new object[] { 3, 1000.0, new DateTime(2023, 9, 4, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3351), 20.0, 50 });
+                values: new object[] { 3, 1000.0, new DateTime(2023, 9, 8, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(496), 20.0, 50 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

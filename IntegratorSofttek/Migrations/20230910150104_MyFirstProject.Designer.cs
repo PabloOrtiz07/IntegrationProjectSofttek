@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntegratorSofttek.Migrations
 {
     [DbContext(typeof(ContextDB))]
-    [Migration("20230907020339_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20230910150104_MyFirstProject")]
+    partial class MyFirstProject
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -132,6 +132,10 @@ namespace IntegratorSofttek.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -147,8 +151,9 @@ namespace IntegratorSofttek.Migrations
                         new
                         {
                             Id = 1,
-                            Dni = 212,
+                            Dni = 1001010,
                             FirstName = "Pablo",
+                            LastName = "Ortiz",
                             Password = "123",
                             Type = 1
                         },
@@ -157,6 +162,7 @@ namespace IntegratorSofttek.Migrations
                             Id = 2,
                             Dni = 213,
                             FirstName = "Alice",
+                            LastName = "Johnson",
                             Password = "456",
                             Type = 2
                         },
@@ -165,6 +171,7 @@ namespace IntegratorSofttek.Migrations
                             Id = 3,
                             Dni = 214,
                             FirstName = "Bob",
+                            LastName = "Smith",
                             Password = "789",
                             Type = 1
                         });
@@ -196,7 +203,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 6, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3330),
+                            Date = new DateTime(2023, 9, 10, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(480),
                             HourlyRate = 25.0,
                             HoursQuantity = 40
                         },
@@ -204,7 +211,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 2,
                             Cost = 900.0,
-                            Date = new DateTime(2023, 9, 5, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3344),
+                            Date = new DateTime(2023, 9, 9, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(492),
                             HourlyRate = 30.0,
                             HoursQuantity = 30
                         },
@@ -212,7 +219,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 3,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 4, 23, 3, 38, 952, DateTimeKind.Local).AddTicks(3351),
+                            Date = new DateTime(2023, 9, 8, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(496),
                             HourlyRate = 20.0,
                             HoursQuantity = 50
                         });

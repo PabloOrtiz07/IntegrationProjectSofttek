@@ -5,6 +5,7 @@ using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IntegratorSofttek.Controllers
 {
@@ -22,6 +23,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+
         public async Task<ActionResult<IEnumerable<Work>>> GetAllWorks()
         {
             var works = await _unitOfWork.WorkRepository.GetAll();
@@ -30,6 +33,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> GetWorkById(int id)
         {
             var work = await _unitOfWork.WorkRepository.GetById(id);
@@ -44,7 +49,9 @@ namespace IntegratorSofttek.Controllers
             }
         }
 
-        [HttpPost("insert")]
+        [HttpPost]
+        [Authorize]
+
         public async Task<IActionResult> InsertWork(WorkDTO workDTO)
         {
             var work = _workMapper.MapWorkDTOToWork(workDTO);
@@ -58,7 +65,9 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut]
+        [Authorize]
+
         public async Task<IActionResult> UpdateWork(WorkDTO workDTO, int id)
         {
             var work = _workMapper.MapWorkDTOToWork(workDTO);
@@ -72,7 +81,9 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete]
+        [Authorize]
+
         public async Task<IActionResult> DeleteWork(int id)
         {
             var work = await _unitOfWork.WorkRepository.DeleteById(id);
