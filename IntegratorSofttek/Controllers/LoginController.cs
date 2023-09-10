@@ -24,7 +24,7 @@ namespace IntegratorSofttek.Controllers
         public async Task<IActionResult> Login(AuthenticateDto dto)
         {
             var userCredentials = await _unitOfWork.UserRepository.AuthenticateCredentials(dto);
-            if (userCredentials is null) return Unauthorized("Las credenciales son incorrectas");
+            if (userCredentials is null) return Unauthorized("The credentials are incorrect");
 
             var token = _tokenJwtHelper.GenerateToken(userCredentials);
 
