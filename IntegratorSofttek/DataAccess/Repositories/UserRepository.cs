@@ -1,5 +1,7 @@
 ﻿using IntegratorSofttek.DataAccess.Repositories.Interfaces;
+using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 
 namespace IntegratorSofttek.DataAccess.Repositories
@@ -29,6 +31,12 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 
                 return false;
             }
+        }
+
+        public async Task<User?> AuthenticateCredentials(AuthenticateDto dto)
+        {
+            return await _contextDB.Users.SingleOrDefaultAsync
+                (user =>  user.Dni == dto.Dni && user.Password == dto.Password);
         }
 
     }

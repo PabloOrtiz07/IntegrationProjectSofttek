@@ -2,6 +2,7 @@
 using IntegratorSofttek.Entities;
 using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -22,6 +23,7 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             var users = await _unitOfWork.UserRepository.GetAll();
@@ -30,6 +32,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _unitOfWork.UserRepository.GetById(id);
@@ -44,6 +48,8 @@ namespace IntegratorSofttek.Controllers
             }
         }
         [HttpPost]
+        [Authorize]
+
         public async Task<IActionResult> InsertUser(UserDTO userDTO)
         {
             
@@ -58,6 +64,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpPut]
+        [Authorize]
+
         public async Task<IActionResult> UpdateUser(User user)
         {
          
@@ -70,6 +78,8 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
         [HttpDelete]
+        [Authorize]
+
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await _unitOfWork.UserRepository.DeleteById(id);

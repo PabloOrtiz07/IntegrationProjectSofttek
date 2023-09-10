@@ -5,6 +5,7 @@ using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IntegratorSofttek.Controllers
 {
@@ -22,6 +23,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+
         public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
         {
             var projects = await _unitOfWork.ProjectRepository.GetAll();
@@ -30,6 +33,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> GetProjectById(int id)
         {
             var project = await _unitOfWork.ProjectRepository.GetById(id);
@@ -44,7 +49,9 @@ namespace IntegratorSofttek.Controllers
             }
         }
 
-        [HttpPost("insert")]
+        [HttpPost]
+        [Authorize]
+
         public async Task<IActionResult> InsertProject(ProjectDTO projectDTO)
         {
             var project = _projectMapper.MapProjectDTOToProject(projectDTO);
@@ -58,7 +65,9 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut]
+        [Authorize]
+
         public async Task<IActionResult> UpdateProject(ProjectDTO projectDTO, int id)
         {
             var project = _projectMapper.MapProjectDTOToProject(projectDTO);
@@ -72,7 +81,9 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete]
+        [Authorize]
+
         public async Task<IActionResult> DeleteProject(int id)
         {
             var project = await _unitOfWork.ProjectRepository.DeleteById(id); ;

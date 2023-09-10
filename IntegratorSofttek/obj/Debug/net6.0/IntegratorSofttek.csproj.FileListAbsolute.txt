@@ -134,3 +134,4 @@ C:\Users\Pablo\Desktop\Sofftek\IntegratorSofttek\IntegratorSofttek\obj\Debug\net
 C:\Users\Pablo\Desktop\Sofftek\IntegratorSofttek\IntegratorSofttek\obj\Debug\net6.0\IntegratorSofttek.pdb
 C:\Users\Pablo\Desktop\Sofftek\IntegratorSofttek\IntegratorSofttek\obj\Debug\net6.0\IntegratorSofttek.genruntimeconfig.cache
 C:\Users\Pablo\Desktop\Sofftek\IntegratorSofttek\IntegratorSofttek\obj\Debug\net6.0\ref\IntegratorSofttek.dll
+C:\Users\Pablo\Desktop\IntegratorSofttek\IntegratorSofttek\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

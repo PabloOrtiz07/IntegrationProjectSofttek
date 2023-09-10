@@ -12,7 +12,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                      {
                          Id = 1,
                          FirstName = "Pablo",
-                         Dni = 212,
+                         LastName = "Ortiz",
+                         Dni = 1001010,
                          Type = 1,
                          Password = "123"
                      },
@@ -20,6 +21,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     {
                         Id = 2,
                         FirstName = "Alice",
+                        LastName = "Johnson", 
                         Dni = 213,
                         Type = 2,
                         Password = "456"
@@ -28,6 +30,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     {
                         Id = 3,
                         FirstName = "Bob",
+                        LastName = "Smith",
                         Dni = 214,
                         Type = 1,
                         Password = "789"
