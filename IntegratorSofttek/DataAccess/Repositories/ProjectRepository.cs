@@ -17,7 +17,6 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 if (projectFinding != null)
                 {
                     _contextDB.Update(updatedProject); 
-                    await SaveChangesAsync();
                     return true;
                 }
 

@@ -16,18 +16,20 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public virtual async Task<List<T>> GetAll()
         {
-            var users = await _contextDB.Set<T>().ToListAsync();
-            return users;
+            var entity = await _contextDB.Set<T>().ToListAsync();
+            return entity;
         }
+
+
 
         public virtual async Task<T> GetById(int id)
         {
             try
             {
-                var user = await _contextDB.Set<T>().FindAsync(id);
-                if (user != null)
+                var entity = await _contextDB.Set<T>().FindAsync(id);
+                if (entity != null)
                 {
-                    return user;
+                    return entity;
                 }
 
                 return null;
@@ -44,7 +46,6 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 _contextDB.Set<T>().Add(entity);
-                SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -54,45 +55,32 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         }
 
-        public virtual async Task<bool> DeleteById(int id)
+
+
+        public virtual async Task<bool> DeleteHardById(int id)
         {
-            var user = await GetById(id);
-            if (user != null)
+            var entity = await GetById(id);
+            if (entity != null)
             {
-                _contextDB.Set<T>().Remove(user);
-                SaveChangesAsync();
+                _contextDB.Set<T>().Remove(entity);
                 return true;
             }
 
             return false;
         }
 
+        public virtual async Task<bool> DeleteSoftById(int id)
+        {
+            throw new NotImplementedException();
+
+        }
+
         public virtual async Task<bool> Update(T entity)
         {
-            throw new NotSupportedException("Specifics update methods for each Repository");
+            throw new NotImplementedException();
 
 
         }
-
-
-        protected async Task<bool> SaveChangesAsync()
-        {
-            try
-            {
-                await _contextDB.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-
-
-
-
-
 
     }
 }

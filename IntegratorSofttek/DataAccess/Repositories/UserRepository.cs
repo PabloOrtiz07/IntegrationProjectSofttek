@@ -20,7 +20,6 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 var userFinding = GetById(user.Id);
                 if (userFinding != null) {
                     _contextDB.Update(user);
-                    SaveChangesAsync();
                     return true;
 
                 }
@@ -33,10 +32,24 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
+        public override  async Task<bool> DeleteSoftById(int id)
+        {
+            User user = await GetById(id);
+            if (user != null)
+            {
+                user.IsDeleted = true;
+                user.DeletedTimeUtc = DateTime.UtcNow;
+
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<User?> AuthenticateCredentials(AuthenticateDto dto)
         {
             return await _contextDB.Users.SingleOrDefaultAsync
-                (user =>  user.Dni == dto.Dni && user.Password == dto.Password);
+                (user =>  user.Email == dto.Email && user.Password == dto.Password);
         }
 
     }

@@ -12,10 +12,10 @@ namespace IntegratorSofttek.Entities
         public DateTime Date { get; set; }
 
         [ForeignKey("Id")]
-        public  Project project { get; set; }
+        public  int project { get; set; }
 
         [ForeignKey("Id")]
-        public Service service { get; set; }
+        public int service { get; set; }
 
         public int HoursQuantity { get; set; }
 

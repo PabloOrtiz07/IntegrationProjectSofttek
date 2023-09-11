@@ -1,5 +1,6 @@
 ﻿using IntegratorSofttek.DataAccess;
 using IntegratorSofttek.DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntegratorSofttek.Services
 {
@@ -25,6 +26,11 @@ namespace IntegratorSofttek.Services
             WorkRepository = new WorkRepository(_contextDB);
             ProjectRepository = new ProjectRepository(_contextDB);
 
+        }
+
+        public Task<int> Complete()
+        {
+            return _contextDB.SaveChangesAsync();
         }
     }
 }

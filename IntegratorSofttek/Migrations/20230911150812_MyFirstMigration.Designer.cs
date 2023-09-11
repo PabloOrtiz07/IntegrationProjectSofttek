@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntegratorSofttek.Migrations
 {
     [DbContext(typeof(ContextDB))]
-    [Migration("20230910150104_MyFirstProject")]
-    partial class MyFirstProject
+    [Migration("20230911150812_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -121,27 +121,47 @@ namespace IntegratorSofttek.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Dni")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("DeletedTimeUtc")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("user_deletedTimeUtc");
+
+                    b.Property<string>("Dni")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)")
+                        .HasColumnName("user_dni");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)")
+                        .HasColumnName("user_email");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("VARCHAR(100)")
+                        .HasColumnName("user_firstName");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("user_isDeleted");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("VARCHAR(100)")
+                        .HasColumnName("user_lastName");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("VARCHAR(100)")
+                        .HasColumnName("user_password");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("user_type");
 
                     b.HasKey("Id");
 
@@ -151,8 +171,11 @@ namespace IntegratorSofttek.Migrations
                         new
                         {
                             Id = 1,
-                            Dni = 1001010,
+                            DeletedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Dni = "1001010",
+                            Email = "pablo@example.com",
                             FirstName = "Pablo",
+                            IsDeleted = false,
                             LastName = "Ortiz",
                             Password = "123",
                             Type = 1
@@ -160,8 +183,11 @@ namespace IntegratorSofttek.Migrations
                         new
                         {
                             Id = 2,
-                            Dni = 213,
+                            DeletedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Dni = "213",
+                            Email = "alice@example.com",
                             FirstName = "Alice",
+                            IsDeleted = false,
                             LastName = "Johnson",
                             Password = "456",
                             Type = 2
@@ -169,10 +195,37 @@ namespace IntegratorSofttek.Migrations
                         new
                         {
                             Id = 3,
-                            Dni = 214,
+                            DeletedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Dni = "214",
+                            Email = "bob@example.com",
                             FirstName = "Bob",
+                            IsDeleted = true,
                             LastName = "Smith",
                             Password = "789",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DeletedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Dni = "315",
+                            Email = "eva@example.com",
+                            FirstName = "Eva",
+                            IsDeleted = false,
+                            LastName = "Lee",
+                            Password = "567",
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DeletedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Dni = "416",
+                            Email = "john@example.com",
+                            FirstName = "John",
+                            IsDeleted = true,
+                            LastName = "Doe",
+                            Password = "901",
                             Type = 1
                         });
                 });
@@ -180,7 +233,10 @@ namespace IntegratorSofttek.Migrations
             modelBuilder.Entity("IntegratorSofttek.Entities.Work", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<double>("Cost")
                         .HasColumnType("float");
@@ -194,6 +250,12 @@ namespace IntegratorSofttek.Migrations
                     b.Property<int>("HoursQuantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("project")
+                        .HasColumnType("int");
+
+                    b.Property<int>("service")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("works");
@@ -203,45 +265,32 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 10, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(480),
+                            Date = new DateTime(2023, 9, 11, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2287),
                             HourlyRate = 25.0,
-                            HoursQuantity = 40
+                            HoursQuantity = 40,
+                            project = 0,
+                            service = 0
                         },
                         new
                         {
                             Id = 2,
                             Cost = 900.0,
-                            Date = new DateTime(2023, 9, 9, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(492),
+                            Date = new DateTime(2023, 9, 10, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2300),
                             HourlyRate = 30.0,
-                            HoursQuantity = 30
+                            HoursQuantity = 30,
+                            project = 0,
+                            service = 0
                         },
                         new
                         {
                             Id = 3,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 8, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(496),
+                            Date = new DateTime(2023, 9, 9, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2304),
                             HourlyRate = 20.0,
-                            HoursQuantity = 50
+                            HoursQuantity = 50,
+                            project = 0,
+                            service = 0
                         });
-                });
-
-            modelBuilder.Entity("IntegratorSofttek.Entities.Work", b =>
-                {
-                    b.HasOne("IntegratorSofttek.Entities.Project", "project")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IntegratorSofttek.Entities.Service", "service")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("project");
-
-                    b.Navigation("service");
                 });
 #pragma warning restore 612, 618
         }

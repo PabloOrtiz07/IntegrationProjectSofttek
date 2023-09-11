@@ -86,12 +86,12 @@ namespace IntegratorSofttek.Controllers
 
         public async Task<IActionResult> DeleteWork(int id)
         {
-            var work = await _unitOfWork.WorkRepository.DeleteById(id);
+            var work = await _unitOfWork.WorkRepository.DeleteHardById(id);
 
             if (work != null)
             {
                 
-                return Ok("The work has been eliminated");
+                return Ok("The work has been eliminated from Database");
             }
 
             return NotFound("The work couldn't be found");
