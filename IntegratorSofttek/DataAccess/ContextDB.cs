@@ -21,9 +21,9 @@ namespace IntegratorSofttek.DataAccess
             var seeders = new List<IEntitySeeder>
             {
                 new UserSeeder(),
-                new WorkSeeder(),
                 new ProjectSeeder(),
-                new ServiceSeeder()
+                new ServiceSeeder(),
+                new WorkSeeder()
             };
 
             foreach (var seeder in seeders)

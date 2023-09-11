@@ -32,7 +32,7 @@ namespace IntegratorSofttek.Controllers
             {
                 FirstName = userCredentials.FirstName,
                 LastName = userCredentials.LastName,
-                Dni = userCredentials.Dni,
+                Email = userCredentials.Email,
                 Token = token
             };
 

@@ -10,7 +10,8 @@
 
         public Task<bool> Update(T entity);
 
-        public Task<bool> DeleteById(int id);
+        public Task<bool> DeleteSoftById(int id);
+        public Task<bool> DeleteHardById(int id);
 
     }
 }

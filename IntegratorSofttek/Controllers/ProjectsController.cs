@@ -86,12 +86,12 @@ namespace IntegratorSofttek.Controllers
 
         public async Task<IActionResult> DeleteProject(int id)
         {
-            var project = await _unitOfWork.ProjectRepository.DeleteById(id); ;
+            var project = await _unitOfWork.ProjectRepository.DeleteHardById(id); ;
 
             if (project != null)
             {
                 
-                return Ok("The project has been eliminated");
+                return Ok("The project has been eliminated from DataBase");
             }
 
             return NotFound("The project couldn't be found");

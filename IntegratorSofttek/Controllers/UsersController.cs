@@ -5,6 +5,7 @@ using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace IntegratorSofttek.Controllers
@@ -23,7 +24,7 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             var users = await _unitOfWork.UserRepository.GetAll();
@@ -32,7 +33,7 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
 
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -44,27 +45,29 @@ namespace IntegratorSofttek.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound("The user couldn't be found");
             }
         }
         [HttpPost]
-        [Authorize]
+        [Route("RegisterUser")]
+        //[Authorize]
 
-        public async Task<IActionResult> InsertUser(UserDTO userDTO)
+        public async Task<IActionResult> RegisterUser(UserDTO userDTO)
         {
             
             var user = _userMapper.MapUserDTOToUser(userDTO);
             var userReturn = await _unitOfWork.UserRepository.Insert(user);
             if (userReturn != false)
             {
-                return Ok("The insert operation was successful");
+                await _unitOfWork.Complete();
+                return Ok("The register operation was successful");
 
             }
             return BadRequest("The operation was canceled");
         }
 
-        [HttpPut]
-        [Authorize]
+        [HttpPut("update/{id}")]
+        //[Authorize]
 
         public async Task<IActionResult> UpdateUser(User user)
         {
@@ -72,21 +75,41 @@ namespace IntegratorSofttek.Controllers
             var userReturn = await _unitOfWork.UserRepository.Update(user);
             if (userReturn != false)
             {
+                await _unitOfWork.Complete();
                 return Ok("The update operation was successful");
 
             }
             return BadRequest("The operation was canceled");
         }
-        [HttpDelete]
-        [Authorize]
 
-        public async Task<IActionResult> DeleteUser(int id)
+
+        [HttpPut("delete/{id}")]
+        //[Authorize]
+
+        public async Task<IActionResult> DeleteSoftUser(int id)
         {
-            var user = await _unitOfWork.UserRepository.DeleteById(id);
+
+            var userReturn = await _unitOfWork.UserRepository.DeleteSoftById(id);
+            if (userReturn != false)
+            {
+                await _unitOfWork.Complete();
+                return Ok("This user has been dropped down");
+
+            }
+            return NotFound("The user couldn't be found");
+        }
+
+        [HttpDelete("{id}")]
+       // [Authorize]
+
+        public async Task<IActionResult> DeleteHardUser(int id)
+        {
+            var user = await _unitOfWork.UserRepository.DeleteHardById(id);
 
             if (user != null)
             {
-                return Ok("This user has been elimited: ");
+                await _unitOfWork.Complete();
+                return Ok("This user has been elimited from DataBase");
             }
             else
             {

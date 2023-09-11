@@ -84,11 +84,11 @@ namespace IntegratorSofttek.Controllers
 
         public async Task<IActionResult> DeleteService(int id)
         {
-            var service = await _unitOfWork.ServiceRepository.DeleteById(id);
+            var service = await _unitOfWork.ServiceRepository.DeleteHardById(id);
 
             if (service != null)
             {
-                return Ok("The service has been eliminated");
+                return Ok("The service has been eliminated from DataBase");
             }
 
             return NotFound("The service couldn't be found");

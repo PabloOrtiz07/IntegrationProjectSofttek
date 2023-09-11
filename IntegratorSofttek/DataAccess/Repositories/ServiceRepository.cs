@@ -20,7 +20,6 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 if (serviceFinding != null)
                 {
                     _contextDB.Update(updatedService); 
-                    await SaveChangesAsync();
                     return true;
                 }
 

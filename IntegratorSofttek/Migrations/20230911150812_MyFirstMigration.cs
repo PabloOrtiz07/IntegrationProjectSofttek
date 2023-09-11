@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IntegratorSofttek.Migrations
 {
-    public partial class MyFirstProject : Migration
+    public partial class MyFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,25 +43,31 @@ namespace IntegratorSofttek.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    user_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Dni = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    user_firstName = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_lastName = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_dni = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_type = table.Column<int>(type: "int", nullable: false),
+                    user_password = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_email = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_isDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    user_deletedTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.Id);
+                    table.PrimaryKey("PK_users", x => x.user_id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "works",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    project = table.Column<int>(type: "int", nullable: false),
+                    service = table.Column<int>(type: "int", nullable: false),
                     HoursQuantity = table.Column<int>(type: "int", nullable: false),
                     HourlyRate = table.Column<double>(type: "float", nullable: false),
                     Cost = table.Column<double>(type: "float", nullable: false)
@@ -69,18 +75,6 @@ namespace IntegratorSofttek.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_works", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_works_projects_Id",
-                        column: x => x.Id,
-                        principalTable: "projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_works_services_Id",
-                        column: x => x.Id,
-                        principalTable: "services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -105,43 +99,40 @@ namespace IntegratorSofttek.Migrations
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "Id", "Dni", "FirstName", "LastName", "Password", "Type" },
+                columns: new[] { "user_id", "user_deletedTimeUtc", "user_dni", "user_email", "user_firstName", "user_isDeleted", "user_lastName", "user_password", "user_type" },
                 values: new object[,]
                 {
-                    { 1, 1001010, "Pablo", "Ortiz", "123", 1 },
-                    { 2, 213, "Alice", "Johnson", "456", 2 },
-                    { 3, 214, "Bob", "Smith", "789", 1 }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "1001010", "pablo@example.com", "Pablo", false, "Ortiz", "123", 1 },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "213", "alice@example.com", "Alice", false, "Johnson", "456", 2 },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "214", "bob@example.com", "Bob", true, "Smith", "789", 1 },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "315", "eva@example.com", "Eva", false, "Lee", "567", 2 },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "416", "john@example.com", "John", true, "Doe", "901", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "works",
-                columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
-                values: new object[] { 1, 1000.0, new DateTime(2023, 9, 10, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(480), 25.0, 40 });
-
-            migrationBuilder.InsertData(
-                table: "works",
-                columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
-                values: new object[] { 2, 900.0, new DateTime(2023, 9, 9, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(492), 30.0, 30 });
-
-            migrationBuilder.InsertData(
-                table: "works",
-                columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity" },
-                values: new object[] { 3, 1000.0, new DateTime(2023, 9, 8, 12, 1, 4, 715, DateTimeKind.Local).AddTicks(496), 20.0, 50 });
+                columns: new[] { "Id", "Cost", "Date", "HourlyRate", "HoursQuantity", "project", "service" },
+                values: new object[,]
+                {
+                    { 1, 1000.0, new DateTime(2023, 9, 11, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2287), 25.0, 40, 0, 0 },
+                    { 2, 900.0, new DateTime(2023, 9, 10, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2300), 30.0, 30, 0, 0 },
+                    { 3, 1000.0, new DateTime(2023, 9, 9, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2304), 20.0, 50, 0, 0 }
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "users");
-
-            migrationBuilder.DropTable(
-                name: "works");
-
-            migrationBuilder.DropTable(
                 name: "projects");
 
             migrationBuilder.DropTable(
                 name: "services");
+
+            migrationBuilder.DropTable(
+                name: "users");
+
+            migrationBuilder.DropTable(
+                name: "works");
         }
     }
 }
