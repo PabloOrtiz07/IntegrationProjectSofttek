@@ -1,7 +1,6 @@
 using IntegratorSofttek.DataAccess;
 using IntegratorSofttek.DataAccess.DatabaseSeeding;
 using IntegratorSofttek.Entities;
-using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -44,16 +43,16 @@ builder.Services.AddDbContext<ContextDB>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-//Add some registers and new features
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+
 
 
 
 //Apply  dependency injection
 builder.Services.AddScoped<IUnitOfWork,UnitOfWorkService>();
-builder.Services.AddScoped<UserMapper>();
-builder.Services.AddScoped<WorkMapper>();
-builder.Services.AddScoped<ProjectMapper>();
-builder.Services.AddScoped<ServiceMapper>();
+//Apply AutoMapper
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
            .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()

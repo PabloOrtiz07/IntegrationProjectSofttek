@@ -11,18 +11,16 @@ namespace IntegratorSofttek.DataAccess.Repositories
         {
 
         }
-        public virtual async Task<bool> Update(Service updatedService)
+        public override async Task<bool> Update(Service service, int id)
         {
             try
             {
-                var serviceFinding = await GetById(updatedService.Id);
-
+                var serviceFinding = await GetById(id);
                 if (serviceFinding != null)
                 {
-                    _contextDB.Update(updatedService); 
+                    _contextDB.Update(service);
                     return true;
                 }
-
                 return false;
             }
             catch (Exception)
@@ -30,6 +28,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 return false;
             }
         }
+
 
         public override async Task<bool> DeleteSoftById(int id)
         {

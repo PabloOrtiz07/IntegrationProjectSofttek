@@ -8,26 +8,24 @@ namespace IntegratorSofttek.DataAccess.Repositories
         public WorkRepository(ContextDB contextDB) : base(contextDB)
         {
         }
-        public virtual async Task<bool> Update(Work updatedWork)
+        public override async Task<bool> Update(Work work, int id)
         {
             try
             {
-                var workFinding = await GetById(updatedWork.Id);
-
+                var workFinding = await GetById(id);
                 if (workFinding != null)
                 {
-                    _contextDB.Update(updatedWork); 
+                    _contextDB.Update(work);
                     return true;
                 }
-
                 return false;
             }
             catch (Exception)
             {
-              
                 return false;
             }
         }
+
         public override async Task<bool> DeleteSoftById(int id)
         {
             Work work  = await GetById(id);

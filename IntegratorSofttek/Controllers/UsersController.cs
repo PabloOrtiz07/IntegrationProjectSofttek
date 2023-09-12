@@ -1,6 +1,6 @@
-﻿using IntegratorSofttek.DTOs;
+﻿using AutoMapper;
+using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
-using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,20 +17,20 @@ namespace IntegratorSofttek.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserMapper _userMapper;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUnitOfWork unitOfWork, UserMapper userMapper)
+        public UsersController(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _userMapper = userMapper;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             var users = await _unitOfWork.UserRepository.GetAll();
-
-            return users;
+            var usersDTO = _mapper.Map<List<UserDTO>>(users);
+            return Ok(usersDTO);
         }
 
         [HttpGet("{id}")]
@@ -41,22 +41,22 @@ namespace IntegratorSofttek.Controllers
 
             if (user != null)
             {
-                return Ok(user);
+                var userDTO = _mapper.Map<UserDTO>(user);
+                return Ok(userDTO);
             }
             else
             {
                 return NotFound("The user couldn't be found");
             }
         }
+
         [HttpPost]
         [Route("RegisterUser")]
-
         public async Task<IActionResult> RegisterUser(UserDTO userDTO)
         {
-            
-            var user = _userMapper.MapUserDTOToUser(userDTO);
-            var userReturn = await _unitOfWork.UserRepository.Insert(user);
-            if (userReturn != false)
+            var user = _mapper.Map<User>(userDTO);
+            var result = await _unitOfWork.UserRepository.Insert(user);
+            if (result != false)
             {
                 await _unitOfWork.Complete();
                 return Ok("The register operation was successful");
@@ -67,12 +67,12 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("UpdateUser/{id}")]
-
-        public async Task<IActionResult> UpdateUser(User user)
+        public async Task<IActionResult> UpdateUser([FromRoute] int id, UserDTO userDTO)
         {
-         
-            var userReturn = await _unitOfWork.UserRepository.Update(user);
-            if (userReturn != false)
+            var user = _mapper.Map<User>(userDTO);
+
+            var result = await _unitOfWork.UserRepository.Update(user,id);
+            if (result != null)
             {
                 await _unitOfWork.Complete();
                 return Ok("The update operation was successful");
@@ -84,7 +84,6 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("DeleteSoftUser/{id}")]
-
         public async Task<IActionResult> DeleteSoftUser(int id)
         {
 
@@ -100,7 +99,6 @@ namespace IntegratorSofttek.Controllers
 
         [HttpDelete]
         [Route("DeleteHardUser/{id}")]
-
         public async Task<IActionResult> DeleteHardUser(int id)
         {
             var user = await _unitOfWork.UserRepository.DeleteHardById(id);
