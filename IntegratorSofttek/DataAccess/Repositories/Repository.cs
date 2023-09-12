@@ -45,8 +45,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
         {
             try
             {
+           
                 _contextDB.Set<T>().Add(entity);
                 return true;
+
+              
             }
             catch (Exception)
             {
@@ -75,7 +78,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         }
 
-        public virtual async Task<bool> Update(T entity)
+        public virtual async Task<bool> Update(T entity, int id)
         {
             throw new NotImplementedException();
 

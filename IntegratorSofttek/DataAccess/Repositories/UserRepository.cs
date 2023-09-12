@@ -13,11 +13,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         }
 
-        public override async Task<bool> Update(User user)
+        public override async Task<bool> Update(User user,int id)
         {
             try
             {
-                var userFinding = GetById(user.Id);
+                var userFinding = await GetById(id);
                 if (userFinding != null) {
                     _contextDB.Update(user);
                     return true;

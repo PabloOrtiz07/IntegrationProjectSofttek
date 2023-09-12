@@ -304,7 +304,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 11, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6921),
+                            Date = new DateTime(2023, 9, 12, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9912),
                             HourlyRate = 25.0,
                             HoursQuantity = 40,
                             IsDeleted = false,
@@ -315,7 +315,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 2,
                             Cost = 900.0,
-                            Date = new DateTime(2023, 9, 10, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6935),
+                            Date = new DateTime(2023, 9, 11, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9922),
                             HourlyRate = 30.0,
                             HoursQuantity = 30,
                             IsDeleted = false,
@@ -326,7 +326,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 3,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 9, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6939),
+                            Date = new DateTime(2023, 9, 10, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9927),
                             HourlyRate = 20.0,
                             HoursQuantity = 50,
                             IsDeleted = false,
@@ -337,7 +337,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 4,
                             Cost = 980.0,
-                            Date = new DateTime(2023, 9, 8, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6940),
+                            Date = new DateTime(2023, 9, 9, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9928),
                             HourlyRate = 28.0,
                             HoursQuantity = 35,
                             IsDeleted = false,
@@ -348,7 +348,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 5,
                             Cost = 990.0,
-                            Date = new DateTime(2023, 9, 7, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6941),
+                            Date = new DateTime(2023, 9, 8, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9929),
                             HourlyRate = 22.0,
                             HoursQuantity = 45,
                             IsDeleted = false,

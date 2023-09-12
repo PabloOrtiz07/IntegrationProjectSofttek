@@ -8,18 +8,16 @@ namespace IntegratorSofttek.DataAccess.Repositories
         public ProjectRepository(ContextDB contextDB) : base(contextDB)
         {
         }
-        public virtual async Task<bool> Update(Project updatedProject)
+        public override async Task<bool> Update(Project project, int id)
         {
             try
             {
-                var projectFinding = await GetById(updatedProject.Id);
-
+                var projectFinding = await GetById(id);
                 if (projectFinding != null)
                 {
-                    _contextDB.Update(updatedProject); 
+                    _contextDB.Update(project);
                     return true;
                 }
-
                 return false;
             }
             catch (Exception)
@@ -27,6 +25,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 return false;
             }
         }
+
 
         public override async Task<bool> DeleteSoftById(int id)
         {

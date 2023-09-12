@@ -1,9 +1,11 @@
-﻿using IntegratorSofttek.DTOs;
+﻿using AutoMapper;
+using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
-using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,20 +17,20 @@ namespace IntegratorSofttek.Controllers
     public class ProjectsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ProjectMapper _projectMapper;
+        private readonly IMapper _mapper;
 
-        public ProjectsController(IUnitOfWork unitOfWork, ProjectMapper projectMapper)
+        public ProjectsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _projectMapper = projectMapper;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
         {
             var projects = await _unitOfWork.ProjectRepository.GetAll();
-
-            return projects;
+            var projectsDTO = _mapper.Map<List<ProjectDTO>>(projects);
+            return Ok(projectsDTO);
         }
 
         [HttpGet("{id}")]
@@ -38,7 +40,8 @@ namespace IntegratorSofttek.Controllers
 
             if (project != null)
             {
-                return Ok(project);
+                var projectDTO = _mapper.Map<ProjectDTO>(project);
+                return Ok(projectDTO);
             }
             else
             {
@@ -50,30 +53,28 @@ namespace IntegratorSofttek.Controllers
         [Route("RegisterProject")]
         public async Task<IActionResult> RegisterProject(ProjectDTO projectDTO)
         {
-            var project = _projectMapper.MapProjectDTOToProject(projectDTO);
-            var projectReturn = await _unitOfWork.ProjectRepository.Insert(project);
-
-            if (projectReturn != false)
+            var project = _mapper.Map<Project>(projectDTO);
+            var result = await _unitOfWork.ProjectRepository.Insert(project);
+            if (result != false)
             {
                 await _unitOfWork.Complete();
                 return Ok("The register operation was successful");
             }
-
             return BadRequest("The operation was canceled");
         }
 
         [HttpPut]
         [Route("UpdateProject/{id}")]
-        public async Task<IActionResult> UpdateProject(Project project)
+        public async Task<IActionResult> UpdateProject([FromRoute] int id, ProjectDTO projectDTO)
         {
-            var projectReturn = await _unitOfWork.ProjectRepository.Update(project);
+            var project = _mapper.Map<Project>(projectDTO);
 
-            if (projectReturn != false)
+            var result = await _unitOfWork.ProjectRepository.Update(project, id);
+            if (result != null)
             {
                 await _unitOfWork.Complete();
                 return Ok("The update operation was successful");
             }
-
             return BadRequest("The operation was canceled");
         }
 
@@ -82,13 +83,11 @@ namespace IntegratorSofttek.Controllers
         public async Task<IActionResult> DeleteSoftProject(int id)
         {
             var projectReturn = await _unitOfWork.ProjectRepository.DeleteSoftById(id);
-
             if (projectReturn != false)
             {
                 await _unitOfWork.Complete();
                 return Ok("This project has been dropped down");
             }
-
             return NotFound("The project couldn't be found");
         }
 
@@ -101,7 +100,7 @@ namespace IntegratorSofttek.Controllers
             if (project != null)
             {
                 await _unitOfWork.Complete();
-                return Ok("This project has been eliminated from Database");
+                return Ok("This project has been eliminated from the database");
             }
             else
             {
