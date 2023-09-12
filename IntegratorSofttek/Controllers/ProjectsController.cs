@@ -1,30 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using IntegratorSofttek.DTOs;
+﻿using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
 using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectController : ControllerBase
+    [Authorize]
+    public class ProjectsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ProjectMapper _projectMapper;
 
-        public ProjectController(IUnitOfWork unitOfWork, ProjectMapper projectMapper)
+        public ProjectsController(IUnitOfWork unitOfWork, ProjectMapper projectMapper)
         {
             _unitOfWork = unitOfWork;
             _projectMapper = projectMapper;
         }
 
         [HttpGet]
-        [Authorize]
-
         public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
         {
             var projects = await _unitOfWork.ProjectRepository.GetAll();
@@ -33,8 +32,6 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
-
         public async Task<IActionResult> GetProjectById(int id)
         {
             var project = await _unitOfWork.ProjectRepository.GetById(id);
@@ -45,56 +42,71 @@ namespace IntegratorSofttek.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound("The project couldn't be found");
             }
         }
 
         [HttpPost]
-        [Authorize]
-
-        public async Task<IActionResult> InsertProject(ProjectDTO projectDTO)
+        [Route("RegisterProject")]
+        public async Task<IActionResult> RegisterProject(ProjectDTO projectDTO)
         {
             var project = _projectMapper.MapProjectDTOToProject(projectDTO);
             var projectReturn = await _unitOfWork.ProjectRepository.Insert(project);
 
             if (projectReturn != false)
             {
-                return Ok("The insert operation was successful");
+                await _unitOfWork.Complete();
+                return Ok("The register operation was successful");
             }
 
             return BadRequest("The operation was canceled");
         }
 
         [HttpPut]
-        [Authorize]
-
-        public async Task<IActionResult> UpdateProject(ProjectDTO projectDTO, int id)
+        [Route("UpdateProject/{id}")]
+        public async Task<IActionResult> UpdateProject(Project project)
         {
-            var project = _projectMapper.MapProjectDTOToProject(projectDTO);
             var projectReturn = await _unitOfWork.ProjectRepository.Update(project);
 
             if (projectReturn != false)
             {
+                await _unitOfWork.Complete();
                 return Ok("The update operation was successful");
             }
 
             return BadRequest("The operation was canceled");
         }
 
-        [HttpDelete]
-        [Authorize]
-
-        public async Task<IActionResult> DeleteProject(int id)
+        [HttpPut]
+        [Route("DeleteSoftProject/{id}")]
+        public async Task<IActionResult> DeleteSoftProject(int id)
         {
-            var project = await _unitOfWork.ProjectRepository.DeleteHardById(id); ;
+            var projectReturn = await _unitOfWork.ProjectRepository.DeleteSoftById(id);
 
-            if (project != null)
+            if (projectReturn != false)
             {
-                
-                return Ok("The project has been eliminated from DataBase");
+                await _unitOfWork.Complete();
+                return Ok("This project has been dropped down");
             }
 
             return NotFound("The project couldn't be found");
+        }
+
+        [HttpDelete]
+        [Route("DeleteHardProject/{id}")]
+        public async Task<IActionResult> DeleteHardProject(int id)
+        {
+            var project = await _unitOfWork.ProjectRepository.DeleteHardById(id);
+
+            if (project != null)
+            {
+                await _unitOfWork.Complete();
+                return Ok("This project has been eliminated from Database");
+            }
+            else
+            {
+                return NotFound("The project couldn't be found");
+            }
         }
     }
 }

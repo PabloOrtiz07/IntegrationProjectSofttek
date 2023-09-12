@@ -22,29 +22,34 @@ namespace IntegratorSofttek.Entities
         public string LastName { get; set; }
         [Required]
         [Column("user_dni", TypeName = "VARCHAR(100)")]
-
         public int Dni { get; set; }
-        [Required]
 
+        [Required]
         [Column("user_type")]
-        public int Type { get; set; }
+        public UserType Type { get; set; }
         [Required]
         [Column("user_password", TypeName = "VARCHAR(100)")]
 
         public string Password { get; set; }
         [Required]
         [Column("user_email", TypeName = "VARCHAR(100)")]
-
         public string Email { get; set; }
+
         [Required]
         [Column("user_isDeleted")]
-
         public bool IsDeleted { get; set; }
-        [Required]
+
+
         [Column("user_deletedTimeUtc")]
-        public DateTime DeletedTimeUtc { get; set; }
+        public DateTime? DeletedTimeUtc { get; set; }
 
 
+    }
+
+    public enum UserType
+    {
+        Administrator,
+        Consultant
     }
 
 }

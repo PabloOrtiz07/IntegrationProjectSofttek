@@ -1,4 +1,6 @@
-﻿namespace IntegratorSofttek.DTOs
+﻿using IntegratorSofttek.Entities;
+
+namespace IntegratorSofttek.DTOs
 {
     public class UserDTO
     {
@@ -8,9 +10,11 @@
 
         public int Dni { get; set; }
 
-        public int Type { get; set; }
+        public UserType Type { get; set; }
         public string Password { get; set; }
 
         public string Email { get; set; }
     }
+
+  
 }

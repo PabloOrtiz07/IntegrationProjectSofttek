@@ -10,7 +10,7 @@ namespace IntegratorSofttek.Logic
             return new Service
             {
                 Description = serviceDTO.Description,
-                Status = serviceDTO.Status,
+                IsActive = serviceDTO.IsActive,
                 HourlyRate = serviceDTO.HourlyRate,
 
 
