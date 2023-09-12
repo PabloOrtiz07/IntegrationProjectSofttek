@@ -11,7 +11,7 @@ namespace IntegratorSofttek.Logic
             {
                 Name = projectDTO.Name,
                 Status = projectDTO.Status,
-                Adress = projectDTO.Adress,
+                Address = projectDTO.Address,
 
 
                 // Map other properties as needed

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntegratorSofttek.Migrations
 {
     [DbContext(typeof(ContextDB))]
-    [Migration("20230911150812_MyFirstMigration")]
+    [Migration("20230912025505_MyFirstMigration")]
     partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,20 +28,32 @@ namespace IntegratorSofttek.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("project_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Adress")
+                    b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("VARCHAR(100)")
+                        .HasColumnName("project_address");
+
+                    b.Property<DateTime?>("DeletedTimeUtc")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("project_deletedTimeUtc");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("project_isDeleted");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("VARCHAR(100)")
+                        .HasColumnName("project_name");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("project_status");
 
                     b.HasKey("Id");
 
@@ -51,23 +63,26 @@ namespace IntegratorSofttek.Migrations
                         new
                         {
                             Id = 1,
-                            Adress = "123 Main St",
+                            Address = "123 Main St",
+                            IsDeleted = false,
                             Name = "Project 1",
-                            Status = 1
+                            Status = 0
                         },
                         new
                         {
                             Id = 2,
-                            Adress = "456 Elm St",
+                            Address = "456 Elm St",
+                            IsDeleted = false,
                             Name = "Project 2",
-                            Status = 2
+                            Status = 1
                         },
                         new
                         {
                             Id = 3,
-                            Adress = "789 Oak St",
+                            Address = "789 Oak St",
+                            IsDeleted = false,
                             Name = "Project 3",
-                            Status = 1
+                            Status = 0
                         });
                 });
 
@@ -75,19 +90,31 @@ namespace IntegratorSofttek.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("service_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime?>("DeletedTimeUtc")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("service_deletedTimeUtc");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("VARCHAR(100)")
+                        .HasColumnName("service_description");
 
                     b.Property<double>("HourlyRate")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("service_hourlyRate");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("service_isActive");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("service_isDeleted");
 
                     b.HasKey("Id");
 
@@ -99,21 +126,24 @@ namespace IntegratorSofttek.Migrations
                             Id = 1,
                             Description = "Service 1",
                             HourlyRate = 25.0,
-                            Status = true
+                            IsActive = true,
+                            IsDeleted = false
                         },
                         new
                         {
                             Id = 2,
                             Description = "Service 2",
                             HourlyRate = 30.0,
-                            Status = true
+                            IsActive = true,
+                            IsDeleted = false
                         },
                         new
                         {
                             Id = 3,
                             Description = "Service 3",
                             HourlyRate = 20.0,
-                            Status = false
+                            IsActive = false,
+                            IsDeleted = false
                         });
                 });
 
@@ -126,7 +156,7 @@ namespace IntegratorSofttek.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("DeletedTimeUtc")
+                    b.Property<DateTime?>("DeletedTimeUtc")
                         .HasColumnType("datetime2")
                         .HasColumnName("user_deletedTimeUtc");
 
@@ -171,7 +201,6 @@ namespace IntegratorSofttek.Migrations
                         new
                         {
                             Id = 1,
-                            DeletedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dni = "1001010",
                             Email = "pablo@example.com",
                             FirstName = "Pablo",
@@ -183,14 +212,13 @@ namespace IntegratorSofttek.Migrations
                         new
                         {
                             Id = 2,
-                            DeletedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dni = "213",
                             Email = "alice@example.com",
                             FirstName = "Alice",
                             IsDeleted = false,
                             LastName = "Johnson",
                             Password = "456",
-                            Type = 2
+                            Type = 1
                         },
                         new
                         {
@@ -202,7 +230,7 @@ namespace IntegratorSofttek.Migrations
                             IsDeleted = true,
                             LastName = "Smith",
                             Password = "789",
-                            Type = 1
+                            Type = 0
                         },
                         new
                         {
@@ -214,7 +242,7 @@ namespace IntegratorSofttek.Migrations
                             IsDeleted = false,
                             LastName = "Lee",
                             Password = "567",
-                            Type = 2
+                            Type = 0
                         },
                         new
                         {
@@ -226,7 +254,7 @@ namespace IntegratorSofttek.Migrations
                             IsDeleted = true,
                             LastName = "Doe",
                             Password = "901",
-                            Type = 1
+                            Type = 0
                         });
                 });
 
@@ -234,26 +262,39 @@ namespace IntegratorSofttek.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("work_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<double>("Cost")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("work_cost");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("work_date");
+
+                    b.Property<DateTime?>("DeletedTimeUtc")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("work_deletedTimeUtc");
 
                     b.Property<double>("HourlyRate")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("work_hourlyRate");
 
                     b.Property<int>("HoursQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("work_hoursQuantity");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("work_isDeleted");
+
+                    b.Property<int>("Project")
                         .HasColumnType("int");
 
-                    b.Property<int>("project")
-                        .HasColumnType("int");
-
-                    b.Property<int>("service")
+                    b.Property<int>("Service")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -265,31 +306,56 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 11, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2287),
+                            Date = new DateTime(2023, 9, 11, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6921),
                             HourlyRate = 25.0,
                             HoursQuantity = 40,
-                            project = 0,
-                            service = 0
+                            IsDeleted = false,
+                            Project = 1,
+                            Service = 1
                         },
                         new
                         {
                             Id = 2,
                             Cost = 900.0,
-                            Date = new DateTime(2023, 9, 10, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2300),
+                            Date = new DateTime(2023, 9, 10, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6935),
                             HourlyRate = 30.0,
                             HoursQuantity = 30,
-                            project = 0,
-                            service = 0
+                            IsDeleted = false,
+                            Project = 2,
+                            Service = 2
                         },
                         new
                         {
                             Id = 3,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 9, 12, 8, 12, 728, DateTimeKind.Local).AddTicks(2304),
+                            Date = new DateTime(2023, 9, 9, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6939),
                             HourlyRate = 20.0,
                             HoursQuantity = 50,
-                            project = 0,
-                            service = 0
+                            IsDeleted = false,
+                            Project = 1,
+                            Service = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Cost = 980.0,
+                            Date = new DateTime(2023, 9, 8, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6940),
+                            HourlyRate = 28.0,
+                            HoursQuantity = 35,
+                            IsDeleted = false,
+                            Project = 2,
+                            Service = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Cost = 990.0,
+                            Date = new DateTime(2023, 9, 7, 23, 55, 5, 666, DateTimeKind.Local).AddTicks(6941),
+                            HourlyRate = 22.0,
+                            HoursQuantity = 45,
+                            IsDeleted = false,
+                            Project = 3,
+                            Service = 2
                         });
                 });
 #pragma warning restore 612, 618

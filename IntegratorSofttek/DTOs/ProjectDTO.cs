@@ -1,12 +1,17 @@
-﻿namespace IntegratorSofttek.DTOs
+﻿using IntegratorSofttek.Entities;
+
+namespace IntegratorSofttek.DTOs
 {
     public class ProjectDTO
     {
 
         public string Name { get; set; }
 
-        public string Adress { get; set; }
+        public string Address { get; set; }
 
-        public int Status { get; set; }
+        public ProjectStatus Status { get; set; }
+
     }
+
+
 }

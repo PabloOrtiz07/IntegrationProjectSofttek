@@ -31,5 +31,19 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
+        public override async Task<bool> DeleteSoftById(int id)
+        {
+            Service service = await GetById(id);
+            if (service != null)
+            {
+                service.IsDeleted = true;
+                service.DeletedTimeUtc = DateTime.UtcNow;
+
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }

@@ -4,25 +4,26 @@ using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceController : ControllerBase
+    [Authorize]
+    public class ServicesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ServiceMapper _serviceMapper;
 
-        public ServiceController(IUnitOfWork unitOfWork, ServiceMapper serviceMapper)
+        public ServicesController(IUnitOfWork unitOfWork, ServiceMapper serviceMapper)
         {
             _unitOfWork = unitOfWork;
             _serviceMapper = serviceMapper;
         }
 
         [HttpGet]
-        [Authorize]
-
         public async Task<ActionResult<IEnumerable<Service>>> GetAllServices()
         {
             var services = await _unitOfWork.ServiceRepository.GetAll();
@@ -31,8 +32,6 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
-
         public async Task<IActionResult> GetServiceById(int id)
         {
             var service = await _unitOfWork.ServiceRepository.GetById(id);
@@ -43,55 +42,71 @@ namespace IntegratorSofttek.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound("The service couldn't be found");
             }
         }
 
         [HttpPost]
-        [Authorize]
-
-        public async Task<IActionResult> InsertService(ServiceDTO serviceDTO)
+        [Route("RegisterService")]
+        public async Task<IActionResult> RegisterService(ServiceDTO serviceDTO)
         {
             var service = _serviceMapper.MapServiceDTOToService(serviceDTO);
             var serviceReturn = await _unitOfWork.ServiceRepository.Insert(service);
 
             if (serviceReturn != false)
             {
-                return Ok("The insert operation was successful");
+                await _unitOfWork.Complete();
+                return Ok("The register operation was successful");
             }
 
             return BadRequest("The operation was canceled");
         }
 
         [HttpPut]
-        [Authorize]
-
-        public async Task<IActionResult> UpdateService(ServiceDTO serviceDTO, int id)
+        [Route("UpdateService/{id}")]
+        public async Task<IActionResult> UpdateService(Service service)
         {
-            var service = _serviceMapper.MapServiceDTOToService(serviceDTO);
             var serviceReturn = await _unitOfWork.ServiceRepository.Update(service);
 
             if (serviceReturn != false)
             {
+                await _unitOfWork.Complete();
                 return Ok("The update operation was successful");
             }
 
             return BadRequest("The operation was canceled");
         }
 
-        [HttpDelete]
-        [Authorize]
+        [HttpPut]
+        [Route("DeleteSoftService/{id}")]
+        public async Task<IActionResult> DeleteSoftService(int id)
+        {
+            var serviceReturn = await _unitOfWork.ServiceRepository.DeleteSoftById(id);
 
-        public async Task<IActionResult> DeleteService(int id)
+            if (serviceReturn != false)
+            {
+                await _unitOfWork.Complete();
+                return Ok("This service has been dropped down");
+            }
+
+            return NotFound("The service couldn't be found");
+        }
+
+        [HttpDelete]
+        [Route("DeleteHardService/{id}")]
+        public async Task<IActionResult> DeleteHardService(int id)
         {
             var service = await _unitOfWork.ServiceRepository.DeleteHardById(id);
 
             if (service != null)
             {
-                return Ok("The service has been eliminated from DataBase");
+                await _unitOfWork.Complete();
+                return Ok("This service has been eliminated from Database");
             }
-
-            return NotFound("The service couldn't be found");
+            else
+            {
+                return NotFound("The service couldn't be found");
+            }
         }
     }
 }

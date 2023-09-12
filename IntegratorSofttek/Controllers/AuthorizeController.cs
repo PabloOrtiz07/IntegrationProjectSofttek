@@ -9,18 +9,19 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    [AllowAnonymous]
+
+    public class AuthorizeController : ControllerBase
     {
         private TokenJwtHelper _tokenJwtHelper;
         private readonly IUnitOfWork _unitOfWork;
-        public LoginController(IUnitOfWork unitOfWork, IConfiguration configuration)
+        public AuthorizeController(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _tokenJwtHelper = new TokenJwtHelper(configuration);
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Login(AuthenticateDto dto)
         {
             var userCredentials = await _unitOfWork.UserRepository.AuthenticateCredentials(dto);

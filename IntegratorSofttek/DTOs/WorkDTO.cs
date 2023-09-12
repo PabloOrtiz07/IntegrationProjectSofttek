@@ -12,5 +12,9 @@ namespace IntegratorSofttek.DTOs
         public double HourlyRate { get; set; }
 
         public double Cost { get; set; }
+
+        public int project { get; set; }
+
+        public int service { get; set; }
     }
 }

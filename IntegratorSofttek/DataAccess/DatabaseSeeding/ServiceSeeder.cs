@@ -12,21 +12,21 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                 {
                     Id = 1,
                     Description = "Service 1",
-                    Status = true,
+                    IsActive = true,
                     HourlyRate = 25.0
                 },
                 new Service
                 {
                     Id = 2,
                     Description = "Service 2",
-                    Status = true,
+                    IsActive = true,
                     HourlyRate = 30.0
                 },
                 new Service
                 {
                     Id = 3,
                     Description = "Service 3",
-                    Status = false,
+                    IsActive = false,
                     HourlyRate = 20.0
                 }
             );

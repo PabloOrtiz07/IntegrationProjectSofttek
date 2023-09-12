@@ -17,11 +17,11 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Pablo",
                     LastName = "Ortiz",
                     Dni = 1001010,
-                    Type = 1,
+                    Type = UserType.Consultant,
                     Password = "123",
                     Email = "pablo@example.com", // Provide an email address
                     IsDeleted = false,
-                    DeletedTimeUtc = DateTime.MinValue
+                    DeletedTimeUtc = null
                 },
                 new User
                 {
@@ -29,11 +29,11 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Alice",
                     LastName = "Johnson",
                     Dni = 213,
-                    Type = 2,
+                    Type = UserType.Consultant,
                     Password = "456",
                     Email = "alice@example.com", // Provide an email address
                     IsDeleted = false,
-                    DeletedTimeUtc = DateTime.MinValue
+                    DeletedTimeUtc = null
                 },
                 new User
                 {
@@ -41,7 +41,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Bob",
                     LastName = "Smith",
                     Dni = 214,
-                    Type = 1,
+                    Type = UserType.Administrator,
                     Password = "789",
                     Email = "bob@example.com", // Provide an email address
                     IsDeleted = true, // Soft-deleted
@@ -53,7 +53,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Eva",
                     LastName = "Lee",
                     Dni = 315,
-                    Type = 2,
+                    Type = UserType.Administrator,
                     Password = "567",
                     Email = "eva@example.com", // Provide an email address
                     IsDeleted = false,
@@ -65,7 +65,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "John",
                     LastName = "Doe",
                     Dni = 416,
-                    Type = 1,
+                    Type = UserType.Administrator,
                     Password = "901",
                     Email = "john@example.com", // Provide an email address
                     IsDeleted = true, // Soft-deleted

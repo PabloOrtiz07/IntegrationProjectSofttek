@@ -1,30 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using IntegratorSofttek.DTOs;
+﻿using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
 using IntegratorSofttek.Logic;
 using IntegratorSofttek.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WorkController : ControllerBase
+    [Authorize]
+    public class WorksController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly WorkMapper _workMapper;
 
-        public WorkController(IUnitOfWork unitOfWork, WorkMapper workMapper)
+        public WorksController(IUnitOfWork unitOfWork, WorkMapper workMapper)
         {
             _unitOfWork = unitOfWork;
             _workMapper = workMapper;
         }
 
         [HttpGet]
-        [Authorize]
-
         public async Task<ActionResult<IEnumerable<Work>>> GetAllWorks()
         {
             var works = await _unitOfWork.WorkRepository.GetAll();
@@ -33,8 +32,6 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
-
         public async Task<IActionResult> GetWorkById(int id)
         {
             var work = await _unitOfWork.WorkRepository.GetById(id);
@@ -45,56 +42,71 @@ namespace IntegratorSofttek.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound("The work couldn't be found");
             }
         }
 
         [HttpPost]
-        [Authorize]
-
-        public async Task<IActionResult> InsertWork(WorkDTO workDTO)
+        [Route("RegisterWork")]
+        public async Task<IActionResult> RegisterWork(WorkDTO workDTO)
         {
             var work = _workMapper.MapWorkDTOToWork(workDTO);
             var workReturn = await _unitOfWork.WorkRepository.Insert(work);
 
             if (workReturn != false)
             {
-                return Ok("The insert operation was successful");
+                await _unitOfWork.Complete();
+                return Ok("The register operation was successful");
             }
 
             return BadRequest("The operation was canceled");
         }
 
         [HttpPut]
-        [Authorize]
-
-        public async Task<IActionResult> UpdateWork(WorkDTO workDTO, int id)
+        [Route("UpdateWork/{id}")]
+        public async Task<IActionResult> UpdateWork(Work work)
         {
-            var work = _workMapper.MapWorkDTOToWork(workDTO);
             var workReturn = await _unitOfWork.WorkRepository.Update(work);
 
             if (workReturn != false)
             {
+                await _unitOfWork.Complete();
                 return Ok("The update operation was successful");
             }
 
             return BadRequest("The operation was canceled");
         }
 
-        [HttpDelete]
-        [Authorize]
+        [HttpPut]
+        [Route("DeleteSoftWork/{id}")]
+        public async Task<IActionResult> DeleteSoftWork(int id)
+        {
+            var workReturn = await _unitOfWork.WorkRepository.DeleteSoftById(id);
 
-        public async Task<IActionResult> DeleteWork(int id)
+            if (workReturn != false)
+            {
+                await _unitOfWork.Complete();
+                return Ok("This work has been dropped down");
+            }
+
+            return NotFound("The work couldn't be found");
+        }
+
+        [HttpDelete]
+        [Route("DeleteHardWork/{id}")]
+        public async Task<IActionResult> DeleteHardWork(int id)
         {
             var work = await _unitOfWork.WorkRepository.DeleteHardById(id);
 
             if (work != null)
             {
-                
-                return Ok("The work has been eliminated from Database");
+                await _unitOfWork.Complete();
+                return Ok("This work has been eliminated from Database");
             }
-
-            return NotFound("The work couldn't be found");
+            else
+            {
+                return NotFound("The work couldn't be found");
+            }
         }
     }
 }

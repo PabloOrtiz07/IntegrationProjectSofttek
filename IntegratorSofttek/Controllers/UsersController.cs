@@ -12,6 +12,8 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -24,7 +26,6 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             var users = await _unitOfWork.UserRepository.GetAll();
@@ -33,7 +34,6 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize]
 
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -50,7 +50,6 @@ namespace IntegratorSofttek.Controllers
         }
         [HttpPost]
         [Route("RegisterUser")]
-        //[Authorize]
 
         public async Task<IActionResult> RegisterUser(UserDTO userDTO)
         {
@@ -66,8 +65,8 @@ namespace IntegratorSofttek.Controllers
             return BadRequest("The operation was canceled");
         }
 
-        [HttpPut("update/{id}")]
-        //[Authorize]
+        [HttpPut]
+        [Route("UpdateUser/{id}")]
 
         public async Task<IActionResult> UpdateUser(User user)
         {
@@ -83,8 +82,8 @@ namespace IntegratorSofttek.Controllers
         }
 
 
-        [HttpPut("delete/{id}")]
-        //[Authorize]
+        [HttpPut]
+        [Route("DeleteSoftUser/{id}")]
 
         public async Task<IActionResult> DeleteSoftUser(int id)
         {
@@ -99,8 +98,8 @@ namespace IntegratorSofttek.Controllers
             return NotFound("The user couldn't be found");
         }
 
-        [HttpDelete("{id}")]
-       // [Authorize]
+        [HttpDelete]
+        [Route("DeleteHardUser/{id}")]
 
         public async Task<IActionResult> DeleteHardUser(int id)
         {
