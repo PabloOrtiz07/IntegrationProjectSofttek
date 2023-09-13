@@ -45,21 +45,27 @@ builder.Services.AddDbContext<ContextDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 
 
 builder.Services.AddAuthorization(option =>
 {
-    option.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "1"));
+    option.AddPolicy("Administrator", policy => policy.RequireClaim(ClaimTypes.Role, "1"));
 });
 
-builder.Services.AddAuthorization(option =>
+builder.Services.AddAuthorization(options =>
 {
-    option.AddPolicy("Consult", policy => policy.RequireClaim(ClaimTypes.Role, "2"));
+    options.AddPolicy("AdministratorAndConsultant", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.Role, "1", "2"); // 
+    });
 });
+
+
+
 
 //Apply  dependency injection
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUnitOfWork,UnitOfWorkService>();
 //Apply AutoMapper
 

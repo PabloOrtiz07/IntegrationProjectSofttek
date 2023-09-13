@@ -41,10 +41,10 @@ namespace IntegratorSofttek.Entities
         [Column("user_deletedTimeUtc")]
         public DateTime? DeletedTimeUtc { get; set; }
 
-        //[Required]
-        //[Column("role_id")]
-        //public int RoleId { get; set; }
-        //public Role? Role { get; set; }
+        [Required]
+        [Column("role_id")]
+        public int RoleId { get; set; }
+        public Role? Role { get; set; }
 
     }
 

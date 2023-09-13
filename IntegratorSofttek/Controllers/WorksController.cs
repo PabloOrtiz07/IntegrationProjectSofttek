@@ -12,7 +12,6 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
 
     public class WorksController : ControllerBase
     {
@@ -26,6 +25,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdministratorAndConsultant")]
+
         public async Task<ActionResult<IEnumerable<WorkDTO>>> GetAllWorks()
         {
             var works = await _unitOfWork.WorkRepository.GetAll();
@@ -34,6 +35,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdministratorAndConsultant")]
+
         public async Task<IActionResult> GetWorkById([FromRoute] int id, int parameter)
         {
             var work = await _unitOfWork.WorkRepository.GetWorkById(id, parameter);
@@ -51,6 +54,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPost]
         [Route("RegisterWork")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> RegisterWork(WorkDTO workDTO)
         {
             var work = _mapper.Map<Work>(workDTO);
@@ -65,6 +70,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("UpdateWork/{id}")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> UpdateWork([FromRoute] int id, WorkDTO workDTO)
         {
             var work = _mapper.Map<Work>(workDTO);
@@ -80,6 +87,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("DeleteWork/{id}")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> DeleteWork([FromRoute] int id, int parameter)
         {
             var workReturn = await _unitOfWork.WorkRepository.DeleteWorkById(id, parameter);

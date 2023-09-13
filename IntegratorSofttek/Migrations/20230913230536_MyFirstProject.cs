@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IntegratorSofttek.Migrations
 {
-    public partial class MyFirstMigration : Migration
+    public partial class MyFirstProject : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,25 +60,6 @@ namespace IntegratorSofttek.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "users",
-                columns: table => new
-                {
-                    user_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_firstName = table.Column<string>(type: "VARCHAR(100)", nullable: false),
-                    user_lastName = table.Column<string>(type: "VARCHAR(100)", nullable: false),
-                    user_dni = table.Column<string>(type: "VARCHAR(100)", nullable: false),
-                    user_password = table.Column<string>(type: "VARCHAR(100)", nullable: false),
-                    user_email = table.Column<string>(type: "VARCHAR(100)", nullable: false),
-                    user_isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    user_deletedTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_users", x => x.user_id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "works",
                 columns: table => new
                 {
@@ -98,13 +79,39 @@ namespace IntegratorSofttek.Migrations
                     table.PrimaryKey("PK_works", x => x.work_id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "users",
+                columns: table => new
+                {
+                    user_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_firstName = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_lastName = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_dni = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_password = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_email = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    user_isDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    user_deletedTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    role_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_users", x => x.user_id);
+                    table.ForeignKey(
+                        name: "FK_users_Roles_role_id",
+                        column: x => x.role_id,
+                        principalTable: "Roles",
+                        principalColumn: "role_id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "role_id", "role_deletedTimeUtc", "role_description", "role_isDeleted", "role_name" },
                 values: new object[,]
                 {
-                    { 1, null, "Admin", false, "Admin" },
-                    { 2, null, "Consult", false, "Consult" }
+                    { 1, null, "Administrator", false, "Administrator" },
+                    { 2, null, "Consultant", false, "Consultant" }
                 });
 
             migrationBuilder.InsertData(
@@ -128,37 +135,39 @@ namespace IntegratorSofttek.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "users",
-                columns: new[] { "user_id", "user_deletedTimeUtc", "user_dni", "user_email", "user_firstName", "user_isDeleted", "user_lastName", "user_password" },
-                values: new object[,]
-                {
-                    { 1, null, "1001010", "pablo@example.com", "Pablo", false, "Ortiz", "123" },
-                    { 2, null, "213", "alice@example.com", "Alice", false, "Johnson", "456" },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "214", "bob@example.com", "Bob", true, "Smith", "789" },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "315", "eva@example.com", "Eva", false, "Lee", "567" },
-                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "416", "john@example.com", "John", true, "Doe", "901" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "works",
                 columns: new[] { "work_id", "work_cost", "work_date", "work_deletedTimeUtc", "work_hourlyRate", "work_hoursQuantity", "work_isDeleted", "Project", "Service" },
                 values: new object[,]
                 {
-                    { 1, 1000.0, new DateTime(2023, 9, 13, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7721), null, 25.0, 40, false, 1, 1 },
-                    { 2, 900.0, new DateTime(2023, 9, 12, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7733), null, 30.0, 30, false, 2, 2 },
-                    { 3, 1000.0, new DateTime(2023, 9, 11, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7737), null, 20.0, 50, false, 1, 3 },
-                    { 4, 980.0, new DateTime(2023, 9, 10, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7738), null, 28.0, 35, false, 2, 1 },
-                    { 5, 990.0, new DateTime(2023, 9, 9, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7739), null, 22.0, 45, false, 3, 2 }
+                    { 1, 1000.0, new DateTime(2023, 9, 13, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8836), null, 25.0, 40, false, 1, 1 },
+                    { 2, 900.0, new DateTime(2023, 9, 12, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8845), null, 30.0, 30, false, 2, 2 },
+                    { 3, 1000.0, new DateTime(2023, 9, 11, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8850), null, 20.0, 50, false, 1, 3 },
+                    { 4, 980.0, new DateTime(2023, 9, 10, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8851), null, 28.0, 35, false, 2, 1 },
+                    { 5, 990.0, new DateTime(2023, 9, 9, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8852), null, 22.0, 45, false, 3, 2 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "user_id", "user_deletedTimeUtc", "user_dni", "user_email", "user_firstName", "user_isDeleted", "user_lastName", "user_password", "role_id" },
+                values: new object[,]
+                {
+                    { 1, null, "1001010", "adm", "Pablo", false, "Ortiz", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", 1 },
+                    { 2, null, "213", "noAdmin", "Alice", false, "Johnson", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", 2 },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "214", "bob@example.com", "Bob", true, "Smith", "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", 1 },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "315", "eva@example.com", "Eva", false, "Lee", "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", 2 },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "416", "john@example.com", "John", true, "Doe", "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", 2 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_role_id",
+                table: "users",
+                column: "role_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "projects");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "services");
@@ -168,6 +177,9 @@ namespace IntegratorSofttek.Migrations
 
             migrationBuilder.DropTable(
                 name: "works");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }

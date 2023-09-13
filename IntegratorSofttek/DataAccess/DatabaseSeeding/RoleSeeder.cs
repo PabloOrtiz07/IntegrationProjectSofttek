@@ -11,16 +11,16 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                 new Role
                 {
                     Id = 1,
-                    Name = "Admin",
-                    Description = "Admin",
+                    Name = "Administrator",
+                    Description = "Administrator",
                     IsDeleted = false,
 
                 },
                  new Role
                  {
                      Id = 2,
-                     Name = "Consult",
-                     Description = "Consult",
+                     Name = "Consultant",
+                     Description = "Consultant",
                      IsDeleted = false,
                  });
         }

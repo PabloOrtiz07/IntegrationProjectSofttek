@@ -1,5 +1,6 @@
 ﻿using System;
 using IntegratorSofttek.Entities;
+using IntegratorSofttek.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntegratorSofttek.DataAccess.DatabaseSeeding
@@ -16,10 +17,11 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Pablo",
                     LastName = "Ortiz",
                     Dni = 1001010,
-                    Password = "123",
-                    Email = "pablo@example.com", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123"),
+                    Email = "adm", // Provide an email address
                     IsDeleted = false,
-                    DeletedTimeUtc = null
+                    DeletedTimeUtc = null,
+                    RoleId = 1
                 },
                 new User
                 {
@@ -27,10 +29,11 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Alice",
                     LastName = "Johnson",
                     Dni = 213,
-                    Password = "456",
-                    Email = "alice@example.com", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123"),
+                    Email = "noAdmin", // Provide an email address
                     IsDeleted = false,
-                    DeletedTimeUtc = null
+                    DeletedTimeUtc = null,
+                    RoleId = 2
                 },
                 new User
                 {
@@ -38,10 +41,11 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Bob",
                     LastName = "Smith",
                     Dni = 214,
-                    Password = "789",
+                    Password = PasswordEncryptHelper.EncryptPassword("1234"),
                     Email = "bob@example.com", // Provide an email address
                     IsDeleted = true, // Soft-deleted
-                    DeletedTimeUtc = DateTime.MinValue
+                    DeletedTimeUtc = DateTime.MinValue,
+                    RoleId = 1
                 },
                 new User
                 {
@@ -49,10 +53,11 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Eva",
                     LastName = "Lee",
                     Dni = 315,
-                    Password = "567",
+                    Password = PasswordEncryptHelper.EncryptPassword("1234"),
                     Email = "eva@example.com", // Provide an email address
                     IsDeleted = false,
-                    DeletedTimeUtc = DateTime.MinValue
+                    DeletedTimeUtc = DateTime.MinValue,
+                    RoleId = 2
                 },
                 new User
                 {
@@ -60,10 +65,11 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "John",
                     LastName = "Doe",
                     Dni = 416,
-                    Password = "901",
+                    Password = PasswordEncryptHelper.EncryptPassword("1234"),
                     Email = "john@example.com", // Provide an email address
                     IsDeleted = true, // Soft-deleted
-                    DeletedTimeUtc = DateTime.MinValue
+                    DeletedTimeUtc = DateTime.MinValue,
+                    RoleId = 2
                 }
             );
         }

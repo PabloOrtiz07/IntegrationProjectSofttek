@@ -22,11 +22,11 @@ namespace IntegratorSofttek.DataAccess
         {
             var seeders = new List<IEntitySeeder>
             {
+                new RoleSeeder(),
                 new UserSeeder(),
                 new ProjectSeeder(),
                 new ServiceSeeder(),
                 new WorkSeeder(),
-                new RoleSeeder(),
             };
 
             foreach (var seeder in seeders)

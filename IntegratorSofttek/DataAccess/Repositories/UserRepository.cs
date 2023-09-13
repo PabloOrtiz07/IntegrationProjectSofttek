@@ -4,7 +4,7 @@ using IntegratorSofttek.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using System.Linq;
-
+using IntegratorSofttek.Helper;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
@@ -105,7 +105,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
         public async Task<User?> AuthenticateCredentials(AuthenticateDto dto)
         {
             return await _contextDB.Users.SingleOrDefaultAsync
-                (user =>  user.Email == dto.Email && user.Password == dto.Password);
+                (user =>  user.Email == dto.Email && user.Password == PasswordEncryptHelper.EncryptPassword(dto.Password));
         }
 
     }
