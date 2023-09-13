@@ -12,7 +12,7 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
 
     public class UsersController : ControllerBase
     {
@@ -26,18 +26,18 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers([FromQuery] int parameter)
         {
-            var users = await _unitOfWork.UserRepository.GetAll();
+            var users = await _unitOfWork.UserRepository.GetAllUsers(parameter);
             var usersDTO = _mapper.Map<List<UserDTO>>(users);
             return Ok(usersDTO);
         }
 
         [HttpGet("{id}")]
 
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> GetUserById([FromRoute] int id, [FromQuery] int parameter)
         {
-            var user = await _unitOfWork.UserRepository.GetById(id);
+            var user = await _unitOfWork.UserRepository.GetUserById(id,parameter);
 
             if (user != null)
             {
@@ -83,11 +83,11 @@ namespace IntegratorSofttek.Controllers
 
 
         [HttpPut]
-        [Route("DeleteSoftUser/{id}")]
-        public async Task<IActionResult> DeleteSoftUser(int id)
+        [Route("DeleteUser/{id}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] int id, [FromQuery] int parameter)
         {
 
-            var userReturn = await _unitOfWork.UserRepository.DeleteSoftById(id);
+            var userReturn = await _unitOfWork.UserRepository.DeleteUserById(id,parameter);
             if (userReturn != false)
             {
                 await _unitOfWork.Complete();
@@ -97,21 +97,5 @@ namespace IntegratorSofttek.Controllers
             return NotFound("The user couldn't be found");
         }
 
-        [HttpDelete]
-        [Route("DeleteHardUser/{id}")]
-        public async Task<IActionResult> DeleteHardUser(int id)
-        {
-            var user = await _unitOfWork.UserRepository.DeleteHardById(id);
-
-            if (user != null)
-            {
-                await _unitOfWork.Complete();
-                return Ok("This user has been elimited from DataBase");
-            }
-            else
-            {
-                return NotFound("The user couldn't be found");
-            }
-        }
     }
 }

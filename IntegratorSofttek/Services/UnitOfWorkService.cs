@@ -17,6 +17,9 @@ namespace IntegratorSofttek.Services
 
         public ProjectRepository ProjectRepository { get; set; }
 
+        public RoleRepository RoleRepository { get; set; }
+
+
 
         public UnitOfWorkService(ContextDB contextDB)
         {
@@ -25,6 +28,7 @@ namespace IntegratorSofttek.Services
             ServiceRepository = new ServiceRepository(_contextDB);
             WorkRepository = new WorkRepository(_contextDB);
             ProjectRepository = new ProjectRepository(_contextDB);
+            RoleRepository = new RoleRepository(_contextDB);
 
         }
 

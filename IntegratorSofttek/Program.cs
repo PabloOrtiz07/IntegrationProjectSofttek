@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,7 +49,15 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 
 
+builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "1"));
+});
 
+builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("Consult", policy => policy.RequireClaim(ClaimTypes.Role, "2"));
+});
 
 //Apply  dependency injection
 builder.Services.AddScoped<IUnitOfWork,UnitOfWorkService>();

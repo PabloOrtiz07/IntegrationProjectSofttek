@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 
 namespace IntegratorSofttek.Entities
 {
@@ -25,9 +26,6 @@ namespace IntegratorSofttek.Entities
         public int Dni { get; set; }
 
         [Required]
-        [Column("user_type")]
-        public UserType Type { get; set; }
-        [Required]
         [Column("user_password", TypeName = "VARCHAR(100)")]
 
         public string Password { get; set; }
@@ -43,13 +41,13 @@ namespace IntegratorSofttek.Entities
         [Column("user_deletedTimeUtc")]
         public DateTime? DeletedTimeUtc { get; set; }
 
+        //[Required]
+        //[Column("role_id")]
+        //public int RoleId { get; set; }
+        //public Role? Role { get; set; }
 
     }
 
-    public enum UserType
-    {
-        Administrator,
-        Consultant
-    }
+
 
 }

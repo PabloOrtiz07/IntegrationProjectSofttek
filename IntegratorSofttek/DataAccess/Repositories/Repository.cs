@@ -45,11 +45,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
         {
             try
             {
-           
+
                 _contextDB.Set<T>().Add(entity);
                 return true;
 
-              
+
             }
             catch (Exception)
             {
@@ -72,7 +72,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
             return false;
         }
 
-        public virtual async Task<bool> DeleteSoftById(int id)
+        public virtual async Task<bool> DeleteById(int id)
         {
             throw new NotImplementedException();
 

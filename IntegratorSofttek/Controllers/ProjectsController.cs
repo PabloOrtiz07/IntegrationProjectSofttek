@@ -5,7 +5,6 @@ using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,7 +12,7 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ProjectsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -26,17 +25,17 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
+        public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProjects([FromQuery] int parameter, [FromQuery] int state)
         {
-            var projects = await _unitOfWork.ProjectRepository.GetAll();
+            var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter,state);
             var projectsDTO = _mapper.Map<List<ProjectDTO>>(projects);
             return Ok(projectsDTO);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProjectById(int id)
+        public async Task<IActionResult> GetProjectById([FromRoute] int id, [FromQuery] int parameter)
         {
-            var project = await _unitOfWork.ProjectRepository.GetById(id);
+            var project = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
 
             if (project != null)
             {
@@ -79,33 +78,16 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpPut]
-        [Route("DeleteSoftProject/{id}")]
-        public async Task<IActionResult> DeleteSoftProject(int id)
+        [Route("DeleteProject/{id}")]
+        public async Task<IActionResult> DeleteProject([FromRoute] int id, [FromQuery] int parameter)
         {
-            var projectReturn = await _unitOfWork.ProjectRepository.DeleteSoftById(id);
+            var projectReturn = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);
             if (projectReturn != false)
             {
                 await _unitOfWork.Complete();
                 return Ok("This project has been dropped down");
             }
             return NotFound("The project couldn't be found");
-        }
-
-        [HttpDelete]
-        [Route("DeleteHardProject/{id}")]
-        public async Task<IActionResult> DeleteHardProject(int id)
-        {
-            var project = await _unitOfWork.ProjectRepository.DeleteHardById(id);
-
-            if (project != null)
-            {
-                await _unitOfWork.Complete();
-                return Ok("This project has been eliminated from the database");
-            }
-            else
-            {
-                return NotFound("The project couldn't be found");
-            }
         }
     }
 }
