@@ -5,15 +5,15 @@ using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+
     public class WorksController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -26,7 +26,7 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Work>>> GetAllWorks()
+        public async Task<ActionResult<IEnumerable<WorkDTO>>> GetAllWorks()
         {
             var works = await _unitOfWork.WorkRepository.GetAll();
             var worksDTO = _mapper.Map<List<WorkDTO>>(works);
@@ -34,9 +34,9 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetWorkById(int id)
+        public async Task<IActionResult> GetWorkById([FromRoute] int id, int parameter)
         {
-            var work = await _unitOfWork.WorkRepository.GetById(id);
+            var work = await _unitOfWork.WorkRepository.GetWorkById(id, parameter);
 
             if (work != null)
             {
@@ -79,33 +79,16 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpPut]
-        [Route("DeleteSoftWork/{id}")]
-        public async Task<IActionResult> DeleteSoftWork(int id)
+        [Route("DeleteWork/{id}")]
+        public async Task<IActionResult> DeleteWork([FromRoute] int id, int parameter)
         {
-            var workReturn = await _unitOfWork.WorkRepository.DeleteSoftById(id);
+            var workReturn = await _unitOfWork.WorkRepository.DeleteWorkById(id, parameter);
             if (workReturn != false)
             {
                 await _unitOfWork.Complete();
                 return Ok("This work has been dropped down");
             }
             return NotFound("The work couldn't be found");
-        }
-
-        [HttpDelete]
-        [Route("DeleteHardWork/{id}")]
-        public async Task<IActionResult> DeleteHardWork(int id)
-        {
-            var work = await _unitOfWork.WorkRepository.DeleteHardById(id);
-
-            if (work != null)
-            {
-                await _unitOfWork.Complete();
-                return Ok("This work has been eliminated from the database");
-            }
-            else
-            {
-                return NotFound("The work couldn't be found");
-            }
         }
     }
 }

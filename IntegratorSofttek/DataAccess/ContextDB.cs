@@ -11,6 +11,8 @@ namespace IntegratorSofttek.DataAccess
         }
 
         public DbSet<Project> Projects { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Service> Services { get; set; }
 
         public DbSet<Work> Works { get; set; }
@@ -23,7 +25,8 @@ namespace IntegratorSofttek.DataAccess
                 new UserSeeder(),
                 new ProjectSeeder(),
                 new ServiceSeeder(),
-                new WorkSeeder()
+                new WorkSeeder(),
+                new RoleSeeder(),
             };
 
             foreach (var seeder in seeders)

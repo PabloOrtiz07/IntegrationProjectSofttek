@@ -1,21 +1,24 @@
 ﻿using IntegratorSofttek.DataAccess.Repositories.Interfaces;
-using IntegratorSofttek.DataAccess.Repositories;
-using IntegratorSofttek.DataAccess;
+using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
-    public class ServiceRepository : Repository<Service>, IServiceRepository
+    public class ServiceRepository : Repository<Service>, IServiceRepository // Update class and interface names
     {
         public ServiceRepository(ContextDB contextDB) : base(contextDB)
         {
 
         }
-        public override async Task<bool> Update(Service service, int id)
+
+        public async Task<bool> UpdateService(Service service, int id) // Update method name
         {
             try
             {
-                var serviceFinding = await GetById(id);
+                var serviceFinding = await GetById(id); // Update variable name
                 if (serviceFinding != null)
                 {
                     _contextDB.Update(service);
@@ -29,20 +32,65 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-
-        public override async Task<bool> DeleteSoftById(int id)
+        public virtual async Task<List<Service>> GetAllServices(int parameter) // Update method name
         {
-            Service service = await GetById(id);
-            if (service != null)
+            try
+            {
+                var services = await base.GetAll();
+                switch (parameter)
+                {
+                    case 0:
+                        return services;
+                    case 1:
+                        return services.Where(service => !service.IsDeleted).ToList();
+                    case 2:
+                        return services.Where(service => !service.IsDeleted && service.IsActive).ToList();
+                    default:
+                        return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<Service> GetServiceById(int id, int parameter) // Update method name
+        {
+            try
+            {
+                Service service = await base.GetById(id); // Update variable name
+                if (service.IsDeleted != true && parameter == 1)
+                {
+                    return service;
+                }
+                if (parameter == 2)
+                {
+                    return service;
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteServiceById(int id, int parameter) // Update method name
+        {
+            Service service = await GetById(id); // Update variable name
+            if (service != null && parameter == 1)
             {
                 service.IsDeleted = true;
                 service.DeletedTimeUtc = DateTime.UtcNow;
-
                 return true;
             }
-
+            if (service != null && parameter == 2)
+            {
+                _contextDB.Services.Remove(service); // Update entity reference
+                return true;
+            }
             return false;
         }
-
     }
 }

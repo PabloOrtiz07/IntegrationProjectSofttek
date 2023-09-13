@@ -11,6 +11,8 @@ namespace IntegratorSofttek.Services
 
         public WorkRepository WorkRepository { get; }
 
+        public RoleRepository RoleRepository { get; }
+
         public Task<int> Complete();
 
     }

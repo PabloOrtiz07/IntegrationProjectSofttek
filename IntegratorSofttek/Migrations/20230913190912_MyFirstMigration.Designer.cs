@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntegratorSofttek.Migrations
 {
     [DbContext(typeof(ContextDB))]
-    [Migration("20230912190541_MyFirstMigration")]
+    [Migration("20230913190912_MyFirstMigration")]
     partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,54 @@ namespace IntegratorSofttek.Migrations
                             IsDeleted = false,
                             Name = "Project 3",
                             Status = 0
+                        });
+                });
+
+            modelBuilder.Entity("IntegratorSofttek.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("role_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("DeletedTimeUtc")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("role_deletedTimeUtc");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("role_description");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("role_isDeleted");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("role_name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Admin",
+                            IsDeleted = false,
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Consult",
+                            IsDeleted = false,
+                            Name = "Consult"
                         });
                 });
 
@@ -189,10 +237,6 @@ namespace IntegratorSofttek.Migrations
                         .HasColumnType("VARCHAR(100)")
                         .HasColumnName("user_password");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int")
-                        .HasColumnName("user_type");
-
                     b.HasKey("Id");
 
                     b.ToTable("users");
@@ -206,8 +250,7 @@ namespace IntegratorSofttek.Migrations
                             FirstName = "Pablo",
                             IsDeleted = false,
                             LastName = "Ortiz",
-                            Password = "123",
-                            Type = 1
+                            Password = "123"
                         },
                         new
                         {
@@ -217,8 +260,7 @@ namespace IntegratorSofttek.Migrations
                             FirstName = "Alice",
                             IsDeleted = false,
                             LastName = "Johnson",
-                            Password = "456",
-                            Type = 1
+                            Password = "456"
                         },
                         new
                         {
@@ -229,8 +271,7 @@ namespace IntegratorSofttek.Migrations
                             FirstName = "Bob",
                             IsDeleted = true,
                             LastName = "Smith",
-                            Password = "789",
-                            Type = 0
+                            Password = "789"
                         },
                         new
                         {
@@ -241,8 +282,7 @@ namespace IntegratorSofttek.Migrations
                             FirstName = "Eva",
                             IsDeleted = false,
                             LastName = "Lee",
-                            Password = "567",
-                            Type = 0
+                            Password = "567"
                         },
                         new
                         {
@@ -253,8 +293,7 @@ namespace IntegratorSofttek.Migrations
                             FirstName = "John",
                             IsDeleted = true,
                             LastName = "Doe",
-                            Password = "901",
-                            Type = 0
+                            Password = "901"
                         });
                 });
 
@@ -306,7 +345,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 12, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9912),
+                            Date = new DateTime(2023, 9, 13, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7721),
                             HourlyRate = 25.0,
                             HoursQuantity = 40,
                             IsDeleted = false,
@@ -317,7 +356,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 2,
                             Cost = 900.0,
-                            Date = new DateTime(2023, 9, 11, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9922),
+                            Date = new DateTime(2023, 9, 12, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7733),
                             HourlyRate = 30.0,
                             HoursQuantity = 30,
                             IsDeleted = false,
@@ -328,7 +367,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 3,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 10, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9927),
+                            Date = new DateTime(2023, 9, 11, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7737),
                             HourlyRate = 20.0,
                             HoursQuantity = 50,
                             IsDeleted = false,
@@ -339,7 +378,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 4,
                             Cost = 980.0,
-                            Date = new DateTime(2023, 9, 9, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9928),
+                            Date = new DateTime(2023, 9, 10, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7738),
                             HourlyRate = 28.0,
                             HoursQuantity = 35,
                             IsDeleted = false,
@@ -350,7 +389,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 5,
                             Cost = 990.0,
-                            Date = new DateTime(2023, 9, 8, 16, 5, 41, 306, DateTimeKind.Local).AddTicks(9929),
+                            Date = new DateTime(2023, 9, 9, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7739),
                             HourlyRate = 22.0,
                             HoursQuantity = 45,
                             IsDeleted = false,
