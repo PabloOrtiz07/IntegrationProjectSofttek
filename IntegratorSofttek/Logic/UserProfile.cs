@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
+using IntegratorSofttek.Helper;
 
 public class UserProfile : Profile
 {
@@ -8,7 +9,8 @@ public class UserProfile : Profile
     {
         CreateMap<UserDTO, User>()
             .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false))
-            .ForMember(dest => dest.DeletedTimeUtc, opt => opt.MapFrom(src => (DateTime?)null));
+            .ForMember(dest => dest.DeletedTimeUtc, opt => opt.MapFrom(src => (DateTime?)null))
+            .BeforeMap((src, dest) => dest.Password = PasswordEncryptHelper.EncryptPassword(src.Password));
 
         CreateMap<User, UserDTO>();
 

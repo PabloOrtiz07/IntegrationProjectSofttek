@@ -12,7 +12,6 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     public class ProjectsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,6 +24,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdministratorAndConsultant")]
+
         public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProjects([FromQuery] int parameter, [FromQuery] int state)
         {
             var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter,state);
@@ -33,6 +34,7 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdministratorAndConsultant")]
         public async Task<IActionResult> GetProjectById([FromRoute] int id, [FromQuery] int parameter)
         {
             var project = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
@@ -50,6 +52,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPost]
         [Route("RegisterProject")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> RegisterProject(ProjectDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
@@ -64,6 +68,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("UpdateProject/{id}")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> UpdateProject([FromRoute] int id, ProjectDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
@@ -79,6 +85,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("DeleteProject/{id}")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> DeleteProject([FromRoute] int id, [FromQuery] int parameter)
         {
             var projectReturn = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);

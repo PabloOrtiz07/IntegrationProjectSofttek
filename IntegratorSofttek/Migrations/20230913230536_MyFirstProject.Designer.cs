@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntegratorSofttek.Migrations
 {
     [DbContext(typeof(ContextDB))]
-    [Migration("20230913190912_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20230913230536_MyFirstProject")]
+    partial class MyFirstProject
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -121,16 +121,16 @@ namespace IntegratorSofttek.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Admin",
+                            Description = "Administrator",
                             IsDeleted = false,
-                            Name = "Admin"
+                            Name = "Administrator"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Consult",
+                            Description = "Consultant",
                             IsDeleted = false,
-                            Name = "Consult"
+                            Name = "Consultant"
                         });
                 });
 
@@ -237,7 +237,13 @@ namespace IntegratorSofttek.Migrations
                         .HasColumnType("VARCHAR(100)")
                         .HasColumnName("user_password");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int")
+                        .HasColumnName("role_id");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("users");
 
@@ -246,21 +252,23 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Dni = "1001010",
-                            Email = "pablo@example.com",
+                            Email = "adm",
                             FirstName = "Pablo",
                             IsDeleted = false,
                             LastName = "Ortiz",
-                            Password = "123"
+                            Password = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 2,
                             Dni = "213",
-                            Email = "alice@example.com",
+                            Email = "noAdmin",
                             FirstName = "Alice",
                             IsDeleted = false,
                             LastName = "Johnson",
-                            Password = "456"
+                            Password = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+                            RoleId = 2
                         },
                         new
                         {
@@ -271,7 +279,8 @@ namespace IntegratorSofttek.Migrations
                             FirstName = "Bob",
                             IsDeleted = true,
                             LastName = "Smith",
-                            Password = "789"
+                            Password = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+                            RoleId = 1
                         },
                         new
                         {
@@ -282,7 +291,8 @@ namespace IntegratorSofttek.Migrations
                             FirstName = "Eva",
                             IsDeleted = false,
                             LastName = "Lee",
-                            Password = "567"
+                            Password = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+                            RoleId = 2
                         },
                         new
                         {
@@ -293,7 +303,8 @@ namespace IntegratorSofttek.Migrations
                             FirstName = "John",
                             IsDeleted = true,
                             LastName = "Doe",
-                            Password = "901"
+                            Password = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+                            RoleId = 2
                         });
                 });
 
@@ -345,7 +356,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 13, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7721),
+                            Date = new DateTime(2023, 9, 13, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8836),
                             HourlyRate = 25.0,
                             HoursQuantity = 40,
                             IsDeleted = false,
@@ -356,7 +367,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 2,
                             Cost = 900.0,
-                            Date = new DateTime(2023, 9, 12, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7733),
+                            Date = new DateTime(2023, 9, 12, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8845),
                             HourlyRate = 30.0,
                             HoursQuantity = 30,
                             IsDeleted = false,
@@ -367,7 +378,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 3,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 11, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7737),
+                            Date = new DateTime(2023, 9, 11, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8850),
                             HourlyRate = 20.0,
                             HoursQuantity = 50,
                             IsDeleted = false,
@@ -378,7 +389,7 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 4,
                             Cost = 980.0,
-                            Date = new DateTime(2023, 9, 10, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7738),
+                            Date = new DateTime(2023, 9, 10, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8851),
                             HourlyRate = 28.0,
                             HoursQuantity = 35,
                             IsDeleted = false,
@@ -389,13 +400,24 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 5,
                             Cost = 990.0,
-                            Date = new DateTime(2023, 9, 9, 16, 9, 12, 505, DateTimeKind.Local).AddTicks(7739),
+                            Date = new DateTime(2023, 9, 9, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8852),
                             HourlyRate = 22.0,
                             HoursQuantity = 45,
                             IsDeleted = false,
                             Project = 3,
                             Service = 2
                         });
+                });
+
+            modelBuilder.Entity("IntegratorSofttek.Entities.User", b =>
+                {
+                    b.HasOne("IntegratorSofttek.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }

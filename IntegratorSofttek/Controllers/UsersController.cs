@@ -12,7 +12,6 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize]
 
     public class UsersController : ControllerBase
     {
@@ -25,7 +24,17 @@ namespace IntegratorSofttek.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets a list of users based on a parameter.
+        /// Requires The Administrador and the Consultant policy for access 
+        /// </summary>
+        /// <param name="parameter">The parameter is used to filter users.
+        /// Use parameter 1 filter for non-deleted users
+        /// and parameter 2 to return all of them without filters</param>
+        /// <returns>Returns a list of users</returns>
+
         [HttpGet]
+        [Authorize(Policy = "AdministratorAndConsultant")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers([FromQuery] int parameter)
         {
             var users = await _unitOfWork.UserRepository.GetAllUsers(parameter);
@@ -33,7 +42,16 @@ namespace IntegratorSofttek.Controllers
             return Ok(usersDTO);
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdministratorAndConsultant")]
 
         public async Task<IActionResult> GetUserById([FromRoute] int id, [FromQuery] int parameter)
         {
@@ -52,6 +70,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPost]
         [Route("RegisterUser")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> RegisterUser(UserDTO userDTO)
         {
             var user = _mapper.Map<User>(userDTO);
@@ -67,6 +87,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("UpdateUser/{id}")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> UpdateUser([FromRoute] int id, UserDTO userDTO)
         {
             var user = _mapper.Map<User>(userDTO);
@@ -84,6 +106,7 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("DeleteUser/{id}")]
+        [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id, [FromQuery] int parameter)
         {
 

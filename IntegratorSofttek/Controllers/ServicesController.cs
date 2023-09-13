@@ -12,7 +12,6 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     public class ServicesController : ControllerBase // Update controller class name
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,6 +24,8 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdministratorAndConsultant")]
+
         public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetAllServices([FromQuery] int parameter)
         {
             var services = await _unitOfWork.ServiceRepository.GetAllServices(parameter); // Update repository method call
@@ -33,6 +34,7 @@ namespace IntegratorSofttek.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdministratorAndConsultant")]
         public async Task<IActionResult> GetServiceById([FromRoute] int id, [FromQuery] int parameter)
         {
             var service = await _unitOfWork.ServiceRepository.GetServiceById(id, parameter); // Update repository method call
@@ -50,6 +52,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPost]
         [Route("RegisterService")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> RegisterService(ServiceDTO serviceDTO)
         {
             var service = _mapper.Map<Service>(serviceDTO);
@@ -64,6 +68,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("UpdateService/{id}")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> UpdateService([FromRoute] int id, ServiceDTO serviceDTO)
         {
             var service = _mapper.Map<Service>(serviceDTO);
@@ -79,6 +85,8 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut]
         [Route("DeleteService/{id}")]
+        [Authorize(Policy = "Administrator")]
+
         public async Task<IActionResult> DeleteService([FromRoute] int id, [FromQuery] int parameter)
         {
             var serviceReturn = await _unitOfWork.ServiceRepository.DeleteServiceById(id, parameter); // Update repository method call
