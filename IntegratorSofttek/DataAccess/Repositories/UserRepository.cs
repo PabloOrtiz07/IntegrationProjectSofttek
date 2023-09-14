@@ -40,23 +40,18 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 var users = await base.GetAll();
-                if (parameter == 1)
+                if (parameter != 1)
                 {
                     users = users.Where(user => user.IsDeleted != true).ToList();
-                    return users;
+
                 }
-                if (parameter == 0)
-                {
-                    return users;
-                }
-                return null;
+                return users;
             }
             catch (Exception)
             {
                 return null;
 
             }
-
         }
 
         public async Task<User> GetUserById(int id, int parameter)
@@ -64,11 +59,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 User user = await base.GetById(id);
-                if (user.IsDeleted != true && parameter == 1)
+                if (user.IsDeleted != true && parameter != 1)
                 {
                     return user;
                 }
-                if (parameter == 0)
+                if (parameter == 1)
                 {
                     return user;
                 }

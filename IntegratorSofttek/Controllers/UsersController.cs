@@ -26,22 +26,35 @@ namespace IntegratorSofttek.Controllers
 
         /// <summary>
         /// Gets a list of users based on a parameter.
-        /// Requires The Administrador and the Consultant policy for access 
+        /// Requires the Administrator and Consultant policies for access.
         /// </summary>
-        /// <param name="parameter">The parameter is used to filter users.
-        /// Use parameter 1 filter for non-deleted users
-        /// and parameter 2 to return all of them without filters</param>
-        /// <returns>Returns a list of users</returns>
+        /// <param name="parameter">The parameter used to filter users.
+        /// Use parameter 1 to retrieve all users without filtering,
+        /// and use the default parameter to return filtered non-deleted users.</param>
+        /// <returns>Returns a list of users.</returns>
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers([FromQuery] int parameter)
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers(int parameter=0, int pageNumber=1, int pageSize=10)
         {
-            var users = await _unitOfWork.UserRepository.GetAllUsers(parameter);
-            var usersDTO = _mapper.Map<List<UserDTO>>(users);
-            return Ok(usersDTO);
-        }
 
+
+            var users = await _unitOfWork.UserRepository.GetAllUsers(parameter);
+            if (users == null || !users.Any())
+            {
+                return NotFound();
+            }
+            var usersDTO = _mapper.Map<List<UserDTO>>(users);
+            PagedResponse pagedResponse = new PagedResponse(pageNumber, pageSize);
+            var (totalCount, totalPages, usersDTOPerPage) = pagedResponse.CalculatePagination(usersDTO, pagedResponse);
+
+            return Ok(new
+            {
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                Users = usersDTOPerPage
+            });
+        }
 
         /// <summary>
         /// 
@@ -53,7 +66,7 @@ namespace IntegratorSofttek.Controllers
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<IActionResult> GetUserById([FromRoute] int id, [FromQuery] int parameter)
+        public async Task<IActionResult> GetUserById([FromRoute] int id, int parameter=0)
         {
             var user = await _unitOfWork.UserRepository.GetUserById(id,parameter);
 
@@ -107,7 +120,7 @@ namespace IntegratorSofttek.Controllers
         [HttpPut]
         [Route("DeleteUser/{id}")]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id, [FromQuery] int parameter)
+        public async Task<IActionResult> DeleteUser([FromRoute] int id,  int parameter = 0)
         {
 
             var userReturn = await _unitOfWork.UserRepository.DeleteUserById(id,parameter);
