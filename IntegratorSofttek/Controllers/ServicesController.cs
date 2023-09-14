@@ -26,18 +26,18 @@ namespace IntegratorSofttek.Controllers
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetAllServices([FromQuery] int parameter)
+        public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetAllServices([FromQuery] int parameter = 0)
         {
-            var services = await _unitOfWork.ServiceRepository.GetAllServices(parameter); // Update repository method call
+            var services = await _unitOfWork.ServiceRepository.GetAllServices(parameter); 
             var servicesDTO = _mapper.Map<List<ServiceDTO>>(services);
             return Ok(servicesDTO);
         }
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
-        public async Task<IActionResult> GetServiceById([FromRoute] int id, [FromQuery] int parameter)
+        public async Task<IActionResult> GetServiceById([FromRoute] int id, [FromQuery] int parameter = 0)
         {
-            var service = await _unitOfWork.ServiceRepository.GetServiceById(id, parameter); // Update repository method call
+            var service = await _unitOfWork.ServiceRepository.GetServiceById(id, parameter); 
 
             if (service != null)
             {

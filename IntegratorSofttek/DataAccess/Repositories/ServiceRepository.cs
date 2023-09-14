@@ -39,14 +39,12 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 var services = await base.GetAll();
                 switch (parameter)
                 {
-                    case 0:
-                        return services;
                     case 1:
-                        return services.Where(service => !service.IsDeleted).ToList();
+                        return services;
                     case 2:
                         return services.Where(service => !service.IsDeleted && service.IsActive).ToList();
                     default:
-                        return null;
+                        return services.Where(service => !service.IsDeleted).ToList();
                 }
             }
             catch (Exception)
@@ -55,16 +53,16 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public async Task<Service> GetServiceById(int id, int parameter) // Update method name
+        public async Task<Service> GetServiceById(int id, int parameter)
         {
             try
             {
-                Service service = await base.GetById(id); // Update variable name
-                if (service.IsDeleted != true && parameter == 1)
+                Service service = await base.GetById(id);
+                if (service.IsDeleted != true && parameter != 1)
                 {
                     return service;
                 }
-                if (parameter == 2)
+                if (parameter == 1)
                 {
                     return service;
                 }
@@ -75,6 +73,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 return null;
             }
         }
+
 
         public async Task<bool> DeleteServiceById(int id, int parameter) // Update method name
         {
