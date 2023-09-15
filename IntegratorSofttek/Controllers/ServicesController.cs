@@ -23,6 +23,17 @@ namespace IntegratorSofttek.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets a list of services based on a parameter.
+        /// Requires the Administrator and Consultant policies for access.
+        /// </summary>
+        /// <param name="parameter">The parameter used to filter services.
+        /// Use parameter 0 to return filtered non-deleted services,
+        /// use parameter 1 to retrieve all services without filtering,
+        /// and use parameter 2 to return filtered non-deleted users with active status.
+        /// </param>
+        /// <returns>Returns a list of services.</returns>
+
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
@@ -37,6 +48,15 @@ namespace IntegratorSofttek.Controllers
             var servicesDTO = _mapper.Map<List<ServiceDTO>>(services);
             return Ok(servicesDTO);
         }
+        /// <summary>
+        /// Get a service by their id.
+        /// Requires the Administrator and Consultant policies for access.
+        /// </summary>
+        /// <param name="id">The ID used to find a service with this identication.</param>
+        /// <param name="parameter">The parameter used to filter a non-deleted service or deleted service
+        /// Use parameter 0 to return filtered non-deleted service,
+        /// and use parameter 1 to retrieve all services without filtering </param>
+        /// <returns>Returns a service object matching the given ID or null</returns>
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
@@ -55,6 +75,13 @@ namespace IntegratorSofttek.Controllers
             }
         }
 
+        /// <summary>
+        /// Register a service in the database.
+        /// Requires the Administrator policies for access.
+        /// </summary>
+        /// <param name="serviceDTO">A model used to fill in service information</param>
+        /// <returns>Returns "OK" if the registeration operation was succesful </returns>
+
         [HttpPost]
         [Route("RegisterService")]
         [Authorize(Policy = "Administrator")]
@@ -70,6 +97,14 @@ namespace IntegratorSofttek.Controllers
             }
             return BadRequest("The operation was canceled");
         }
+
+        /// <summary>
+        /// Update a service in the database
+        /// Requires the Administrator policies for access.
+        /// </summary>
+        /// <param name="id">The ID used to find a service that matche  this identification</param>
+        /// <param name="serviceDTO">A model which will replace the older service data</param>
+        /// <returns>Returns "OK" if the updating operation was succesfull</returns>
 
         [HttpPut]
         [Route("UpdateService/{id}")]
@@ -87,6 +122,16 @@ namespace IntegratorSofttek.Controllers
             }
             return BadRequest("The operation was canceled");
         }
+
+        /// <summary>
+        /// Delete a service softly (soft deletion) or permanently (hard deletion).
+        /// Requires the Administrator policies for access.
+        /// </summary>
+        /// <param name="id">The ID used to find a service with this identification </param>
+        /// <param name="parameter">The parameter used to select the type of deletion 
+        /// Use parameter 0 to soft delete  and,
+        /// use parameter 1 to hard delete </param>
+        /// <returns>Returns "OK" if the delete operation was succesfull or "BadRequest" if there was and issue</returns>
 
         [HttpPut]
         [Route("DeleteService/{id}")]

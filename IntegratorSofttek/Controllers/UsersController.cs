@@ -30,7 +30,8 @@ namespace IntegratorSofttek.Controllers
         /// </summary>
         /// <param name="parameter">The parameter used to filter users.
         /// Use parameter 0 to return filtered non-deleted users,
-        /// and use parameter 1 to retrieve all users without filtering</param>
+        /// and use parameter 1 to retrieve all users without filtering,
+        /// </param>
         /// <returns>Returns a list of users.</returns>
 
         [HttpGet]
@@ -51,6 +52,7 @@ namespace IntegratorSofttek.Controllers
 
         /// <summary>
         /// Get an user by their id.
+        /// Requires the Administrator and Consultant policies for access.
         /// </summary>
         /// <param name="id">The ID used to find an user with this identication.</param>
         /// <param name="parameter">The parameter used to filter a non-deleted user or deleted user
@@ -75,11 +77,12 @@ namespace IntegratorSofttek.Controllers
                 return NotFound("The user couldn't be found");
             }
         }
-     /// <summary>
-     /// Register an user in the database.
-     /// </summary>
-     /// <param name="userDTO">A model used to fill in user information</param>
-     /// <returns>Returns "OK" if the registeration operation was succesful </returns>
+        /// <summary>
+        /// Register an user in the database.
+        /// Requires the Administrator policies for access.
+        /// </summary>
+        /// <param name="userDTO">A model used to fill in user information</param>
+        /// <returns>Returns "OK" if the registeration operation was succesful </returns>
 
 
         [HttpPost]
@@ -98,13 +101,14 @@ namespace IntegratorSofttek.Controllers
             }
             return BadRequest("The operation was canceled");
         }
-     /// <summary>
-     /// Update an user in the database
-     /// </summary>
-     /// <param name="id">The ID used to find an user that matche  this identification</param>
-     /// <param name="userDTO">A model which will replace the older user data</param>
-     /// <returns>Returns "OK" if the updating operation was succesfull</returns>
-     
+        /// <summary>
+        /// Update an user in the database
+        /// Requires the Administrator policies for access.
+        /// </summary>
+        /// <param name="id">The ID used to find an user that matche  this identification</param>
+        /// <param name="userDTO">A model which will replace the older user data</param>
+        /// <returns>Returns "OK" if the updating operation was succesfull</returns>
+
         [HttpPut]
         [Route("UpdateUser/{id}")]
         [Authorize(Policy = "Administrator")]
@@ -122,14 +126,15 @@ namespace IntegratorSofttek.Controllers
             }
             return BadRequest("The operation was canceled");
         }
-     /// <summary>
-     /// Delete an user softly (soft deletion) or permanently (hard deletion).
-     /// </summary>
-     /// <param name="id">The ID used to find an user with this identification </param>
-     /// <param name="parameter">The parameter used to select the type of deletion 
-     /// Use parameter 0 to soft delete  and,
-     /// use parameter 1 to hard delete </param>
-     /// <returns>Returns "OK" if the delete operation was succesfull or "BadRequest" if there was and issue</returns>
+        /// <summary>
+        /// Delete an user softly (soft deletion) or permanently (hard deletion).
+        /// Requires the Administrator policies for access.
+        /// </summary>
+        /// <param name="id">The ID used to find an user with this identification </param>
+        /// <param name="parameter">The parameter used to select the type of deletion 
+        /// Use parameter 0 to soft delete  and,
+        /// use parameter 1 to hard delete </param>
+        /// <returns>Returns "OK" if the delete operation was succesfull or "BadRequest" if there was and issue</returns>
 
         [HttpPut]
         [Route("DeleteUser/{id}")]
