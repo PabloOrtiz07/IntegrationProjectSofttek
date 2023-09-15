@@ -40,12 +40,18 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 var users = await base.GetAll();
-                if (parameter != 1)
+                if (parameter == 0)
                 {
                     users = users.Where(user => user.IsDeleted != true).ToList();
+                    return users;
+
+                }else if(parameter == 1)
+                {
+                    return users;
 
                 }
-                return users;
+                return null;
+
             }
             catch (Exception)
             {
@@ -59,7 +65,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 User user = await base.GetById(id);
-                if (user.IsDeleted != true && parameter != 1)
+                if (user.IsDeleted != true && parameter == 0)
                 {
                     return user;
                 }
@@ -79,28 +85,44 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public  async Task<bool> DeleteUserById(int id,int parameter)
         {
-            User user = await GetById(id);
-            if (user != null && parameter == 1)
-            {
-                user.IsDeleted = true;
-                user.DeletedTimeUtc = DateTime.UtcNow;
 
-                return true;
-            }
-            if(user != null && parameter == 0)
+            try
             {
-                _contextDB.Users.Remove(user);
-                return true;
+                User user = await GetById(id);
+                if (user != null && parameter == 0)
+                {
+                    user.IsDeleted = true;
+                    user.DeletedTimeUtc = DateTime.UtcNow;
+
+                    return true;
+                }
+                if (user != null && parameter == 1)
+                {
+                    _contextDB.Users.Remove(user);
+                    return true;
+                }
+
+                return false;
+            }
+            catch(Exception) {
+                return false;
             }
 
-            return false;
         }
 
 
         public async Task<User?> AuthenticateCredentials(AuthenticateDto dto)
         {
-            return await _contextDB.Users.SingleOrDefaultAsync
-                (user =>  user.Email == dto.Email && user.Password == PasswordEncryptHelper.EncryptPassword(dto.Password));
+
+            try
+            {
+                return await _contextDB.Users.SingleOrDefaultAsync
+               (user => user.Email == dto.Email && user.Password == PasswordEncryptHelper.EncryptPassword(dto.Password));
+            }
+            catch(Exception) {
+                return null;
+            }
+           
         }
 
     }

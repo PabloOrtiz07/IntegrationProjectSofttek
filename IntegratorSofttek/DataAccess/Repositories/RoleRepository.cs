@@ -1,19 +1,21 @@
 ﻿using IntegratorSofttek.DataAccess.Repositories.Interfaces;
+using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
+using System.Linq;
+using IntegratorSofttek.Helper;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
     public class RoleRepository : Repository<Role>, IRoleRepository
     {
-
         public RoleRepository(ContextDB contextDB) : base(contextDB)
         {
 
         }
 
-    
-        public async Task<bool> UpdateRol(Role role, int id)
+        public async Task<bool> UpdateRole(Role role, int id)
         {
             try
             {
@@ -33,25 +35,80 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-
-        public async Task<bool> DeleteRolById(int id, int parameter)
+        public virtual async Task<List<Role>> GetAllRoles(int parameter)
         {
-            Role role = await GetById(id);
-            if (role != null && parameter == 1)
+            try
             {
-                role.IsDeleted = true;
-                role.DeletedTimeUtc = DateTime.UtcNow;
+                var roles = await base.GetAll();
+                if (parameter == 0)
+                {
+                    roles = roles.Where(role => role.IsDeleted != true).ToList();
+                    return roles;
 
-                return true;
+                }
+                else if (parameter == 1)
+                {
+                    return roles;
+
+                }
+                return null;
+
             }
-            if (role != null && parameter == 2)
+            catch (Exception)
             {
-                _contextDB.Roles.Remove(role);
-                return true;
-            }
+                return null;
 
-            return false;
+            }
         }
 
+        public async Task<Role> GetRoleById(int id, int parameter)
+        {
+            try
+            {
+                Role role = await base.GetById(id);
+                if (role.IsDeleted != true && parameter == 0)
+                {
+                    return role;
+                }
+                if (parameter == 1)
+                {
+                    return role;
+                }
+                return null;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteRoleById(int id, int parameter)
+        {
+
+            try
+            {
+                Role role = await GetById(id);
+                if (role != null && parameter == 0)
+                {
+                    role.IsDeleted = true;
+                    role.DeletedTimeUtc = DateTime.UtcNow;
+
+                    return true;
+                }
+                if (role != null && parameter == 1)
+                {
+                    _contextDB.Roles.Remove(role);
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
     }
 }

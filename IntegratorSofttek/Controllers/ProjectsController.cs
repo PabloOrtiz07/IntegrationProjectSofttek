@@ -26,16 +26,20 @@ namespace IntegratorSofttek.Controllers
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProjects([FromQuery] int parameter, [FromQuery] int state)
+        public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProjects( int parameter =0, int state=0)
         {
             var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter,state);
+            if (projects == null || !projects.Any())
+            {
+                return NotFound();
+            }
             var projectsDTO = _mapper.Map<List<ProjectDTO>>(projects);
             return Ok(projectsDTO);
         }
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
-        public async Task<IActionResult> GetProjectById([FromRoute] int id, [FromQuery] int parameter)
+        public async Task<IActionResult> GetProjectById([FromRoute] int id,  int parameter=0)
         {
             var project = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
 
@@ -87,7 +91,7 @@ namespace IntegratorSofttek.Controllers
         [Route("DeleteProject/{id}")]
         [Authorize(Policy = "Administrator")]
 
-        public async Task<IActionResult> DeleteProject([FromRoute] int id, [FromQuery] int parameter)
+        public async Task<IActionResult> DeleteProject([FromRoute] int id, int parameter=0)
         {
             var projectReturn = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);
             if (projectReturn != false)
