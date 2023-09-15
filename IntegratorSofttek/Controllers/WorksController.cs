@@ -27,9 +27,14 @@ namespace IntegratorSofttek.Controllers
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<ActionResult<IEnumerable<WorkDTO>>> GetAllWorks()
+        public async Task<ActionResult<IEnumerable<WorkDTO>>> GetAllWorks(int parameter)
         {
-            var works = await _unitOfWork.WorkRepository.GetAll();
+
+            var works = await _unitOfWork.WorkRepository.GetAllWorks(parameter);
+            if (works == null || !works.Any())
+            {
+                return NotFound();
+            }
             var worksDTO = _mapper.Map<List<WorkDTO>>(works);
             return Ok(worksDTO);
         }
@@ -37,7 +42,7 @@ namespace IntegratorSofttek.Controllers
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<IActionResult> GetWorkById([FromRoute] int id, int parameter)
+        public async Task<IActionResult> GetWorkById([FromRoute] int id, int parameter=0)
         {
             var work = await _unitOfWork.WorkRepository.GetWorkById(id, parameter);
 
@@ -89,7 +94,7 @@ namespace IntegratorSofttek.Controllers
         [Route("DeleteWork/{id}")]
         [Authorize(Policy = "Administrator")]
 
-        public async Task<IActionResult> DeleteWork([FromRoute] int id, int parameter)
+        public async Task<IActionResult> DeleteWork([FromRoute] int id, int parameter=0)
         {
             var workReturn = await _unitOfWork.WorkRepository.DeleteWorkById(id, parameter);
             if (workReturn != false)

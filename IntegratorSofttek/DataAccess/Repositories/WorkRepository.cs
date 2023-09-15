@@ -37,12 +37,15 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 var works = await base.GetAll(); // Update variable name
-                if (parameter == 1)
+                switch (parameter)
                 {
-                    works = works.Where(work => work.IsDeleted == false).ToList();
-                    return works;
+                    case 0:
+                        return works.Where(work => !work.IsDeleted).ToList();
+                    case 1:
+                        return works;
+                    default:
+                        return null;
                 }
-                return works;
             }
             catch (Exception)
             {
@@ -55,11 +58,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 Work work = await base.GetById(id); // Update variable name
-                if (work.IsDeleted != true && parameter == 1)
+                if (work.IsDeleted != true && parameter == 0)
                 {
                     return work;
                 }
-                if (parameter == 2)
+                if (parameter == 1)
                 {
                     return work;
                 }
@@ -73,19 +76,27 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public async Task<bool> DeleteWorkById(int id, int parameter) // Update method name
         {
-            Work work = await GetById(id); // Update variable name
-            if (work != null && parameter == 1)
+            try
             {
-                work.IsDeleted = true;
-                work.DeletedTimeUtc = DateTime.UtcNow;
-                return true;
+                Work work = await GetById(id); // Update variable name
+                if (work != null && parameter == 0)
+                {
+                    work.IsDeleted = true;
+                    work.DeletedTimeUtc = DateTime.UtcNow;
+                    return true;
+                }
+                if (work != null && parameter == 1)
+                {
+                    _contextDB.Works.Remove(work); // Update entity reference
+                    return true;
+                }
+                return false;
             }
-            if (work != null && parameter == 2)
+            catch (Exception)
             {
-                _contextDB.Works.Remove(work); // Update entity reference
-                return true;
+                return false;
             }
-            return false;
+  
         }
     }
 }

@@ -40,9 +40,9 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 switch (parameter)
                 {
                     case 0:
-                        return projects;
-                    case 1:
                         return projects.Where(projects => !projects.IsDeleted).ToList();
+                    case 1:
+                        return projects;
                     case 2:
                         return projects.Where(projects => !projects.IsDeleted && projects.Status==(ProjectStatus)state).ToList();
                     default:
@@ -61,11 +61,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 Project project = await base.GetById(id); // Update variable name
-                if (project.IsDeleted != true && parameter == 1)
+                if (project.IsDeleted != true && parameter == 0)
                 {
                     return project;
                 }
-                if (parameter == 2)
+                if (parameter == 1)
                 {
                     return project;
                 }
@@ -79,19 +79,28 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public async Task<bool> DeleteProjectById(int id, int parameter) // Update method name
         {
-            Project project = await GetById(id); // Update variable name
-            if (project != null && parameter == 1)
+
+            try
             {
-                project.IsDeleted = true;
-                project.DeletedTimeUtc = DateTime.UtcNow;
-                return true;
+                Project project = await GetById(id); // Update variable name
+                if (project != null && parameter == 0)
+                {
+                    project.IsDeleted = true;
+                    project.DeletedTimeUtc = DateTime.UtcNow;
+                    return true;
+                }
+                if (project != null && parameter == 1)
+                {
+                    _contextDB.Projects.Remove(project); // Update entity reference
+                    return true;
+                }
+                return false;
             }
-            if (project != null && parameter == 2)
+            catch (Exception)
             {
-                _contextDB.Projects.Remove(project); // Update entity reference
-                return true;
+                return false;
             }
-            return false;
+   
         }
     }
 }

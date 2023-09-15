@@ -139,11 +139,11 @@ namespace IntegratorSofttek.Migrations
                 columns: new[] { "work_id", "work_cost", "work_date", "work_deletedTimeUtc", "work_hourlyRate", "work_hoursQuantity", "work_isDeleted", "Project", "Service" },
                 values: new object[,]
                 {
-                    { 1, 1000.0, new DateTime(2023, 9, 13, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8836), null, 25.0, 40, false, 1, 1 },
-                    { 2, 900.0, new DateTime(2023, 9, 12, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8845), null, 30.0, 30, false, 2, 2 },
-                    { 3, 1000.0, new DateTime(2023, 9, 11, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8850), null, 20.0, 50, false, 1, 3 },
-                    { 4, 980.0, new DateTime(2023, 9, 10, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8851), null, 28.0, 35, false, 2, 1 },
-                    { 5, 990.0, new DateTime(2023, 9, 9, 20, 5, 36, 66, DateTimeKind.Local).AddTicks(8852), null, 22.0, 45, false, 3, 2 }
+                    { 1, 1000.0, new DateTime(2023, 9, 15, 17, 55, 8, 127, DateTimeKind.Local).AddTicks(3845), null, 25.0, 40, false, 1, 1 },
+                    { 2, 900.0, new DateTime(2023, 9, 14, 17, 55, 8, 127, DateTimeKind.Local).AddTicks(3856), null, 30.0, 30, false, 2, 2 },
+                    { 3, 1000.0, new DateTime(2023, 9, 13, 17, 55, 8, 127, DateTimeKind.Local).AddTicks(3864), null, 20.0, 50, false, 1, 3 },
+                    { 4, 980.0, new DateTime(2023, 9, 12, 17, 55, 8, 127, DateTimeKind.Local).AddTicks(3865), null, 28.0, 35, false, 2, 1 },
+                    { 5, 990.0, new DateTime(2023, 9, 11, 17, 55, 8, 127, DateTimeKind.Local).AddTicks(3866), null, 22.0, 45, false, 3, 2 }
                 });
 
             migrationBuilder.InsertData(

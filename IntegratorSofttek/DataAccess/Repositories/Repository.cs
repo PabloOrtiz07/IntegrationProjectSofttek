@@ -16,8 +16,15 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public virtual async Task<List<T>> GetAll()
         {
-            var entity = await _contextDB.Set<T>().ToListAsync();
-            return entity;
+            try
+            {
+                var entity = await _contextDB.Set<T>().ToListAsync();
+                return entity;
+            }
+            catch (Exception) {
+                return null;
+            }
+
         }
 
 
@@ -62,14 +69,23 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public virtual async Task<bool> DeleteHardById(int id)
         {
-            var entity = await GetById(id);
-            if (entity != null)
-            {
-                _contextDB.Set<T>().Remove(entity);
-                return true;
-            }
 
-            return false;
+            try
+            {
+                var entity = await GetById(id);
+                if (entity != null)
+                {
+                    _contextDB.Set<T>().Remove(entity);
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+   
         }
 
         public virtual async Task<bool> DeleteById(int id)

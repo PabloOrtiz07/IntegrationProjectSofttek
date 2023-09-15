@@ -39,12 +39,14 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 var services = await base.GetAll();
                 switch (parameter)
                 {
+                    case 0:
+                        return services.Where(service => !service.IsDeleted).ToList();
                     case 1:
                         return services;
                     case 2:
                         return services.Where(service => !service.IsDeleted && service.IsActive).ToList();
                     default:
-                        return services.Where(service => !service.IsDeleted).ToList();
+                        return null;
                 }
             }
             catch (Exception)
@@ -58,7 +60,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 Service service = await base.GetById(id);
-                if (service.IsDeleted != true && parameter != 1)
+                if (service.IsDeleted != true && parameter == 0)
                 {
                     return service;
                 }
@@ -77,19 +79,28 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public async Task<bool> DeleteServiceById(int id, int parameter) // Update method name
         {
-            Service service = await GetById(id); // Update variable name
-            if (service != null && parameter == 1)
+
+            try
             {
-                service.IsDeleted = true;
-                service.DeletedTimeUtc = DateTime.UtcNow;
-                return true;
+                Service service = await GetById(id); // Update variable name
+                if (service != null && parameter == 0)
+                {
+                    service.IsDeleted = true;
+                    service.DeletedTimeUtc = DateTime.UtcNow;
+                    return true;
+                }
+                if (service != null && parameter == 1)
+                {
+                    _contextDB.Services.Remove(service); // Update entity reference
+                    return true;
+                }
+                return false;
             }
-            if (service != null && parameter == 2)
-            {
-                _contextDB.Services.Remove(service); // Update entity reference
-                return true;
+            catch (Exception){
+                return false;
+
             }
-            return false;
+
         }
     }
 }

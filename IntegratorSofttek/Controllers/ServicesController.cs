@@ -26,16 +26,21 @@ namespace IntegratorSofttek.Controllers
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetAllServices([FromQuery] int parameter = 0)
+        public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetAllServices(int parameter = 0)
         {
-            var services = await _unitOfWork.ServiceRepository.GetAllServices(parameter); 
+
+            var services = await _unitOfWork.ServiceRepository.GetAllServices(parameter);
+            if (services == null || !services.Any())
+            {
+                return NotFound();
+            }
             var servicesDTO = _mapper.Map<List<ServiceDTO>>(services);
             return Ok(servicesDTO);
         }
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
-        public async Task<IActionResult> GetServiceById([FromRoute] int id, [FromQuery] int parameter = 0)
+        public async Task<IActionResult> GetServiceById([FromRoute] int id,int parameter = 0)
         {
             var service = await _unitOfWork.ServiceRepository.GetServiceById(id, parameter); 
 
@@ -87,7 +92,7 @@ namespace IntegratorSofttek.Controllers
         [Route("DeleteService/{id}")]
         [Authorize(Policy = "Administrator")]
 
-        public async Task<IActionResult> DeleteService([FromRoute] int id, [FromQuery] int parameter)
+        public async Task<IActionResult> DeleteService([FromRoute] int id, int parameter = 0)
         {
             var serviceReturn = await _unitOfWork.ServiceRepository.DeleteServiceById(id, parameter); // Update repository method call
             if (serviceReturn != false)
