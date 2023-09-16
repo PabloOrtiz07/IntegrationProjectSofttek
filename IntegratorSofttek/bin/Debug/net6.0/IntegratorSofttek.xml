@@ -12,7 +12,7 @@
             **A model containing your login credentials.**</param>
             <returns>Returns an "Ok" response with your data and an authorization token</returns>
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetAllProjects(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetAllProjects(System.Int32,System.String)">
             <summary>
             Gets a list of projects.
             </summary>
@@ -25,12 +25,12 @@
             - Use paramater 2 to return filtered non-deleted projects with filtered state.
             </param>
             <param name="state">
-            *Stated used to filter projects for differented status.**
-            - Use State 0 is to filter to pending status.
+            *Stated used to filter projects for different statuses.**
+            - Use state Pending to filter to pending status.
             
-            - Use state 1 is to filter to confirmed status.
+            - Use state Confirmed to filter to confirmed status.
             
-            - Use state 2 is to filter to finished status.
+            - Use state Finished to filter to finished status.
             </param>
             <returns>Returns a list of projects with a HTTP 200 response .</returns>
         </member>
