@@ -35,21 +35,23 @@ namespace IntegratorSofttek.Controllers
         /// - Use paramater 2 to return filtered non-deleted projects with filtered state.
         /// </param>
         /// <param name="state">
-        /// *Stated used to filter projects for differented status.**
-        /// - Use State 0 is to filter to pending status.
+        /// *Stated used to filter projects for different statuses.**
+        /// - Use state Pending to filter to pending status.
         /// 
-        /// - Use state 1 is to filter to confirmed status.
+        /// - Use state Confirmed to filter to confirmed status.
         /// 
-        /// - Use state 2 is to filter to finished status.
+        /// - Use state Finished to filter to finished status.
         /// </param>
         /// <returns>Returns a list of projects with a HTTP 200 response .</returns>
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<IActionResult> GetAllProjects( int parameter =0, int state=0)
+        public async Task<IActionResult> GetAllProjects( int parameter =0, string state="Pending")
         {
-            var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter,state);
+            ProjectStatus status;
+            status = _mapper.Map<ProjectStatus>(state.ToLower());
+            var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter,(int)status);
             var projectsDTO = _mapper.Map<List<ProjectDTO>>(projects);
             return ResponseFactory.CreateSuccessResponse(200, projectsDTO);
         }

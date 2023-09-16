@@ -9,7 +9,7 @@ namespace IntegratorSofttek.DTOs
 
         public string Address { get; set; }
 
-        public ProjectStatus Status { get; set; }
+        public String Status { get; set; }
 
     }
 
