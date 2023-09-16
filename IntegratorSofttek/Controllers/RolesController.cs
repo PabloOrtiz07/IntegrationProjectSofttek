@@ -14,94 +14,94 @@ namespace IntegratorSofttek.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class UsersController : ControllerBase
+    public class RolesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UsersController(IUnitOfWork unitOfWork,IMapper mapper)
+        public RolesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         /// <summary>
-        /// Gets a list of users.
+        /// Gets a list of roles.
         /// </summary>
         /// <param name="parameter">
-        ///  **The parameter used to filter users.**
-        /// - Use parameter 0 to return filtered non-deleted users.
+        ///  **The parameter used to filter roles.**
+        /// - Use parameter 0 to return filtered non-deleted roles.
         /// 
-        /// - Use parameter 1 to retrieve all users without filtering.
+        /// - Use parameter 1 to retrieve all roles without filtering.
         /// </param>
-        /// <returns>Returns a list of users with a HTTP 200 response .</returns>
+        /// <returns>Returns a list of roles with a HTTP 200 response .</returns>
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<IActionResult> GetAllUsers(int parameter=0)
+        public async Task<IActionResult> GetAllRoles(int parameter = 0)
         {
 
 
-            var users = await _unitOfWork.UserRepository.GetAllUsers(parameter);
-            var usersDTO = _mapper.Map<List<UserDTO>>(users);
-            return ResponseFactory.CreateSuccessResponse(200, usersDTO);
+            var roles = await _unitOfWork.RoleRepository.GetAllRoles(parameter);
+            var rolesDTO = _mapper.Map<List<RoleDTO>>(roles);
+            return ResponseFactory.CreateSuccessResponse(200, rolesDTO);
 
         }
 
         /// <summary>
-        /// Get an user.
+        /// Get a role.
         /// </summary>
         /// <param name="id">
-        /// **The ID used to find an user with this identication.**
+        /// **The ID used to find a role with this identication.**
         /// </param>
         /// 
         /// <param name="parameter">
-        /// **The parameter used to filter a non-deleted user or deleted user**
-        /// - Use parameter 0 to return filtered non-deleted users.
+        /// **The parameter used to filter a non-deleted role or deleted role**
+        /// - Use parameter 0 to return filtered non-deleted roles.
         /// 
-        /// - Use parameter 1 to retrieve all users without filtering. 
+        /// - Use parameter 1 to retrieve all roles without filtering. 
         /// </param>
         /// <returns>
-        /// Returns a HTTP 200 response with the user object matching the given ID 
-        /// if found, or a HTTP 404 response with an error message if the user is not found.
+        /// Returns a HTTP 200 response with the role object matching the given ID 
+        /// if found, or a HTTP 404 response with an error message if the role is not found.
         /// </returns>
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<IActionResult> GetUserById([FromRoute] int id, int parameter=0)
+        public async Task<IActionResult> GetRoleById([FromRoute] int id, int parameter = 0)
         {
-            var user = await _unitOfWork.UserRepository.GetUserById(id,parameter);
+            var role = await _unitOfWork.RoleRepository.GetRoleById(id, parameter);
 
-            if (user != null)
+            if (role != null)
             {
-                var userDTO = _mapper.Map<UserDTO>(user);
-                return ResponseFactory.CreateSuccessResponse(200, userDTO);
+                var roleDTO = _mapper.Map<RoleDTO>(role);
+                return ResponseFactory.CreateSuccessResponse(200, roleDTO);
             }
             else
             {
-                return ResponseFactory.CreateErrorResponse(404, "The user couldn't be found");
+                return ResponseFactory.CreateErrorResponse(404, "The role couldn't be found");
             }
         }
 
         /// <summary>
-        /// Register an user in the database.
+        /// Register a role in the database.
         /// </summary>
-        /// <param name="userDTO">
-        /// **A model used to fill in user information.**
+        /// <param name="roleDTO">
+        /// **A model used to fill in role information.**
         /// </param>
         /// <returns>Returns an HTTP 201 response if the registration operation was successful 
         /// or an Error HTTP 400 response.</returns>
 
         [HttpPost]
-        [Route("RegisterUser")]
+        [Route("RegisterRole")]
         [Authorize(Policy = "Administrator")]
 
-        public async Task<IActionResult> RegisterUser(UserDTO userDTO)
+        public async Task<IActionResult> RegisterRole(RoleDTO roleDTO)
         {
-            var user = _mapper.Map<User>(userDTO);
-            var result = await _unitOfWork.UserRepository.Insert(user);
+            var role = _mapper.Map<Role>(roleDTO);
+            var result = await _unitOfWork.RoleRepository.Insert(role);
             if (result != false)
             {
                 await _unitOfWork.Complete();
@@ -113,22 +113,22 @@ namespace IntegratorSofttek.Controllers
 
         }
         /// <summary>
-        /// Update an user.
+        /// Update a role.
         /// </summary>
-        /// <param name="id">**The ID used to find an user that matches this identification.**</param>
+        /// <param name="id">**The ID used to find a role that matches this identification.**</param>
         /// 
-        /// <param name="userDTO">**A model which will replace the older user data.**</param>
+        /// <param name="roleDTO">**A model which will replace the older role data.**</param>
         /// <returns>Returns an HTTP 200 response if the updating operation was successful 
         /// or an Error HTTP 400 response.</returns>
 
         [HttpPut]
-        [Route("UpdateUser/{id}")]
+        [Route("UpdateRole/{id}")]
         [Authorize(Policy = "Administrator")]
 
-        public async Task<IActionResult> UpdateUser([FromRoute] int id, UserDTO userDTO)
+        public async Task<IActionResult> UpdateRole([FromRoute] int id, RoleDTO roleDTO)
         {
-            var user = _mapper.Map<User>(userDTO);
-            var result = await _unitOfWork.UserRepository.Update(user,id);
+            var role = _mapper.Map<Role>(roleDTO);
+            var result = await _unitOfWork.RoleRepository.Update(role, id);
 
             if (result != null)
             {
@@ -139,27 +139,28 @@ namespace IntegratorSofttek.Controllers
             return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
         }
         /// <summary>
-        /// Delete an user softly (soft deletion) or permanently (hard deletion).
+        /// Delete a role softly (soft deletion) or permanently (hard deletion).
         /// </summary>
-        /// <param name="id">**The ID used to find an user with this identification.**</param>
+        /// <param name="id">**The ID used to find a role with this identification.**</param>
         /// 
         /// <param name="parameter">
         /// **The parameter used to select the type of deletion.**
         /// - Use parameter 0 to soft delete.
         /// 
         /// - Use parameter 1 to hard delete.</param>
+        /// 
         /// <returns>Returns an HTTP 204 response if the deletion operation was successful 
         /// or an Error HTTP 400 response.</returns>
 
         [HttpPut]
-        [Route("DeleteUser/{id}")]
+        [Route("DeleteRole/{id}")]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id,  int parameter = 0)
+        public async Task<IActionResult> DeleteRole([FromRoute] int id, int parameter = 0)
         {
 
-            var userReturn = await _unitOfWork.UserRepository.DeleteUserById(id, parameter);
+            var roleReturn = await _unitOfWork.RoleRepository.DeleteRoleById(id, parameter);
 
-            if (userReturn != false)
+            if (roleReturn != false)
             {
                 await _unitOfWork.Complete();
                 return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");

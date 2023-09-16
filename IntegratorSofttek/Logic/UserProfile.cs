@@ -10,7 +10,7 @@ public class UserProfile : Profile
         CreateMap<UserDTO, User>()
             .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false))
             .ForMember(dest => dest.DeletedTimeUtc, opt => opt.MapFrom(src => (DateTime?)null))
-            .BeforeMap((src, dest) => dest.Password = PasswordEncryptHelper.EncryptPassword(src.Password));
+            .BeforeMap((src, dest) => dest.Password = PasswordEncryptHelper.EncryptPassword(src.Password, src.Email));
 
         CreateMap<User, UserDTO>();
 
