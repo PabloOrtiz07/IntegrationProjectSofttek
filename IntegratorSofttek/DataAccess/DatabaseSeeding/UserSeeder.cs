@@ -17,8 +17,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Pablo",
                     LastName = "Ortiz",
                     Dni = 1001010,
-                    Password = PasswordEncryptHelper.EncryptPassword("123"),
                     Email = "adm", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123","adm"),
                     IsDeleted = false,
                     DeletedTimeUtc = null,
                     RoleId = 1
@@ -29,8 +29,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Alice",
                     LastName = "Johnson",
                     Dni = 213,
-                    Password = PasswordEncryptHelper.EncryptPassword("123"),
                     Email = "noAdmin", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123","noAdmin"),
                     IsDeleted = false,
                     DeletedTimeUtc = null,
                     RoleId = 2
@@ -41,8 +41,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Bob",
                     LastName = "Smith",
                     Dni = 214,
-                    Password = PasswordEncryptHelper.EncryptPassword("1234"),
                     Email = "bob@example.com", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123", "bob@example.com"),
                     IsDeleted = true, // Soft-deleted
                     DeletedTimeUtc = DateTime.MinValue,
                     RoleId = 1
@@ -53,8 +53,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Eva",
                     LastName = "Lee",
                     Dni = 315,
-                    Password = PasswordEncryptHelper.EncryptPassword("1234"),
                     Email = "eva@example.com", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123", "eva@example.com"),
                     IsDeleted = false,
                     DeletedTimeUtc = DateTime.MinValue,
                     RoleId = 2
@@ -65,8 +65,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "John",
                     LastName = "Doe",
                     Dni = 416,
-                    Password = PasswordEncryptHelper.EncryptPassword("1234"),
                     Email = "john@example.com", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123", "john@example.com"),
                     IsDeleted = true, // Soft-deleted
                     DeletedTimeUtc = DateTime.MinValue,
                     RoleId = 2

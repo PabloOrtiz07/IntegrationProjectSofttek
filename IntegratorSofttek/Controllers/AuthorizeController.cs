@@ -1,4 +1,5 @@
-﻿using IntegratorSofttek.DTOs;
+﻿using AlkemyUmsa.Infrastructure;
+using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Helper;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -22,16 +23,17 @@ namespace IntegratorSofttek.Controllers
         }
 
         /// <summary>
-        /// Logs in using email and password to access the program.
+        /// Log in using email and password.
         /// </summary>
-        /// <param name="dto">A model containing your login credentials</param>
+        /// <param name="dto">
+        /// **A model containing your login credentials.**</param>
         /// <returns>Returns an "Ok" response with your data and an authorization token</returns>
 
         [HttpPost]
         public async Task<IActionResult> Login(AuthenticateDto dto)
         {
             var userCredentials = await _unitOfWork.UserRepository.AuthenticateCredentials(dto);
-            if (userCredentials is null) return Unauthorized("The credentials are incorrect");
+            if (userCredentials is null) ResponseFactory.CreateErrorResponse(401, "The credentials are incorrect");
 
             var token = _tokenJwtHelper.GenerateToken(userCredentials);
 
@@ -44,7 +46,7 @@ namespace IntegratorSofttek.Controllers
             };
 
 
-            return Ok(user);
+            return ResponseFactory.CreateSuccessResponse(200, user);
 
         }
     }

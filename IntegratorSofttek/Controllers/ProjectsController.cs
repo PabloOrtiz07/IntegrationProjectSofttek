@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AlkemyUmsa.Infrastructure;
+using AutoMapper;
 using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
 using IntegratorSofttek.Services;
@@ -23,45 +24,51 @@ namespace IntegratorSofttek.Controllers
             _mapper = mapper;
         }
         /// <summary>
-        /// Gets a list of projects based on a parameter.
-        /// Requires the Administrator and Consultant policies for access.
+        /// Gets a list of projects.
         /// </summary>
-        /// <param name="parameter">The parameter used to filter projects.
-        /// Use parameter 0 to return filtered non-deleted projects,
-        /// use parameter 1 to retrieve all projects without filtering,
-        /// and paramater 2 to return filtered non-deleted user with filtered state
-        /// </param>
-        /// <param name="state">Stated used to filter for differented status
-        /// Use State 0 is to filter to pending status,
-        /// use state 1 is to filter to confirmed status,
-        /// and use state 2 is to filter to finished status 
-        /// </param>
-        /// <returns>Returns a list of projects or null if there were some issues</returns>
+        /// <param name="parameter">
+        /// **The parameter used to filter projects.**
+        /// - Use parameter 0 to return filtered non-deleted projects.
         /// 
+        /// - Use parameter 1 to retrieve all projects without filtering.
+        /// 
+        /// - Use paramater 2 to return filtered non-deleted projects with filtered state.
+        /// </param>
+        /// <param name="state">
+        /// *Stated used to filter projects for differented status.**
+        /// - Use State 0 is to filter to pending status.
+        /// 
+        /// - Use state 1 is to filter to confirmed status.
+        /// 
+        /// - Use state 2 is to filter to finished status.
+        /// </param>
+        /// <returns>Returns a list of projects with a HTTP 200 response .</returns>
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProjects( int parameter =0, int state=0)
+        public async Task<IActionResult> GetAllProjects( int parameter =0, int state=0)
         {
             var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter,state);
-            if (projects == null || !projects.Any())
-            {
-                return NotFound();
-            }
             var projectsDTO = _mapper.Map<List<ProjectDTO>>(projects);
-            return Ok(projectsDTO);
+            return ResponseFactory.CreateSuccessResponse(200, projectsDTO);
         }
 
         /// <summary>
-        /// Get a project by their id.
-        /// Requires the Administrator and Consultant policies for access.
+        /// Get a project.
         /// </summary>
-        /// <param name="id">The ID used to find a project with this identication.</param>
-        /// <param name="parameter">The parameter used to filter projects.
-        /// Use parameter 0 to return filtered non-deleted project,
-        /// and use parameter 1 to retrieve all projects without filtering </param>
-        /// <returns>Returns a project object matching the given ID or null if not found</returns>
+        /// <param name="id">
+        /// **The ID used to find a project with this identication.**</param>
+        /// <param name="parameter">
+        /// **The parameter used to filter projects.**
+        /// - Use parameter 0 to return filtered non-deleted project.
+        /// 
+        /// - Use parameter 1 to retrieve all projects without filtering.</param>
+        /// <returns>
+        /// Returns a HTTP 200 response with the user object matching the given ID 
+        /// if found, or a HTTP 404 response with an error message if the user is not found.
+        /// </returns>
+        /// 
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
@@ -72,24 +79,26 @@ namespace IntegratorSofttek.Controllers
             if (project != null)
             {
                 var projectDTO = _mapper.Map<ProjectDTO>(project);
-                return Ok(projectDTO);
+                return ResponseFactory.CreateSuccessResponse(200, projectDTO);
             }
             else
             {
-                return NotFound("The project couldn't be found");
+                return ResponseFactory.CreateErrorResponse(404, "The project couldn't be found");
             }
         }
+
         /// <summary>
-        /// Register a project in the database.
-        /// Requires the Administrator policies for access.
+        /// Register a project.
         /// </summary>
-        /// <param name="projectDTO">A model containing project information to be registered</param>
-        /// <returns>Returns "OK" if the registration operation was successful and null if the were some issues.</returns>        /// 
+        /// <param name="projectDTO">
+        /// **A model containing project information to be registered.**</param>
+        /// <returns>Returns an HTTP 201 response if the registration operation was successful 
+        /// or an Error HTTP 400 response.</returns>
+        /// 
 
         [HttpPost]
         [Route("RegisterProject")]
         [Authorize(Policy = "Administrator")]
-
         public async Task<IActionResult> RegisterProject(ProjectDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
@@ -97,17 +106,20 @@ namespace IntegratorSofttek.Controllers
             if (result != false)
             {
                 await _unitOfWork.Complete();
-                return Ok("The register operation was successful");
+                return ResponseFactory.CreateSuccessResponse(201, "The register operation was successful");
             }
-            return BadRequest("The operation was canceled");
+            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
         }
+
         /// <summary>
-        /// Update a project in the database
-        /// Requires the Administrator policies for access.
+        /// Update a project.
         /// </summary>
-        /// <param name="id">The ID used to find a project that matche  this identification</param>
-        /// <param name="projectDTO">A model which will replace the older project data</param>
-        /// <returns>Returns "OK" if the updating operation was succesfull</returns>
+        /// <param name="id">
+        /// **The ID used to find a project that matches  this identification**</param>
+        /// <param name="projectDTO">
+        /// **A model which will replace the older project data**</param>
+        /// <returns>Returns an HTTP 200 response if the updating operation was successful 
+        /// or an Error HTTP 400 response.</returns>
         /// 
 
         [HttpPut]
@@ -122,19 +134,22 @@ namespace IntegratorSofttek.Controllers
             if (result != null)
             {
                 await _unitOfWork.Complete();
-                return Ok("The update operation was successful");
+                return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
             }
-            return BadRequest("The operation was canceled");
+            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
         }
         /// <summary>
         /// Delete a project softly (soft deletion) or permanently (hard deletion).
-        /// Requires the Administrator policies for access.
         /// </summary>
-        /// <param name="id">The ID used to find a service with this identification </param>
-        /// <param name="parameter">The parameter used to select the type of deletion 
-        /// Use parameter 0 to soft delete  and,
-        /// use parameter 1 to hard delete </param>
-        /// <returns>Returns "OK" if the delete operation was succesfull or "BadRequest" if there was and issue</returns>
+        /// <param name="id">
+        /// **The ID used to find a service with this identification.**</param>
+        /// <param name="parameter">
+        /// **The parameter used to select the type of deletion.**
+        /// - Use parameter 0 to soft delete.
+        /// 
+        /// - Use parameter 1 to hard delete. </param>
+        /// <returns>Returns an HTTP 204 response if the deletion operation was successful 
+        /// or an Error HTTP 400 response.</returns>
         /// 
 
         [HttpPut]
@@ -147,9 +162,9 @@ namespace IntegratorSofttek.Controllers
             if (projectReturn != false)
             {
                 await _unitOfWork.Complete();
-                return Ok("This project has been dropped down");
+                return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");
             }
-            return NotFound("The project couldn't be found");
+            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
         }
     }
 }

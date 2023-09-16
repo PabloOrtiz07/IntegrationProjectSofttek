@@ -5,6 +5,7 @@ namespace IntegratorSofttek.Entities
 {
     public class Role
     {
+        [Key]
         [Required]
         [Column("role_id")]
         public int Id { get; set; }

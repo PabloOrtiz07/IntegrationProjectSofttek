@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AlkemyUmsa.Infrastructure;
+using AutoMapper;
 using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
 using IntegratorSofttek.Services;
@@ -24,39 +25,44 @@ namespace IntegratorSofttek.Controllers
         }
 
         /// <summary>
-        /// Gets a list of services based on a parameter.
-        /// Requires the Administrator and Consultant policies for access.
+        /// Gets a list of services.
         /// </summary>
-        /// <param name="parameter">The parameter used to filter services.
-        /// Use parameter 0 to return filtered non-deleted services,
-        /// use parameter 1 to retrieve all services without filtering,
-        /// and use parameter 2 to return filtered non-deleted users with active status.
+        /// <param name="parameter">
+        /// **The parameter used to filter services.**
+        /// - Use parameter 0 to return filtered non-deleted services.
+        /// 
+        /// - Use parameter 1 to retrieve all services without filtering.
+        /// 
+        /// - Use parameter 2 to return filtered non-deleted users with active status.
         /// </param>
         /// <returns>Returns a list of services.</returns>
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetAllServices(int parameter = 0)
+        public async Task<IActionResult> GetAllServices(int parameter = 0)
         {
 
             var services = await _unitOfWork.ServiceRepository.GetAllServices(parameter);
-            if (services == null || !services.Any())
-            {
-                return NotFound();
-            }
             var servicesDTO = _mapper.Map<List<ServiceDTO>>(services);
-            return Ok(servicesDTO);
+            return ResponseFactory.CreateSuccessResponse(200, servicesDTO);
         }
+
         /// <summary>
-        /// Get a service by their id.
-        /// Requires the Administrator and Consultant policies for access.
+        /// Get a service.
         /// </summary>
-        /// <param name="id">The ID used to find a service with this identication.</param>
-        /// <param name="parameter">The parameter used to filter a non-deleted service or deleted service
-        /// Use parameter 0 to return filtered non-deleted service,
-        /// and use parameter 1 to retrieve all services without filtering </param>
-        /// <returns>Returns a service object matching the given ID or null</returns>
+        /// <param name="id">
+        /// **The ID used to find a service with this identication**.</param>
+        /// <param name="parameter">
+        /// **The parameter used to filter a non-deleted service or deleted service**
+        /// - Use parameter 0 to return filtered non-deleted service.
+        /// 
+        /// - Use parameter 1 to retrieve all services without filtering. </param>
+        /// <returns>
+        /// Returns a HTTP 200 response with the service object matching the given ID 
+        /// if found, or a HTTP 404 response with an error message if the service is not found.
+        /// </returns>
+        /// 
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
@@ -67,20 +73,23 @@ namespace IntegratorSofttek.Controllers
             if (service != null)
             {
                 var serviceDTO = _mapper.Map<ServiceDTO>(service);
-                return Ok(serviceDTO);
+                return ResponseFactory.CreateSuccessResponse(200, serviceDTO);
+
             }
             else
             {
-                return NotFound("The service couldn't be found");
+                return ResponseFactory.CreateErrorResponse(404, "The service couldn't be found");
             }
         }
 
         /// <summary>
         /// Register a service in the database.
-        /// Requires the Administrator policies for access.
         /// </summary>
-        /// <param name="serviceDTO">A model used to fill in service information</param>
-        /// <returns>Returns "OK" if the registeration operation was succesful </returns>
+        /// 
+        /// <param name="serviceDTO">
+        /// **A model used to fill in service information**</param>
+        /// <returns>Returns an HTTP 201 response if the registration operation was successful 
+        /// or an Error HTTP 400 response.</returns>
 
         [HttpPost]
         [Route("RegisterService")]
@@ -93,19 +102,20 @@ namespace IntegratorSofttek.Controllers
             if (result != false)
             {
                 await _unitOfWork.Complete();
-                return Ok("The register operation was successful");
+                return ResponseFactory.CreateSuccessResponse(201, "The register operation was successful");
             }
-            return BadRequest("The operation was canceled");
+            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
         }
 
         /// <summary>
-        /// Update a service in the database
-        /// Requires the Administrator policies for access.
+        /// Update a service in the database.
         /// </summary>
-        /// <param name="id">The ID used to find a service that matche  this identification</param>
-        /// <param name="serviceDTO">A model which will replace the older service data</param>
-        /// <returns>Returns "OK" if the updating operation was succesfull</returns>
-
+        /// <param name="id">
+        /// **The ID used to find a service that matches this identification.**</param>
+        /// <param name="serviceDTO">
+        /// **A model which will replace the older service data.**</param>
+        /// <returns>Returns an HTTP 200 response if the updating operation was successful 
+        /// or an Error HTTP 400 response.</returns>
         [HttpPut]
         [Route("UpdateService/{id}")]
         [Authorize(Policy = "Administrator")]
@@ -118,21 +128,23 @@ namespace IntegratorSofttek.Controllers
             if (result != null)
             {
                 await _unitOfWork.Complete();
-                return Ok("The update operation was successful");
+                return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
             }
-            return BadRequest("The operation was canceled");
+            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
         }
 
         /// <summary>
         /// Delete a service softly (soft deletion) or permanently (hard deletion).
-        /// Requires the Administrator policies for access.
         /// </summary>
-        /// <param name="id">The ID used to find a service with this identification </param>
-        /// <param name="parameter">The parameter used to select the type of deletion 
-        /// Use parameter 0 to soft delete  and,
-        /// use parameter 1 to hard delete </param>
-        /// <returns>Returns "OK" if the delete operation was succesfull or "BadRequest" if there was and issue</returns>
-
+        /// <param name="id">
+        /// **The ID used to find a service with this identification.**</param>
+        /// <param name="parameter">
+        /// **The parameter used to select the type of deletion.** 
+        /// - Use parameter 0 to soft delete.
+        /// 
+        /// - Use parameter 1 to hard delete. </param>
+        /// <returns>Returns an HTTP 204 response if the deletion operation was successful 
+        /// or an Error HTTP 400 response.</returns>
         [HttpPut]
         [Route("DeleteService/{id}")]
         [Authorize(Policy = "Administrator")]
@@ -143,9 +155,9 @@ namespace IntegratorSofttek.Controllers
             if (serviceReturn != false)
             {
                 await _unitOfWork.Complete();
-                return Ok("This service has been dropped down");
+                return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");
             }
-            return NotFound("The service couldn't be found");
+            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
         }
     }
 }
