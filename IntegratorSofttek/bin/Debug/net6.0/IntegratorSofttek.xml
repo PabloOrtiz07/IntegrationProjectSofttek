@@ -13,7 +13,7 @@
             <returns>Returns an "Ok" response with your data and an authorization token</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetAllProjects(System.Int32,System.String,System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetAll(System.Int32,System.String,System.Int32,System.Int32)">
             <summary>
             Gets a list of projects.
             </summary>
@@ -41,7 +41,7 @@
             </param>
             <returns>Returns a list of users with an HTTP 200 response.</returns>
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetProjectById(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetById(System.Int32,System.Int32)">
             <summary>
             Get a project.
             </summary>
@@ -58,7 +58,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ProjectsController.RegisterProject(IntegratorSofttek.DTOs.ProjectDTO)">
+        <member name="M:IntegratorSofttek.Controllers.ProjectsController.Register(IntegratorSofttek.DTOs.ProjectDTO)">
             <summary>
             Register a project.
             </summary>
@@ -68,7 +68,7 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ProjectsController.UpdateProject(System.Int32,IntegratorSofttek.DTOs.ProjectDTO)">
+        <member name="M:IntegratorSofttek.Controllers.ProjectsController.Update(System.Int32,IntegratorSofttek.DTOs.ProjectDTO)">
             <summary>
             Update a project.
             </summary>
@@ -80,7 +80,7 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ProjectsController.DeleteProject(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.ProjectsController.Delete(System.Int32,System.Int32)">
             <summary>
             Delete a project softly (soft deletion) or permanently (hard deletion).
             </summary>
@@ -95,7 +95,7 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ServicesController.GetAllServices(System.Int32,System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.ServicesController.GetAll(System.Int32,System.Int32,System.Int32)">
             <summary>
             Gets a list of services.
             </summary>
@@ -116,7 +116,7 @@
             <returns>Returns a list of users with an HTTP 200 response.</returns> 
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ServicesController.GetServiceById(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.ServicesController.GetById(System.Int32,System.Int32)">
             <summary>
             Get a service.
             </summary>
@@ -133,7 +133,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ServicesController.RegisterService(IntegratorSofttek.DTOs.ServiceDTO)">
+        <member name="M:IntegratorSofttek.Controllers.ServicesController.Register(IntegratorSofttek.DTOs.ServiceDTO)">
             <summary>
             Register a service in the database.
             </summary>
@@ -143,7 +143,7 @@
             <returns>Returns an HTTP 201 response if the registration operation was successful 
             or an Error HTTP 400 response.</returns>
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ServicesController.UpdateService(System.Int32,IntegratorSofttek.DTOs.ServiceDTO)">
+        <member name="M:IntegratorSofttek.Controllers.ServicesController.Update(System.Int32,IntegratorSofttek.DTOs.ServiceDTO)">
             <summary>
             Update a service in the database.
             </summary>
@@ -154,7 +154,7 @@
             <returns>Returns an HTTP 200 response if the updating operation was successful 
             or an Error HTTP 400 response.</returns>
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ServicesController.DeleteService(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.ServicesController.Delete(System.Int32,System.Int32)">
             <summary>
             Delete a service softly (soft deletion) or permanently (hard deletion).
             </summary>
@@ -169,7 +169,7 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.GetAllUsers(System.Int32,System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.GetAll(System.Int32,System.Int32,System.Int32)">
             <summary>
             Gets a list of users.
             </summary>
@@ -245,7 +245,7 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.GetAllWorks(System.Int32,System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.GetAll(System.Int32,System.Int32,System.Int32)">
             <summary>
             Gets a list of works.
             </summary>
@@ -264,7 +264,7 @@
             <returns>Returns a list of users with an HTTP 200 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.GetWorkById(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.GetById(System.Int32,System.Int32)">
             <summary>
             Get a work.
             </summary>
@@ -281,7 +281,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.RegisterWork(IntegratorSofttek.DTOs.WorkDTO)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.Register(IntegratorSofttek.DTOs.WorkDTO)">
             <summary>
             Register a work.
             </summary>
@@ -291,7 +291,7 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.UpdateWork(System.Int32,IntegratorSofttek.DTOs.WorkDTO)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.Update(System.Int32,IntegratorSofttek.DTOs.WorkDTO)">
             <summary>
             Update a work.
             </summary>
@@ -303,7 +303,7 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.DeleteWork(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.Delete(System.Int32,System.Int32)">
             <summary>
             Delete a work softly (soft deletion) or permanently (hard deletion).
             </summary>

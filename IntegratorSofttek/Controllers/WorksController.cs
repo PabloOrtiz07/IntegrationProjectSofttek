@@ -2,6 +2,7 @@
 using AutoMapper;
 using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
+using IntegratorSofttek.Helper;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -50,7 +51,10 @@ namespace IntegratorSofttek.Controllers
 
             var works = await _unitOfWork.WorkRepository.GetAllWorks(parameter);
             var worksDTO = _mapper.Map<List<WorkDTO>>(works);
-            return ResponseFactory.CreateSuccessResponse(200, worksDTO);
+            if (Request.Query.ContainsKey("page")) int.TryParse(Request.Query["page"], out pageToShow);
+            var url = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}").ToString();
+            var paginateWorks = PaginateHelper.Paginate(worksDTO, pageToShow, url, pageSize);
+            return ResponseFactory.CreateSuccessResponse(200, paginateWorks);
         }
 
         /// <summary>
