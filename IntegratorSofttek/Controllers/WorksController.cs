@@ -29,18 +29,23 @@ namespace IntegratorSofttek.Controllers
         /// Gets a list of works.
         /// </summary>
         /// <param name="parameter">
-        /// **The parameter used to filter services.**
+        /// **The parameter is used to filter services.**
         /// - Use parameter 0 to return filtered non-deleted works.
         /// 
         /// - Use parameter 1 to retrieve all works without filtering.
         /// </param>
-        /// <returns>Returns a list of users with a HTTP 200 response .</returns>
+        /// <param name="pageSize">
+        /// **The pageSize is used to indicate how many elements you want per page.**
+        /// </param>
+        /// <param name="pageToShow">
+        /// **The pageToShow is used to indicate on which page you will be.**
+        /// </param>
+        /// <returns>Returns a list of users with an HTTP 200 response.</returns>
         /// 
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
-
-        public async Task<IActionResult> GetAllWorks(int parameter)
+        public async Task<IActionResult> GetAll(int parameter = 0, int pageSize = 10, int pageToShow = 1)
         {
 
             var works = await _unitOfWork.WorkRepository.GetAllWorks(parameter);
@@ -52,9 +57,9 @@ namespace IntegratorSofttek.Controllers
         /// Get a work.
         /// </summary>
         /// <param name="id">
-        /// **The ID used to find a work with this identication.**</param>
+        /// **The ID is used to find a work with this identication.**</param>
         /// <param name="parameter">
-        /// **The parameter used to filter a non-deleted work or deleted work.**
+        /// **The parameter is used to filter a non-deleted work or deleted work.**
         /// - Use parameter 0 to return filtered non-deleted work.
         /// 
         /// - Use parameter 1 to retrieve all work without filtering.</param>
@@ -66,8 +71,7 @@ namespace IntegratorSofttek.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
-
-        public async Task<IActionResult> GetWorkById([FromRoute] int id, int parameter=0)
+        public async Task<IActionResult> GetById([FromRoute] int id, int parameter=0)
         {
             var work = await _unitOfWork.WorkRepository.GetWorkById(id, parameter);
 
@@ -86,16 +90,14 @@ namespace IntegratorSofttek.Controllers
         /// Register a work.
         /// </summary>
         /// <param name="workDTO">
-        /// **A model used to fill in work information.**</param>
+        /// **A model is used to fill in work information.**</param>
         /// <returns>Returns an HTTP 201 response if the registration operation was successful 
         /// or an Error HTTP 400 response.</returns>
         /// 
 
         [HttpPost]
-        [Route("RegisterWork")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> RegisterWork(WorkDTO workDTO)
+        public async Task<IActionResult> Register(WorkDTO workDTO)
         {
             var work = _mapper.Map<Work>(workDTO);
             var result = await _unitOfWork.WorkRepository.Insert(work);
@@ -113,16 +115,14 @@ namespace IntegratorSofttek.Controllers
         /// <param name="id">
         /// **The ID used to find a work that matche  this identification.**</param>
         /// <param name="workDTO">
-        /// **A model which will replace the older work data**</param>
+        /// **A model is used to replace the older work data**</param>
         /// <returns>Returns an HTTP 200 response if the updating operation was successful 
         /// or an Error HTTP 400 response.</returns>
         /// 
 
         [HttpPut]
-        [Route("UpdateWork/{id}")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> UpdateWork([FromRoute] int id, WorkDTO workDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, WorkDTO workDTO)
         {
             var work = _mapper.Map<Work>(workDTO);
 
@@ -141,7 +141,7 @@ namespace IntegratorSofttek.Controllers
         /// <param name="id">
         /// **The ID used to find a work with this identification.**</param>
         /// <param name="parameter">
-        /// **The parameter used to select the type of deletion.**
+        /// **The parameter is used to select the type of deletion.**
         /// - Use parameter 0 to soft delete.
         /// 
         /// - Use parameter 1 to hard delete. </param>
@@ -149,11 +149,9 @@ namespace IntegratorSofttek.Controllers
         /// or an Error HTTP 400 response.</returns>
         /// 
 
-        [HttpPut]
-        [Route("DeleteWork/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> DeleteWork([FromRoute] int id, int parameter=0)
+        public async Task<IActionResult> Delete([FromRoute] int id, int parameter=0)
         {
             var workReturn = await _unitOfWork.WorkRepository.DeleteWorkById(id, parameter);
             if (workReturn != false)

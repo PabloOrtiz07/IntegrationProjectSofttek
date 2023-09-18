@@ -28,19 +28,26 @@ namespace IntegratorSofttek.Controllers
         /// Gets a list of services.
         /// </summary>
         /// <param name="parameter">
-        /// **The parameter used to filter services.**
+        /// **The parameter is used to filter services.**
         /// - Use parameter 0 to return filtered non-deleted services.
         /// 
         /// - Use parameter 1 to retrieve all services without filtering.
         /// 
         /// - Use parameter 2 to return filtered non-deleted users with active status.
         /// </param>
-        /// <returns>Returns a list of services.</returns>
+        /// <param name="pageSize">
+        /// **The pageSize is used to indicate how many elements you want per page.**
+        /// </param>
+        /// <param name="pageToShow">
+        /// **The pageToShow is used to indicate on which page you will be.**
+        /// </param>
+        /// <returns>Returns a list of users with an HTTP 200 response.</returns> 
+        /// 
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
 
-        public async Task<IActionResult> GetAllServices(int parameter = 0)
+        public async Task<IActionResult> GetAll(int parameter = 0, int pageSize = 10, int pageToShow = 1)
         {
 
             var services = await _unitOfWork.ServiceRepository.GetAllServices(parameter);
@@ -52,9 +59,9 @@ namespace IntegratorSofttek.Controllers
         /// Get a service.
         /// </summary>
         /// <param name="id">
-        /// **The ID used to find a service with this identication**.</param>
+        /// **The ID is used to find a service with this identication**.</param>
         /// <param name="parameter">
-        /// **The parameter used to filter a non-deleted service or deleted service**
+        /// **The parameter is used to filter a non-deleted service or deleted service**
         /// - Use parameter 0 to return filtered non-deleted service.
         /// 
         /// - Use parameter 1 to retrieve all services without filtering. </param>
@@ -66,7 +73,7 @@ namespace IntegratorSofttek.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
-        public async Task<IActionResult> GetServiceById([FromRoute] int id,int parameter = 0)
+        public async Task<IActionResult> GetById([FromRoute] int id,int parameter = 0)
         {
             var service = await _unitOfWork.ServiceRepository.GetServiceById(id, parameter); 
 
@@ -87,15 +94,13 @@ namespace IntegratorSofttek.Controllers
         /// </summary>
         /// 
         /// <param name="serviceDTO">
-        /// **A model used to fill in service information**</param>
+        /// **A model is used to fill in service information**</param>
         /// <returns>Returns an HTTP 201 response if the registration operation was successful 
         /// or an Error HTTP 400 response.</returns>
 
         [HttpPost]
-        [Route("RegisterService")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> RegisterService(ServiceDTO serviceDTO)
+        public async Task<IActionResult> Register(ServiceDTO serviceDTO)
         {
             var service = _mapper.Map<Service>(serviceDTO);
             var result = await _unitOfWork.ServiceRepository.Insert(service); // Update repository method call
@@ -111,16 +116,14 @@ namespace IntegratorSofttek.Controllers
         /// Update a service in the database.
         /// </summary>
         /// <param name="id">
-        /// **The ID used to find a service that matches this identification.**</param>
+        /// **The ID is used to find a service that matches this identification.**</param>
         /// <param name="serviceDTO">
-        /// **A model which will replace the older service data.**</param>
+        /// **A model is used to replace the older service data.**</param>
         /// <returns>Returns an HTTP 200 response if the updating operation was successful 
         /// or an Error HTTP 400 response.</returns>
         [HttpPut]
-        [Route("UpdateService/{id}")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> UpdateService([FromRoute] int id, ServiceDTO serviceDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, ServiceDTO serviceDTO)
         {
             var service = _mapper.Map<Service>(serviceDTO);
 
@@ -137,19 +140,19 @@ namespace IntegratorSofttek.Controllers
         /// Delete a service softly (soft deletion) or permanently (hard deletion).
         /// </summary>
         /// <param name="id">
-        /// **The ID used to find a service with this identification.**</param>
+        /// **The ID is used to find a service with this identification.**</param>
         /// <param name="parameter">
-        /// **The parameter used to select the type of deletion.** 
+        /// **The parameter is used to select the type of deletion.** 
         /// - Use parameter 0 to soft delete.
         /// 
         /// - Use parameter 1 to hard delete. </param>
         /// <returns>Returns an HTTP 204 response if the deletion operation was successful 
         /// or an Error HTTP 400 response.</returns>
-        [HttpPut]
-        [Route("DeleteService/{id}")]
-        [Authorize(Policy = "Administrator")]
+        /// 
 
-        public async Task<IActionResult> DeleteService([FromRoute] int id, int parameter = 0)
+        [HttpPut("{id}")]
+        [Authorize(Policy = "Administrator")]
+        public async Task<IActionResult> Delete([FromRoute] int id, int parameter = 0)
         {
             var serviceReturn = await _unitOfWork.ServiceRepository.DeleteServiceById(id, parameter); // Update repository method call
             if (serviceReturn != false)

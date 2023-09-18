@@ -11,13 +11,14 @@
             <param name="dto">
             **A model containing your login credentials.**</param>
             <returns>Returns an "Ok" response with your data and an authorization token</returns>
+            
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetAllProjects(System.Int32,System.String)">
+        <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetAllProjects(System.Int32,System.String,System.Int32,System.Int32)">
             <summary>
             Gets a list of projects.
             </summary>
             <param name="parameter">
-            **The parameter used to filter projects.**
+            **The parameter is used to filter projects.**
             - Use parameter 0 to return filtered non-deleted projects.
             
             - Use parameter 1 to retrieve all projects without filtering.
@@ -25,14 +26,20 @@
             - Use paramater 2 to return filtered non-deleted projects with filtered state.
             </param>
             <param name="state">
-            *Stated used to filter projects for different statuses.**
+            *Stated is used to filter projects for different statuses.**
             - Use state Pending to filter to pending status.
             
             - Use state Confirmed to filter to confirmed status.
             
             - Use state Finished to filter to finished status.
             </param>
-            <returns>Returns a list of projects with a HTTP 200 response .</returns>
+            <param name="pageSize">
+            **The pageSize is used to indicate how many elements you want per page.**
+            </param>
+            <param name="pageToShow">
+            **The pageToShow is used to indicate on which page you will be.**
+            </param>
+            <returns>Returns a list of users with an HTTP 200 response.</returns>
         </member>
         <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetProjectById(System.Int32,System.Int32)">
             <summary>
@@ -88,94 +95,35 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.RolesController.GetAllRoles(System.Int32)">
-            <summary>
-            Gets a list of roles.
-            </summary>
-            <param name="parameter">
-             **The parameter used to filter roles.**
-            - Use parameter 0 to return filtered non-deleted roles.
-            
-            - Use parameter 1 to retrieve all roles without filtering.
-            </param>
-            <returns>Returns a list of roles with a HTTP 200 response .</returns>
-        </member>
-        <member name="M:IntegratorSofttek.Controllers.RolesController.GetRoleById(System.Int32,System.Int32)">
-            <summary>
-            Get a role.
-            </summary>
-            <param name="id">
-            **The ID used to find a role with this identication.**
-            </param>
-            
-            <param name="parameter">
-            **The parameter used to filter a non-deleted role or deleted role**
-            - Use parameter 0 to return filtered non-deleted roles.
-            
-            - Use parameter 1 to retrieve all roles without filtering. 
-            </param>
-            <returns>
-            Returns a HTTP 200 response with the role object matching the given ID 
-            if found, or a HTTP 404 response with an error message if the role is not found.
-            </returns>
-        </member>
-        <member name="M:IntegratorSofttek.Controllers.RolesController.RegisterRole(IntegratorSofttek.DTOs.RoleDTO)">
-            <summary>
-            Register a role in the database.
-            </summary>
-            <param name="roleDTO">
-            **A model used to fill in role information.**
-            </param>
-            <returns>Returns an HTTP 201 response if the registration operation was successful 
-            or an Error HTTP 400 response.</returns>
-        </member>
-        <member name="M:IntegratorSofttek.Controllers.RolesController.UpdateRole(System.Int32,IntegratorSofttek.DTOs.RoleDTO)">
-            <summary>
-            Update a role.
-            </summary>
-            <param name="id">**The ID used to find a role that matches this identification.**</param>
-            
-            <param name="roleDTO">**A model which will replace the older role data.**</param>
-            <returns>Returns an HTTP 200 response if the updating operation was successful 
-            or an Error HTTP 400 response.</returns>
-        </member>
-        <member name="M:IntegratorSofttek.Controllers.RolesController.DeleteRole(System.Int32,System.Int32)">
-            <summary>
-            Delete a role softly (soft deletion) or permanently (hard deletion).
-            </summary>
-            <param name="id">**The ID used to find a role with this identification.**</param>
-            
-            <param name="parameter">
-            **The parameter used to select the type of deletion.**
-            - Use parameter 0 to soft delete.
-            
-            - Use parameter 1 to hard delete.</param>
-            
-            <returns>Returns an HTTP 204 response if the deletion operation was successful 
-            or an Error HTTP 400 response.</returns>
-        </member>
-        <member name="M:IntegratorSofttek.Controllers.ServicesController.GetAllServices(System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.ServicesController.GetAllServices(System.Int32,System.Int32,System.Int32)">
             <summary>
             Gets a list of services.
             </summary>
             <param name="parameter">
-            **The parameter used to filter services.**
+            **The parameter is used to filter services.**
             - Use parameter 0 to return filtered non-deleted services.
             
             - Use parameter 1 to retrieve all services without filtering.
             
             - Use parameter 2 to return filtered non-deleted users with active status.
             </param>
-            <returns>Returns a list of services.</returns>
+            <param name="pageSize">
+            **The pageSize is used to indicate how many elements you want per page.**
+            </param>
+            <param name="pageToShow">
+            **The pageToShow is used to indicate on which page you will be.**
+            </param>
+            <returns>Returns a list of users with an HTTP 200 response.</returns> 
+            
         </member>
         <member name="M:IntegratorSofttek.Controllers.ServicesController.GetServiceById(System.Int32,System.Int32)">
             <summary>
             Get a service.
             </summary>
             <param name="id">
-            **The ID used to find a service with this identication**.</param>
+            **The ID is used to find a service with this identication**.</param>
             <param name="parameter">
-            **The parameter used to filter a non-deleted service or deleted service**
+            **The parameter is used to filter a non-deleted service or deleted service**
             - Use parameter 0 to return filtered non-deleted service.
             
             - Use parameter 1 to retrieve all services without filtering. </param>
@@ -191,7 +139,7 @@
             </summary>
             
             <param name="serviceDTO">
-            **A model used to fill in service information**</param>
+            **A model is used to fill in service information**</param>
             <returns>Returns an HTTP 201 response if the registration operation was successful 
             or an Error HTTP 400 response.</returns>
         </member>
@@ -200,9 +148,9 @@
             Update a service in the database.
             </summary>
             <param name="id">
-            **The ID used to find a service that matches this identification.**</param>
+            **The ID is used to find a service that matches this identification.**</param>
             <param name="serviceDTO">
-            **A model which will replace the older service data.**</param>
+            **A model is used to replace the older service data.**</param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
             or an Error HTTP 400 response.</returns>
         </member>
@@ -211,37 +159,45 @@
             Delete a service softly (soft deletion) or permanently (hard deletion).
             </summary>
             <param name="id">
-            **The ID used to find a service with this identification.**</param>
+            **The ID is used to find a service with this identification.**</param>
             <param name="parameter">
-            **The parameter used to select the type of deletion.** 
+            **The parameter is used to select the type of deletion.** 
             - Use parameter 0 to soft delete.
             
             - Use parameter 1 to hard delete. </param>
             <returns>Returns an HTTP 204 response if the deletion operation was successful 
             or an Error HTTP 400 response.</returns>
+            
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.GetAllUsers(System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.GetAllUsers(System.Int32,System.Int32,System.Int32)">
             <summary>
             Gets a list of users.
             </summary>
             <param name="parameter">
-             **The parameter used to filter users.**
+             **The parameter is used to filter users.**
             - Use parameter 0 to return filtered non-deleted users.
             
             - Use parameter 1 to retrieve all users without filtering.
             </param>
-            <returns>Returns a list of users with a HTTP 200 response .</returns>
+            <param name="pageSize">
+            **The pageSize is used to indicate how many elements you want per page.**
+            </param>
+            <param name="pageToShow">
+            **The pageToShow is used to indicate on which page you will be.**
+            </param>
+            <returns>Returns a list of users with an HTTP 200 response.</returns>
+            
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.GetUserById(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.GetById(System.Int32,System.Int32)">
             <summary>
             Get an user.
             </summary>
             <param name="id">
-            **The ID used to find an user with this identication.**
+            **The ID is used to find an user with this identication.**
             </param>
             
             <param name="parameter">
-            **The parameter used to filter a non-deleted user or deleted user**
+            **The parameter is used to filter a non-deleted user or deleted user**
             - Use parameter 0 to return filtered non-deleted users.
             
             - Use parameter 1 to retrieve all users without filtering. 
@@ -250,52 +206,62 @@
             Returns a HTTP 200 response with the user object matching the given ID 
             if found, or a HTTP 404 response with an error message if the user is not found.
             </returns>
+            
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.RegisterUser(IntegratorSofttek.DTOs.UserDTO)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.Register(IntegratorSofttek.DTOs.UserDTO)">
             <summary>
             Register an user in the database.
             </summary>
             <param name="userDTO">
-            **A model used to fill in user information.**
+            **A model is used to fill in user information.**
             </param>
             <returns>Returns an HTTP 201 response if the registration operation was successful 
             or an Error HTTP 400 response.</returns>
+            
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.UpdateUser(System.Int32,IntegratorSofttek.DTOs.UserDTO)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.Update(System.Int32,IntegratorSofttek.DTOs.UserDTO)">
             <summary>
             Update an user.
             </summary>
-            <param name="id">**The ID used to find an user that matches this identification.**</param>
+            <param name="id">**The ID is used to find an user that matches this identification.**</param>
             
             <param name="userDTO">**A model which will replace the older user data.**</param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
             or an Error HTTP 400 response.</returns>
+            
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.DeleteUser(System.Int32,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.Delete(System.Int32,System.Int32)">
             <summary>
             Delete an user softly (soft deletion) or permanently (hard deletion).
             </summary>
             <param name="id">**The ID used to find an user with this identification.**</param>
             
             <param name="parameter">
-            **The parameter used to select the type of deletion.**
+            **The parameter is used to select the type of deletion.**
             - Use parameter 0 to soft delete.
             
             - Use parameter 1 to hard delete.</param>
             <returns>Returns an HTTP 204 response if the deletion operation was successful 
             or an Error HTTP 400 response.</returns>
+            
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.GetAllWorks(System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.GetAllWorks(System.Int32,System.Int32,System.Int32)">
             <summary>
             Gets a list of works.
             </summary>
             <param name="parameter">
-            **The parameter used to filter services.**
+            **The parameter is used to filter services.**
             - Use parameter 0 to return filtered non-deleted works.
             
             - Use parameter 1 to retrieve all works without filtering.
             </param>
-            <returns>Returns a list of users with a HTTP 200 response .</returns>
+            <param name="pageSize">
+            **The pageSize is used to indicate how many elements you want per page.**
+            </param>
+            <param name="pageToShow">
+            **The pageToShow is used to indicate on which page you will be.**
+            </param>
+            <returns>Returns a list of users with an HTTP 200 response.</returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.WorksController.GetWorkById(System.Int32,System.Int32)">
@@ -303,9 +269,9 @@
             Get a work.
             </summary>
             <param name="id">
-            **The ID used to find a work with this identication.**</param>
+            **The ID is used to find a work with this identication.**</param>
             <param name="parameter">
-            **The parameter used to filter a non-deleted work or deleted work.**
+            **The parameter is used to filter a non-deleted work or deleted work.**
             - Use parameter 0 to return filtered non-deleted work.
             
             - Use parameter 1 to retrieve all work without filtering.</param>
@@ -320,7 +286,7 @@
             Register a work.
             </summary>
             <param name="workDTO">
-            **A model used to fill in work information.**</param>
+            **A model is used to fill in work information.**</param>
             <returns>Returns an HTTP 201 response if the registration operation was successful 
             or an Error HTTP 400 response.</returns>
             
@@ -332,7 +298,7 @@
             <param name="id">
             **The ID used to find a work that matche  this identification.**</param>
             <param name="workDTO">
-            **A model which will replace the older work data**</param>
+            **A model is used to replace the older work data**</param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
             or an Error HTTP 400 response.</returns>
             
@@ -344,7 +310,7 @@
             <param name="id">
             **The ID used to find a work with this identification.**</param>
             <param name="parameter">
-            **The parameter used to select the type of deletion.**
+            **The parameter is used to select the type of deletion.**
             - Use parameter 0 to soft delete.
             
             - Use parameter 1 to hard delete. </param>

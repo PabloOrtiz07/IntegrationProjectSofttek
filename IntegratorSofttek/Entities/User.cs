@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
@@ -7,7 +8,7 @@ namespace IntegratorSofttek.Entities
 {
     [Table("users")]
 
-
+    [Index(nameof(Email), IsUnique = true)]
     public class User
     {
         [Key]
@@ -29,6 +30,7 @@ namespace IntegratorSofttek.Entities
         [Column("user_password", TypeName = "VARCHAR(100)")]
 
         public string Password { get; set; }
+
         [Required]
         [Column("user_email", TypeName = "VARCHAR(100)")]
         public string Email { get; set; }

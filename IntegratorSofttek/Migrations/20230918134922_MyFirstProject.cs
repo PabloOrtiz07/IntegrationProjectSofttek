@@ -139,11 +139,11 @@ namespace IntegratorSofttek.Migrations
                 columns: new[] { "work_id", "work_cost", "work_date", "work_deletedTimeUtc", "work_hourlyRate", "work_hoursQuantity", "work_isDeleted", "Project", "Service" },
                 values: new object[,]
                 {
-                    { 1, 1000.0, new DateTime(2023, 9, 16, 9, 24, 49, 55, DateTimeKind.Local).AddTicks(9008), null, 25.0, 40, false, 1, 1 },
-                    { 2, 900.0, new DateTime(2023, 9, 15, 9, 24, 49, 55, DateTimeKind.Local).AddTicks(9020), null, 30.0, 30, false, 2, 2 },
-                    { 3, 1000.0, new DateTime(2023, 9, 14, 9, 24, 49, 55, DateTimeKind.Local).AddTicks(9025), null, 20.0, 50, false, 1, 3 },
-                    { 4, 980.0, new DateTime(2023, 9, 13, 9, 24, 49, 55, DateTimeKind.Local).AddTicks(9026), null, 28.0, 35, false, 2, 1 },
-                    { 5, 990.0, new DateTime(2023, 9, 12, 9, 24, 49, 55, DateTimeKind.Local).AddTicks(9027), null, 22.0, 45, false, 3, 2 }
+                    { 1, 1000.0, new DateTime(2023, 9, 18, 10, 49, 21, 963, DateTimeKind.Local).AddTicks(5697), null, 25.0, 40, false, 1, 1 },
+                    { 2, 900.0, new DateTime(2023, 9, 17, 10, 49, 21, 963, DateTimeKind.Local).AddTicks(5707), null, 30.0, 30, false, 2, 2 },
+                    { 3, 1000.0, new DateTime(2023, 9, 16, 10, 49, 21, 963, DateTimeKind.Local).AddTicks(5712), null, 20.0, 50, false, 1, 3 },
+                    { 4, 980.0, new DateTime(2023, 9, 15, 10, 49, 21, 963, DateTimeKind.Local).AddTicks(5713), null, 28.0, 35, false, 2, 1 },
+                    { 5, 990.0, new DateTime(2023, 9, 14, 10, 49, 21, 963, DateTimeKind.Local).AddTicks(5714), null, 22.0, 45, false, 3, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -162,6 +162,12 @@ namespace IntegratorSofttek.Migrations
                 name: "IX_users_role_id",
                 table: "users",
                 column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_user_email",
+                table: "users",
+                column: "user_email",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

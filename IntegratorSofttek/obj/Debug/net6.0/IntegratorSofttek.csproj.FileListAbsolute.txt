@@ -209,3 +209,4 @@ C:\Users\Pablo\Desktop\AcademySofttek\IntegratorSofttek\IntegratorSofttek\obj\De
 C:\Users\Pablo\Desktop\AcademySofttek\IntegratorSofttek\IntegratorSofttek\obj\Debug\net6.0\IntegratorSofttek.genruntimeconfig.cache
 C:\Users\Pablo\Desktop\AcademySofttek\IntegratorSofttek\IntegratorSofttek\obj\Debug\net6.0\ref\IntegratorSofttek.dll
 C:\Users\Pablo\Desktop\AcademySofttek\IntegratorSofttek\IntegratorSofttek\bin\Debug\net6.0\IntegratorSofttek.xml
+C:\Users\Pablo\Desktop\IntegratorSofttek\IntegratorSofttek\bin\Debug\net6.0\IntegratorSofttek.xml

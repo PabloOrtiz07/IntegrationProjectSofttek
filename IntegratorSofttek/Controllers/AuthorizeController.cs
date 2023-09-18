@@ -28,6 +28,7 @@ namespace IntegratorSofttek.Controllers
         /// <param name="dto">
         /// **A model containing your login credentials.**</param>
         /// <returns>Returns an "Ok" response with your data and an authorization token</returns>
+        /// 
 
         [HttpPost]
         public async Task<IActionResult> Login(AuthenticateDto dto)

@@ -12,4 +12,9 @@ The primary goal of this project is to create a RESTful API for the initial deli
 ## Assignment link
 https://drive.google.com/file/d/1yIRq0M9FdApUU2c8_OUoryahJM9B9cO8/view
 
+## Author
+Ortiz Pablo
 
+
+## Acknowledgments
+I Acknowledge this project to the Softtek team for allowing me to participate in this academy .net and to Marcio Abriola for his excellent classes
