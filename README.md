@@ -17,4 +17,4 @@ Ortiz Pablo
 
 
 ## Acknowledgments
-I Acknowledge this project to the Softtek team for allowing me to participate in this academy .net and to Marcio Abriola for his excellent classes
+I Acknowledge this project to the Softtek team for allowing me to participate in this academy .Net  and I extend my gratitude to Marcio Abriola for his excellent classes
