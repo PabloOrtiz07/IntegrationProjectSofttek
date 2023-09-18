@@ -58,13 +58,14 @@ builder.Services.AddDbContext<ContextDB>(options =>
 builder.Services.AddAuthorization(option =>
 {
     option.AddPolicy("Administrator", policy => policy.RequireClaim(ClaimTypes.Role, "1"));
+
 });
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdministratorAndConsultant", policy =>
     {
-        policy.RequireClaim(ClaimTypes.Role, "1", "2"); // 
+        policy.RequireClaim(ClaimTypes.Role, "1", "2"); 
     });
 });
 

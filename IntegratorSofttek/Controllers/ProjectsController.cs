@@ -27,7 +27,7 @@ namespace IntegratorSofttek.Controllers
         /// Gets a list of projects.
         /// </summary>
         /// <param name="parameter">
-        /// **The parameter used to filter projects.**
+        /// **The parameter is used to filter projects.**
         /// - Use parameter 0 to return filtered non-deleted projects.
         /// 
         /// - Use parameter 1 to retrieve all projects without filtering.
@@ -35,19 +35,24 @@ namespace IntegratorSofttek.Controllers
         /// - Use paramater 2 to return filtered non-deleted projects with filtered state.
         /// </param>
         /// <param name="state">
-        /// *Stated used to filter projects for different statuses.**
+        /// *Stated is used to filter projects for different statuses.**
         /// - Use state Pending to filter to pending status.
         /// 
         /// - Use state Confirmed to filter to confirmed status.
         /// 
         /// - Use state Finished to filter to finished status.
         /// </param>
-        /// <returns>Returns a list of projects with a HTTP 200 response .</returns>
+        /// <param name="pageSize">
+        /// **The pageSize is used to indicate how many elements you want per page.**
+        /// </param>
+        /// <param name="pageToShow">
+        /// **The pageToShow is used to indicate on which page you will be.**
+        /// </param>
+        /// <returns>Returns a list of users with an HTTP 200 response.</returns>
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
-
-        public async Task<IActionResult> GetAllProjects( int parameter =0, string state="Pending")
+        public async Task<IActionResult> GetAll( int parameter =0, string state="Pending", int pageSize = 10, int pageToShow = 1)
         {
             ProjectStatus status;
             status = _mapper.Map<ProjectStatus>(state.ToLower());
@@ -74,7 +79,7 @@ namespace IntegratorSofttek.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
-        public async Task<IActionResult> GetProjectById([FromRoute] int id,  int parameter=0)
+        public async Task<IActionResult> GetById([FromRoute] int id,  int parameter=0)
         {
             var project = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
 
@@ -99,9 +104,8 @@ namespace IntegratorSofttek.Controllers
         /// 
 
         [HttpPost]
-        [Route("RegisterProject")]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> RegisterProject(ProjectDTO projectDTO)
+        public async Task<IActionResult> Register(ProjectDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
             var result = await _unitOfWork.ProjectRepository.Insert(project);
@@ -125,10 +129,8 @@ namespace IntegratorSofttek.Controllers
         /// 
 
         [HttpPut]
-        [Route("UpdateProject/{id}")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> UpdateProject([FromRoute] int id, ProjectDTO projectDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, ProjectDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
 
@@ -154,11 +156,9 @@ namespace IntegratorSofttek.Controllers
         /// or an Error HTTP 400 response.</returns>
         /// 
 
-        [HttpPut]
-        [Route("DeleteProject/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> DeleteProject([FromRoute] int id, int parameter=0)
+        public async Task<IActionResult> Delete([FromRoute] int id, int parameter=0)
         {
             var projectReturn = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);
             if (projectReturn != false)

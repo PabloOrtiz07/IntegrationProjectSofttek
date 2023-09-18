@@ -2,11 +2,13 @@
 using AutoMapper;
 using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
+using IntegratorSofttek.Helper;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace IntegratorSofttek.Controllers
@@ -29,23 +31,32 @@ namespace IntegratorSofttek.Controllers
         /// Gets a list of users.
         /// </summary>
         /// <param name="parameter">
-        ///  **The parameter used to filter users.**
+        ///  **The parameter is used to filter users.**
         /// - Use parameter 0 to return filtered non-deleted users.
         /// 
         /// - Use parameter 1 to retrieve all users without filtering.
         /// </param>
-        /// <returns>Returns a list of users with a HTTP 200 response .</returns>
+        /// <param name="pageSize">
+        /// **The pageSize is used to indicate how many elements you want per page.**
+        /// </param>
+        /// <param name="pageToShow">
+        /// **The pageToShow is used to indicate on which page you will be.**
+        /// </param>
+        /// <returns>Returns a list of users with an HTTP 200 response.</returns>
+        /// 
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
-
-        public async Task<IActionResult> GetAllUsers(int parameter=0)
+        public async Task<IActionResult> GetAll(int parameter=0, int pageSize=10, int pageToShow=1)
         {
 
 
             var users = await _unitOfWork.UserRepository.GetAllUsers(parameter);
             var usersDTO = _mapper.Map<List<UserDTO>>(users);
-            return ResponseFactory.CreateSuccessResponse(200, usersDTO);
+            if (Request.Query.ContainsKey("page")) int.TryParse(Request.Query["page"], out pageToShow);
+            var url = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}").ToString();
+            var paginateUsers = PaginateHelper.Paginate(usersDTO, pageToShow, url, pageSize);
+            return ResponseFactory.CreateSuccessResponse(200, paginateUsers);
 
         }
 
@@ -53,11 +64,11 @@ namespace IntegratorSofttek.Controllers
         /// Get an user.
         /// </summary>
         /// <param name="id">
-        /// **The ID used to find an user with this identication.**
+        /// **The ID is used to find an user with this identication.**
         /// </param>
         /// 
         /// <param name="parameter">
-        /// **The parameter used to filter a non-deleted user or deleted user**
+        /// **The parameter is used to filter a non-deleted user or deleted user**
         /// - Use parameter 0 to return filtered non-deleted users.
         /// 
         /// - Use parameter 1 to retrieve all users without filtering. 
@@ -66,11 +77,11 @@ namespace IntegratorSofttek.Controllers
         /// Returns a HTTP 200 response with the user object matching the given ID 
         /// if found, or a HTTP 404 response with an error message if the user is not found.
         /// </returns>
+        /// 
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
-
-        public async Task<IActionResult> GetUserById([FromRoute] int id, int parameter=0)
+        public async Task<IActionResult> GetById([FromRoute] int id, int parameter=0)
         {
             var user = await _unitOfWork.UserRepository.GetUserById(id,parameter);
 
@@ -89,16 +100,15 @@ namespace IntegratorSofttek.Controllers
         /// Register an user in the database.
         /// </summary>
         /// <param name="userDTO">
-        /// **A model used to fill in user information.**
+        /// **A model is used to fill in user information.**
         /// </param>
         /// <returns>Returns an HTTP 201 response if the registration operation was successful 
         /// or an Error HTTP 400 response.</returns>
+        /// 
 
         [HttpPost]
-        [Route("RegisterUser")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> RegisterUser(UserDTO userDTO)
+        public async Task<IActionResult> Register(UserDTO userDTO)
         {
             var user = _mapper.Map<User>(userDTO);
             var result = await _unitOfWork.UserRepository.Insert(user);
@@ -115,17 +125,16 @@ namespace IntegratorSofttek.Controllers
         /// <summary>
         /// Update an user.
         /// </summary>
-        /// <param name="id">**The ID used to find an user that matches this identification.**</param>
+        /// <param name="id">**The ID is used to find an user that matches this identification.**</param>
         /// 
         /// <param name="userDTO">**A model which will replace the older user data.**</param>
         /// <returns>Returns an HTTP 200 response if the updating operation was successful 
         /// or an Error HTTP 400 response.</returns>
+        /// 
 
-        [HttpPut]
-        [Route("UpdateUser/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
-
-        public async Task<IActionResult> UpdateUser([FromRoute] int id, UserDTO userDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, UserDTO userDTO)
         {
             var user = _mapper.Map<User>(userDTO);
             var result = await _unitOfWork.UserRepository.Update(user,id);
@@ -144,17 +153,17 @@ namespace IntegratorSofttek.Controllers
         /// <param name="id">**The ID used to find an user with this identification.**</param>
         /// 
         /// <param name="parameter">
-        /// **The parameter used to select the type of deletion.**
+        /// **The parameter is used to select the type of deletion.**
         /// - Use parameter 0 to soft delete.
         /// 
         /// - Use parameter 1 to hard delete.</param>
         /// <returns>Returns an HTTP 204 response if the deletion operation was successful 
         /// or an Error HTTP 400 response.</returns>
+        /// 
 
         [HttpPut]
-        [Route("DeleteUser/{id}")]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id,  int parameter = 0)
+        public async Task<IActionResult> Delete([FromRoute] int id,  int parameter = 0)
         {
 
             var userReturn = await _unitOfWork.UserRepository.DeleteUserById(id, parameter);
