@@ -17,6 +17,7 @@ namespace IntegratorSofttek.Helper
 
         public string GenerateToken(User user)
         {
+  
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),

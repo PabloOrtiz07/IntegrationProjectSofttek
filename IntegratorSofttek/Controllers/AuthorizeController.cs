@@ -34,8 +34,10 @@ namespace IntegratorSofttek.Controllers
         public async Task<IActionResult> Login(AuthenticateDto dto)
         {
             var userCredentials = await _unitOfWork.UserRepository.AuthenticateCredentials(dto);
-            if (userCredentials is null) ResponseFactory.CreateErrorResponse(401, "The credentials are incorrect");
-
+            if (userCredentials is null)
+            {
+              return ResponseFactory.CreateErrorResponse(401, "The credentials are incorrect");
+            }
             var token = _tokenJwtHelper.GenerateToken(userCredentials);
 
             var user = new UserLoginDTO()
