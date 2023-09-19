@@ -4,6 +4,7 @@ using IntegratorSofttek.Entities;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -59,15 +60,16 @@ builder.Services.AddAuthorization(option =>
 {
     option.AddPolicy("Administrator", policy => policy.RequireClaim(ClaimTypes.Role, "1"));
 
+    option.AddPolicy("Consultant", policy => policy.RequireClaim(ClaimTypes.Role, "2"));
+
+
+    option.AddPolicy("AdministratorAndConsultant", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.Role, "1", "2");
+    });
+
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdministratorAndConsultant", policy =>
-    {
-        policy.RequireClaim(ClaimTypes.Role, "1", "2"); 
-    });
-});
 
 
 

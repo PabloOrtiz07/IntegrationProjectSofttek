@@ -116,10 +116,10 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
             try
             {
-                return await _contextDB.Users.Include(user=>user.Role).SingleOrDefaultAsync
-               (user => user.Email == dto.Email && user.Password == PasswordEncryptHelper.EncryptPassword(dto.Password, dto.Email));
+                return await _contextDB.Users.Include(user => user.Role).SingleOrDefaultAsync
+                              (user => user.Email == dto.Email && user.Password == PasswordEncryptHelper.EncryptPassword(dto.Password, dto.Email));
             }
-            catch(Exception) {
+            catch (Exception) {
                 return null;
             }
            
