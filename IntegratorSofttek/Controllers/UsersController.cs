@@ -5,11 +5,8 @@ using IntegratorSofttek.Entities;
 using IntegratorSofttek.Helper;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace IntegratorSofttek.Controllers
 {
@@ -20,11 +17,13 @@ namespace IntegratorSofttek.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger<UsersController>_logger;
 
-        public UsersController(IUnitOfWork unitOfWork,IMapper mapper)
+        public UsersController(IUnitOfWork unitOfWork,IMapper mapper, ILogger<UsersController> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -50,13 +49,21 @@ namespace IntegratorSofttek.Controllers
         public async Task<IActionResult> GetAll(int parameter=0, int pageSize=10, int pageToShow=1)
         {
 
+            try
+            {
+                var users = await _unitOfWork.UserRepository.GetAllUsers(parameter);
+                var usersDTO = _mapper.Map<List<UserDTO>>(users);
+                if (Request.Query.ContainsKey("page")) int.TryParse(Request.Query["page"], out pageToShow);
+                var url = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}").ToString();
+                var paginateUsers = PaginateHelper.Paginate(usersDTO, pageToShow, url, pageSize);
+                return ResponseFactory.CreateSuccessResponse(200, paginateUsers);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
 
-            var users = await _unitOfWork.UserRepository.GetAllUsers(parameter);
-            var usersDTO = _mapper.Map<List<UserDTO>>(users);
-            if (Request.Query.ContainsKey("page")) int.TryParse(Request.Query["page"], out pageToShow);
-            var url = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}").ToString();
-            var paginateUsers = PaginateHelper.Paginate(usersDTO, pageToShow, url, pageSize);
-            return ResponseFactory.CreateSuccessResponse(200, paginateUsers);
+            }
 
         }
 
@@ -83,17 +90,26 @@ namespace IntegratorSofttek.Controllers
         [Authorize(Policy = "AdministratorAndConsultant")]
         public async Task<IActionResult> GetById([FromRoute] int id, int parameter=0)
         {
-            var user = await _unitOfWork.UserRepository.GetUserById(id,parameter);
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserById(id, parameter);
 
-            if (user != null)
-            {
-                var userDTO = _mapper.Map<UserDTO>(user);
-                return ResponseFactory.CreateSuccessResponse(200, userDTO);
+                if (user != null)
+                {
+                    var userDTO = _mapper.Map<UserDTO>(user);
+                    return ResponseFactory.CreateSuccessResponse(200, userDTO);
+                }
+                else
+                {
+                    return ResponseFactory.CreateErrorResponse(404, "The user couldn't be found");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return ResponseFactory.CreateErrorResponse(404, "The user couldn't be found");
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
             }
+ 
         }
 
         /// <summary>
@@ -110,18 +126,26 @@ namespace IntegratorSofttek.Controllers
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Register(UserDTO userDTO)
         {
-            var user = _mapper.Map<User>(userDTO);
-            var result = await _unitOfWork.UserRepository.Insert(user);
-            if (result != false)
+            try
             {
-                await _unitOfWork.Complete();
-                return ResponseFactory.CreateSuccessResponse(201, "The register operation was successful");
+                var user = _mapper.Map<User>(userDTO);
+                var result = await _unitOfWork.UserRepository.Insert(user);
+                if (result != false)
+                {
+                    await _unitOfWork.Complete();
+                    return ResponseFactory.CreateSuccessResponse(201, "The register operation was successful");
 
 
+                }
+                return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
-            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
-
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
+            }
         }
+
         /// <summary>
         /// Update an user.
         /// </summary>
@@ -136,17 +160,27 @@ namespace IntegratorSofttek.Controllers
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Update([FromRoute] int id, UserDTO userDTO)
         {
-            var user = _mapper.Map<User>(userDTO);
-            var result = await _unitOfWork.UserRepository.Update(user,id);
-
-            if (result != null)
+            try
             {
-                await _unitOfWork.Complete();
-                return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
+                var user = _mapper.Map<User>(userDTO);
+                var result = await _unitOfWork.UserRepository.Update(user, id);
 
+                if (result != null)
+                {
+                    await _unitOfWork.Complete();
+                    return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
+
+                }
+                return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
-            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
+            }
+
         }
+
         /// <summary>
         /// Delete an user softly (soft deletion) or permanently (hard deletion).
         /// </summary>
@@ -165,17 +199,24 @@ namespace IntegratorSofttek.Controllers
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Delete([FromRoute] int id,  int parameter = 0)
         {
-
-            var userReturn = await _unitOfWork.UserRepository.DeleteUserById(id, parameter);
-
-            if (userReturn != false)
+            try
             {
-                await _unitOfWork.Complete();
-                return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");
+                var userReturn = await _unitOfWork.UserRepository.DeleteUserById(id, parameter);
 
+                if (userReturn != false)
+                {
+                    await _unitOfWork.Complete();
+                    return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");
+
+                }
+
+                return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
-
-            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
+            }
         }
 
     }

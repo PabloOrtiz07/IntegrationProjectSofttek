@@ -39,26 +39,29 @@ namespace IntegratorSofttek.DataAccess.Repositories
         {
             try
             {
-                var users = await base.GetAll();
                 if (parameter == 0)
                 {
-                    users = users.Where(user => user.IsDeleted != true).ToList();
-                    return users;
+                    List<User> users = await _contextDB.Users
+                        .Include(user => user.Role)
+                        .Where(user => user.IsDeleted != true)
+                        .ToListAsync();
 
-                }else if(parameter == 1)
-                {
                     return users;
-
                 }
-                return null;
+                else if (parameter == 1)
+                {
+                    List<User> users = await _contextDB.Users.Include(user => user.Role).ToListAsync();
+                    return users;
+                }
 
+                return null;
             }
             catch (Exception)
             {
                 return null;
-
             }
         }
+
 
         public async Task<User> GetUserById(int id, int parameter)
         {
