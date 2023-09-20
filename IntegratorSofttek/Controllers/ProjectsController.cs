@@ -5,10 +5,8 @@ using IntegratorSofttek.Entities;
 using IntegratorSofttek.Helper;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 namespace IntegratorSofttek.Controllers
 {
@@ -18,11 +16,13 @@ namespace IntegratorSofttek.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger<UsersController> _logger;
 
-        public ProjectsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProjectsController(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UsersController> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
         /// <summary>
         /// Gets a list of projects.
@@ -50,19 +50,29 @@ namespace IntegratorSofttek.Controllers
         /// **The pageToShow is used to indicate on which page you will be.**
         /// </param>
         /// <returns>Returns a list of users with an HTTP 200 response.</returns>
+        /// 
 
         [HttpGet]
         [Authorize(Policy = "AdministratorAndConsultant")]
-        public async Task<IActionResult> GetAll( int parameter =0, string state="Pending", int pageSize = 10, int pageToShow = 1)
+        public async Task<IActionResult> GetAll(int parameter = 0, string state = "Pending", int pageSize = 10, int pageToShow = 1)
         {
-            ProjectStatus status;
-            status = _mapper.Map<ProjectStatus>(state.ToLower());
-            var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter,(int)status);
-            var projectsDTO = _mapper.Map<List<ProjectDTO>>(projects);
-            if (Request.Query.ContainsKey("page")) int.TryParse(Request.Query["page"], out pageToShow);
-            var url = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}").ToString();
-            var paginateProjects = PaginateHelper.Paginate(projectsDTO, pageToShow, url, pageSize);
-            return ResponseFactory.CreateSuccessResponse(200, paginateProjects);
+            try
+            {
+                ProjectStatus status;
+                status = _mapper.Map<ProjectStatus>(state.ToLower());
+                var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter, (int)status);
+                var projectsDTO = _mapper.Map<List<ProjectDTO>>(projects);
+                if (Request.Query.ContainsKey("page")) int.TryParse(Request.Query["page"], out pageToShow);
+                var url = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}").ToString();
+                var paginateProjects = PaginateHelper.Paginate(projectsDTO, pageToShow, url, pageSize);
+                return ResponseFactory.CreateSuccessResponse(200, paginateProjects);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
+            }
+
         }
 
         /// <summary>
@@ -83,19 +93,28 @@ namespace IntegratorSofttek.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
-        public async Task<IActionResult> GetById([FromRoute] int id,  int parameter=0)
+        public async Task<IActionResult> GetById([FromRoute] int id, int parameter = 0)
         {
-            var project = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
+            try
+            {
+                var project = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
 
-            if (project != null)
-            {
-                var projectDTO = _mapper.Map<ProjectDTO>(project);
-                return ResponseFactory.CreateSuccessResponse(200, projectDTO);
+                if (project != null)
+                {
+                    var projectDTO = _mapper.Map<ProjectDTO>(project);
+                    return ResponseFactory.CreateSuccessResponse(200, projectDTO);
+                }
+                else
+                {
+                    return ResponseFactory.CreateErrorResponse(404, "The project couldn't be found");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return ResponseFactory.CreateErrorResponse(404, "The project couldn't be found");
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
             }
+
         }
 
         /// <summary>
@@ -111,14 +130,23 @@ namespace IntegratorSofttek.Controllers
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Register(ProjectDTO projectDTO)
         {
-            var project = _mapper.Map<Project>(projectDTO);
-            var result = await _unitOfWork.ProjectRepository.Insert(project);
-            if (result != false)
+            try
             {
-                await _unitOfWork.Complete();
-                return ResponseFactory.CreateSuccessResponse(201, "The register operation was successful");
+                var project = _mapper.Map<Project>(projectDTO);
+                var result = await _unitOfWork.ProjectRepository.Insert(project);
+                if (result != false)
+                {
+                    await _unitOfWork.Complete();
+                    return ResponseFactory.CreateSuccessResponse(201, "The register operation was successful");
+                }
+                return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
-            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
+            }
+
         }
 
         /// <summary>
@@ -136,16 +164,26 @@ namespace IntegratorSofttek.Controllers
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Update([FromRoute] int id, ProjectDTO projectDTO)
         {
-            var project = _mapper.Map<Project>(projectDTO);
-
-            var result = await _unitOfWork.ProjectRepository.Update(project, id);
-            if (result != null)
+            try
             {
-                await _unitOfWork.Complete();
-                return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
+                var project = _mapper.Map<Project>(projectDTO);
+
+                var result = await _unitOfWork.ProjectRepository.Update(project, id);
+                if (result != null)
+                {
+                    await _unitOfWork.Complete();
+                    return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
+                }
+                return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
-            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
+            }
         }
+
         /// <summary>
         /// Delete a project softly (soft deletion) or permanently (hard deletion).
         /// </summary>
@@ -162,15 +200,24 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> Delete([FromRoute] int id, int parameter=0)
+        public async Task<IActionResult> Delete([FromRoute] int id, int parameter = 0)
         {
-            var projectReturn = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);
-            if (projectReturn != false)
+            try
             {
-                await _unitOfWork.Complete();
-                return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");
+                var projectReturn = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);
+                if (projectReturn != false)
+                {
+                    await _unitOfWork.Complete();
+                    return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");
+                }
+                return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
-            return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "A surprise error happened");
+                return ResponseFactory.CreateErrorResponse(500, "A surprise error happened");
+            }
+
         }
     }
 }
