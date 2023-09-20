@@ -16,7 +16,7 @@ namespace IntegratorSofttek.DTOs
 
         public int RoleId { get; set; }
 
-        public Role? Role { get; set; }
+        public RoleDTO? RoleDTO { get; set; }
 
     }
 

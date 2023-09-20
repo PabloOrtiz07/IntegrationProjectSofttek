@@ -12,8 +12,8 @@ public class UserProfile : Profile
             .ForMember(dest => dest.DeletedTimeUtc, opt => opt.MapFrom(src => (DateTime?)null))
             .BeforeMap((src, dest) => dest.Password = PasswordEncryptHelper.EncryptPassword(src.Password, src.Email));
 
-        CreateMap<User, UserDTO>();
-
+        CreateMap<User, UserDTO>()
+            .ForMember(dest => dest.RoleDTO, opt => opt.MapFrom(src => src.Role));
     }
 }
 

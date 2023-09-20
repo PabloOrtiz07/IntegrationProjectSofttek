@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using System.Linq;
 using IntegratorSofttek.Helper;
+using System.Collections.Generic;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
@@ -67,7 +68,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
         {
             try
             {
-                User user = await base.GetById(id);
+                User user = await _contextDB.Users
+                         .Include(u => u.Role)
+                         .Where(u => u.Id == id)
+                         .FirstOrDefaultAsync();
+
                 if (user.IsDeleted != true && parameter == 0)
                 {
                     return user;

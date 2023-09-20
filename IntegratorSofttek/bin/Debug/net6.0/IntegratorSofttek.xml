@@ -40,6 +40,7 @@
             **The pageToShow is used to indicate on which page you will be.**
             </param>
             <returns>Returns a list of users with an HTTP 200 response.</returns>
+            
         </member>
         <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetById(System.Int32,System.Int32)">
             <summary>
@@ -153,6 +154,7 @@
             **A model is used to replace the older service data.**</param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
             or an Error HTTP 400 response.</returns>
+            
         </member>
         <member name="M:IntegratorSofttek.Controllers.ServicesController.Delete(System.Int32,System.Int32)">
             <summary>
