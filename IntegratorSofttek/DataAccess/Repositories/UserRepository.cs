@@ -2,27 +2,32 @@
 using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
-using System.Linq;
 using IntegratorSofttek.Helper;
-using System.Collections.Generic;
+using AutoMapper;
+using System.Data.Common;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        public UserRepository(ContextDB contextDB) : base(contextDB)
-        {
+        private readonly IMapper _mapper;
 
+        public UserRepository(ContextDB contextDB, IMapper mapper) : base(contextDB)
+        {
+            _mapper=mapper;
         }
 
-        public  async Task<bool> UpdateUser(User user,int id)
+        public  async Task<bool> UpdateUser(UserRegisterDTO userRegisterDTO,int id)
         {
             try
             {
+                var user = _mapper.Map<User>(userRegisterDTO);
                 var userFinding = await GetById(id);
                 if (userFinding != null) {
-                    _contextDB.Update(user);
+
+                    _mapper.Map(user, userFinding);
+
+                    _contextDB.Update(userFinding);
                     return true;
 
                 }
@@ -36,7 +41,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
         }
 
 
-        public virtual async Task<List<User>> GetAllUsers(int parameter)
+        public virtual async Task<List<UserDTO>> GetAllUsers(int parameter)
         {
             try
             {
@@ -47,15 +52,49 @@ namespace IntegratorSofttek.DataAccess.Repositories
                         .Where(user => user.IsDeleted != true)
                         .ToListAsync();
 
-                    return users;
+                    return _mapper.Map<List<UserDTO>>(users);
                 }
                 else if (parameter == 1)
                 {
                     List<User> users = await _contextDB.Users.Include(user => user.Role).ToListAsync();
-                    return users;
+                    return _mapper.Map<List<UserDTO>>(users);
                 }
 
                 return null;
+            }
+            catch (DbException ex)
+            {
+                // Log the exception using a logging framework (e.g., Serilog or Microsoft.Extensions.Logging)
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions or log them
+                return null;
+            }
+
+        }
+
+
+        public async Task<UserDTO> GetUserById(int id, int parameter)
+        {
+            try
+            {
+                User user = await _contextDB.Users
+                            .Include(u => u.Role)
+                            .Where(u => u.Id == id)
+                            .FirstOrDefaultAsync();
+
+                if (user.IsDeleted != true && parameter == 0)
+                {
+                    return _mapper.Map<UserDTO>(user);
+                }
+                if (parameter == 1)
+                {
+                    return _mapper.Map<UserDTO>(user);
+                }
+                return null;
+
             }
             catch (Exception)
             {
@@ -63,31 +102,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-
-        public async Task<User> GetUserById(int id, int parameter)
+        public virtual async Task<bool> InsertUser(UserRegisterDTO userRegisterDTO)
         {
-            try
-            {
-                User user = await _contextDB.Users
-                         .Include(u => u.Role)
-                         .Where(u => u.Id == id)
-                         .FirstOrDefaultAsync();
-
-                if (user.IsDeleted != true && parameter == 0)
-                {
-                    return user;
-                }
-                if (parameter == 1)
-                {
-                    return user;
-                }
-                return null;
-
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            var user = _mapper.Map<User>(userRegisterDTO);
+            var response = await base.Insert(user);
+            return response;
         }
 
 
@@ -96,11 +115,12 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
             try
             {
-                User user = await GetById(id);
+                User user = await base.GetById(id);
                 if (user != null && parameter == 0)
                 {
                     user.IsDeleted = true;
                     user.DeletedTimeUtc = DateTime.UtcNow;
+                    _contextDB.Update(user);
 
                     return true;
                 }
@@ -132,10 +152,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
            
         }
-        public async Task<bool> UserExists(string email)
-        {
-            return await _contextDB.Users.AnyAsync(x => x.Email == email);
-        }
+  
 
     }
 }

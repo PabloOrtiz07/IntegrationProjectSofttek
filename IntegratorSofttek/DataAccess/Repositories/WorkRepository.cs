@@ -4,24 +4,30 @@ using IntegratorSofttek.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using System.Linq;
+using AutoMapper;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
     public class WorkRepository : Repository<Work>, IWorkRepository // Update class and interface names
     {
-        public WorkRepository(ContextDB contextDB) : base(contextDB)
-        {
+        private readonly IMapper _mapper;
 
+        public WorkRepository(ContextDB contextDB, IMapper mapper) : base(contextDB)
+        {
+            _mapper = mapper;
         }
 
-        public async Task<bool> UpdateWork(Work work, int id) // Update method name
+        public async Task<bool> UpdateWork(WorkDTO workDTO, int id) // Update method name
         {
             try
             {
+                var work = _mapper.Map<Work>(workDTO);
                 var workFinding = await GetById(id); // Update variable name
                 if (workFinding != null)
                 {
-                    _contextDB.Update(work);
+                    _mapper.Map(work, workFinding);
+
+                    _contextDB.Update(workFinding);
                     return true;
                 }
                 return false;
@@ -32,17 +38,19 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public virtual async Task<List<Work>> GetAllWorks(int parameter) // Update method name
+        public virtual async Task<List<WorkDTO>> GetAllWorks(int parameter) // Update method name
         {
             try
             {
+
                 var works = await base.GetAll(); // Update variable name
                 switch (parameter)
                 {
                     case 0:
-                        return works.Where(work => !work.IsDeleted).ToList();
+                        works.Where(work => !work.IsDeleted).ToList();
+                        return _mapper.Map<List<WorkDTO>>(works);
                     case 1:
-                        return works;
+                        return _mapper.Map<List<WorkDTO>>(works); ;
                     default:
                         return null;
                 }
@@ -53,18 +61,18 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public async Task<Work> GetWorkById(int id, int parameter) // Update method name
+        public async Task<WorkDTO> GetWorkById(int id, int parameter) // Update method name
         {
             try
             {
                 Work work = await base.GetById(id); // Update variable name
                 if (work.IsDeleted != true && parameter == 0)
                 {
-                    return work;
+                    _mapper.Map<WorkDTO>(work);
                 }
                 if (parameter == 1)
                 {
-                    return work;
+                    _mapper.Map<WorkDTO>(work);
                 }
                 return null;
             }
@@ -97,6 +105,13 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 return false;
             }
   
+        }
+
+        public virtual async Task<bool> InsertWork(WorkDTO workDTO)
+        {
+            var work = _mapper.Map<Work>(workDTO);
+            var response = await base.Insert(work);
+            return response;
         }
     }
 }

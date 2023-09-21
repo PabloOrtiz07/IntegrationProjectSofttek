@@ -4,24 +4,34 @@ using IntegratorSofttek.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using System.Linq;
+using AutoMapper;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
     public class ServiceRepository : Repository<Service>, IServiceRepository // Update class and interface names
     {
-        public ServiceRepository(ContextDB contextDB) : base(contextDB)
+
+        private readonly IMapper _mapper;
+
+
+        public ServiceRepository(ContextDB contextDB, IMapper mapper) : base(contextDB)
         {
+            _mapper = mapper;
 
         }
 
-        public async Task<bool> UpdateService(Service service, int id) // Update method name
+        public async Task<bool> UpdateService(ServiceDTO serviceDTO, int id) // Update method name
         {
             try
             {
-                var serviceFinding = await GetById(id); // Update variable name
+                var service= _mapper.Map<Service>(serviceDTO);
+
+                var serviceFinding = await GetById(id);
                 if (serviceFinding != null)
                 {
-                    _contextDB.Update(service);
+                    _mapper.Map(service, serviceFinding); 
+
+                    _contextDB.Update(serviceFinding);
                     return true;
                 }
                 return false;
@@ -32,7 +42,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public virtual async Task<List<Service>> GetAllServices(int parameter) // Update method name
+        public virtual async Task<List<ServiceDTO>> GetAllServices(int parameter) // Update method name
         {
             try
             {
@@ -40,11 +50,13 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 switch (parameter)
                 {
                     case 0:
-                        return services.Where(service => !service.IsDeleted).ToList();
+                        services.Where(service => !service.IsDeleted).ToList();
+                        return _mapper.Map<List<ServiceDTO>>(services);
                     case 1:
-                        return services;
+                        return _mapper.Map<List<ServiceDTO>>(services);
                     case 2:
-                        return services.Where(service => !service.IsDeleted && service.IsActive).ToList();
+                        services.Where(service => !service.IsDeleted && service.IsActive).ToList();
+                        return _mapper.Map<List<ServiceDTO>>(services); 
                     default:
                         return null;
                 }
@@ -55,18 +67,18 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public async Task<Service> GetServiceById(int id, int parameter)
+        public async Task<ServiceDTO> GetServiceById(int id, int parameter)
         {
             try
             {
                 Service service = await base.GetById(id);
                 if (service.IsDeleted != true && parameter == 0)
                 {
-                    return service;
+                    return _mapper.Map<ServiceDTO>(service);
                 }
                 if (parameter == 1)
                 {
-                    return service;
+                    return _mapper.Map<ServiceDTO>(service);
                 }
                 return null;
             }
@@ -96,11 +108,17 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 }
                 return false;
             }
-            catch (Exception){
+            catch (Exception)
+            {
                 return false;
 
             }
-
+        }
+        public virtual async Task<bool> InsertService(ServiceDTO serviceDTO)
+        {
+            var service = _mapper.Map<Service>(serviceDTO);
+            var response = await base.Insert(service);
+            return response;
         }
     }
 }

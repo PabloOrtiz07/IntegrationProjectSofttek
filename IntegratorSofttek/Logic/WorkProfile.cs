@@ -11,5 +11,8 @@ public class WorkProfile : Profile
             .ForMember(dest => dest.DeletedTimeUtc, opt => opt.MapFrom(src => (DateTime?)null));
 
         CreateMap<Work, WorkDTO>();
+
+        CreateMap<Work, Work>()
+          .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore ID property
     }
 }

@@ -11,5 +11,9 @@ public class ServiceProfile : Profile
             .ForMember(dest => dest.DeletedTimeUtc, opt => opt.MapFrom(src => (DateTime?)null));
 
         CreateMap<Service, ServiceDTO>();
+
+        CreateMap<Service, Service>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore ID property
+
     }
 }

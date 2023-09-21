@@ -1,4 +1,5 @@
-﻿using IntegratorSofttek.DataAccess;
+﻿using AutoMapper;
+using IntegratorSofttek.DataAccess;
 using IntegratorSofttek.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,9 @@ namespace IntegratorSofttek.Services
     {
 
         private readonly ContextDB _contextDB;
+
+        private readonly IMapper _mapper;
+
 
         public UserRepository UserRepository { get; set; }
 
@@ -20,15 +24,16 @@ namespace IntegratorSofttek.Services
         public RoleRepository RoleRepository { get; set; }
 
 
-
-        public UnitOfWorkService(ContextDB contextDB)
+        
+        public UnitOfWorkService(ContextDB contextDB, IMapper mapper)
         {
+            _mapper = mapper;
             _contextDB = contextDB;
-            UserRepository = new UserRepository(_contextDB);
-            ServiceRepository = new ServiceRepository(_contextDB);
-            WorkRepository = new WorkRepository(_contextDB);
-            ProjectRepository = new ProjectRepository(_contextDB);
-            RoleRepository = new RoleRepository(_contextDB);
+            UserRepository = new UserRepository(_contextDB, _mapper);
+            ServiceRepository = new ServiceRepository(_contextDB,_mapper);
+            WorkRepository = new WorkRepository(_contextDB, _mapper);
+            ProjectRepository = new ProjectRepository(_contextDB, _mapper);
+            RoleRepository = new RoleRepository(_contextDB, _mapper) ;
 
         }
 

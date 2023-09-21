@@ -15,13 +15,11 @@ namespace IntegratorSofttek.Controllers
     public class ProjectsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ILogger<UsersController> _logger;
 
-        public ProjectsController(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UsersController> logger)
+        public ProjectsController(IUnitOfWork unitOfWork, ILogger<UsersController> logger)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _logger = logger;
         }
         /// <summary>
@@ -58,10 +56,8 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                ProjectStatus status;
-                status = _mapper.Map<ProjectStatus>(state.ToLower());
-                var projects = await _unitOfWork.ProjectRepository.GetAllProjects(parameter, (int)status);
-                var projectsDTO = _mapper.Map<List<ProjectDTO>>(projects);
+      
+                var projectsDTO = await _unitOfWork.ProjectRepository.GetAllProjects(parameter, state);
                 if (Request.Query.ContainsKey("page")) int.TryParse(Request.Query["page"], out pageToShow);
                 var url = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}").ToString();
                 var paginateProjects = PaginateHelper.Paginate(projectsDTO, pageToShow, url, pageSize);
@@ -97,11 +93,10 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var project = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
+                var projectDTO = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
 
-                if (project != null)
+                if (projectDTO != null)
                 {
-                    var projectDTO = _mapper.Map<ProjectDTO>(project);
                     return ResponseFactory.CreateSuccessResponse(200, projectDTO);
                 }
                 else
@@ -132,8 +127,7 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var project = _mapper.Map<Project>(projectDTO);
-                var result = await _unitOfWork.ProjectRepository.Insert(project);
+                var result = await _unitOfWork.ProjectRepository.InsertProject(projectDTO);
                 if (result != false)
                 {
                     await _unitOfWork.Complete();
@@ -160,15 +154,14 @@ namespace IntegratorSofttek.Controllers
         /// or an Error HTTP 400 response.</returns>
         /// 
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Update([FromRoute] int id, ProjectDTO projectDTO)
         {
             try
             {
-                var project = _mapper.Map<Project>(projectDTO);
 
-                var result = await _unitOfWork.ProjectRepository.Update(project, id);
+                var result = await _unitOfWork.ProjectRepository.UpdateProject(projectDTO, id);
                 if (result != null)
                 {
                     await _unitOfWork.Complete();
@@ -194,11 +187,11 @@ namespace IntegratorSofttek.Controllers
         /// - Use parameter 0 to soft delete.
         /// 
         /// - Use parameter 1 to hard delete. </param>
-        /// <returns>Returns an HTTP 204 response if the deletion operation was successful 
+        /// <returns>Returns an HTTP 200 response if the deletion operation was successful 
         /// or an Error HTTP 400 response.</returns>
         /// 
 
-        [HttpPut("{id}")]
+        [HttpPut("delete/{id}")]
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Delete([FromRoute] int id, int parameter = 0)
         {
@@ -208,7 +201,7 @@ namespace IntegratorSofttek.Controllers
                 if (projectReturn != false)
                 {
                     await _unitOfWork.Complete();
-                    return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");
+                    return ResponseFactory.CreateSuccessResponse(200, "The deletion operation was successful");
                 }
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }

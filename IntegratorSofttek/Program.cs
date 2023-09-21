@@ -73,7 +73,6 @@ builder.Services.AddAuthorization(option =>
 
 
 
-
 //Apply  dependency injection
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUnitOfWork,UnitOfWorkService>();
