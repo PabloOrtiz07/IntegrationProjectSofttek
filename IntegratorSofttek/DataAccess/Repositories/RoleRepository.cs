@@ -5,14 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using System.Linq;
 using IntegratorSofttek.Helper;
+using AutoMapper;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
     public class RoleRepository : Repository<Role>, IRoleRepository
     {
-        public RoleRepository(ContextDB contextDB) : base(contextDB)
-        {
+        private readonly IMapper _mapper;
 
+        public RoleRepository(ContextDB contextDB,IMapper mapper) : base(contextDB)
+        {
+            _mapper = mapper;
         }
 
         public async Task<bool> UpdateRole(Role role, int id)
@@ -22,6 +25,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 var roleFinding = await GetById(id);
                 if (roleFinding != null)
                 {
+                    _mapper.Map(role, roleFinding);
                     _contextDB.Update(role);
                     return true;
 

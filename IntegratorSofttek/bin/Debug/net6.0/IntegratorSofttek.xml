@@ -92,7 +92,7 @@
             - Use parameter 0 to soft delete.
             
             - Use parameter 1 to hard delete. </param>
-            <returns>Returns an HTTP 204 response if the deletion operation was successful 
+            <returns>Returns an HTTP 200 response if the deletion operation was successful 
             or an Error HTTP 400 response.</returns>
             
         </member>
@@ -167,7 +167,7 @@
             - Use parameter 0 to soft delete.
             
             - Use parameter 1 to hard delete. </param>
-            <returns>Returns an HTTP 204 response if the deletion operation was successful 
+            <returns>Returns an HTTP 200 response if the deletion operation was successful 
             or an Error HTTP 400 response.</returns>
             
         </member>
@@ -210,7 +210,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.Register(IntegratorSofttek.DTOs.UserDTO)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.Register(UserRegisterDTO)">
             <summary>
             Register an user in the database.
             </summary>
@@ -221,7 +221,7 @@
             or an Error HTTP 400 response.</returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.Update(System.Int32,IntegratorSofttek.DTOs.UserDTO)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.Update(System.Int32,UserRegisterDTO)">
             <summary>
             Update an user.
             </summary>
@@ -243,7 +243,7 @@
             - Use parameter 0 to soft delete.
             
             - Use parameter 1 to hard delete.</param>
-            <returns>Returns an HTTP 204 response if the deletion operation was successful 
+            <returns>Returns an HTTP 200 response if the deletion operation was successful 
             or an Error HTTP 400 response.</returns>
             
         </member>
@@ -316,7 +316,7 @@
             - Use parameter 0 to soft delete.
             
             - Use parameter 1 to hard delete. </param>
-            <returns>Returns an HTTP 204 response if the deletion operation was successful 
+            <returns>Returns an HTTP 200 response if the deletion operation was successful 
             or an Error HTTP 400 response.</returns>
             
         </member>

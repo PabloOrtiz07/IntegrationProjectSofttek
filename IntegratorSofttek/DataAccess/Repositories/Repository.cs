@@ -94,12 +94,15 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         }
 
-        public virtual async Task<bool> Update(T entity, int id)
+        public virtual async Task<bool> Update(int id)
         {
             throw new NotImplementedException();
 
-
         }
 
+        public Task<bool> Update(T entity, int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -11,5 +11,7 @@ public class RoleProfile : Profile
 
         CreateMap<Role, RoleDTO>();
 
+        CreateMap<Role, Role>()
+          .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore ID property
     }
 }

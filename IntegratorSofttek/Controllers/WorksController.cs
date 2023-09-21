@@ -15,13 +15,11 @@ namespace IntegratorSofttek.Controllers
     public class WorksController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
         public WorksController(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UsersController> logger)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _logger = logger;
 
         }
@@ -50,8 +48,7 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var works = await _unitOfWork.WorkRepository.GetAllWorks(parameter);
-                var worksDTO = _mapper.Map<List<WorkDTO>>(works);
+                var worksDTO = await _unitOfWork.WorkRepository.GetAllWorks(parameter);
                 if (Request.Query.ContainsKey("page")) int.TryParse(Request.Query["page"], out pageToShow);
                 var url = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}").ToString();
                 var paginateWorks = PaginateHelper.Paginate(worksDTO, pageToShow, url, pageSize);
@@ -89,11 +86,10 @@ namespace IntegratorSofttek.Controllers
 
             try
             {
-                var work = await _unitOfWork.WorkRepository.GetWorkById(id, parameter);
+                var workDTO = await _unitOfWork.WorkRepository.GetWorkById(id, parameter);
 
-                if (work != null)
+                if (workDTO != null)
                 {
-                    var workDTO = _mapper.Map<WorkDTO>(work);
                     return ResponseFactory.CreateSuccessResponse(200, workDTO);
                 }
                 else
@@ -125,8 +121,7 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var work = _mapper.Map<Work>(workDTO);
-                var result = await _unitOfWork.WorkRepository.Insert(work);
+                var result = await _unitOfWork.WorkRepository.InsertWork(workDTO);
                 if (result != false)
                 {
                     await _unitOfWork.Complete();
@@ -154,15 +149,13 @@ namespace IntegratorSofttek.Controllers
         /// or an Error HTTP 400 response.</returns>
         /// 
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Update([FromRoute] int id, WorkDTO workDTO)
         {
             try
             {
-                var work = _mapper.Map<Work>(workDTO);
-
-                var result = await _unitOfWork.WorkRepository.Update(work, id);
+                var result = await _unitOfWork.WorkRepository.UpdateWork(workDTO, id);
                 if (result != null)
                 {
                     await _unitOfWork.Complete();
@@ -189,11 +182,11 @@ namespace IntegratorSofttek.Controllers
         /// - Use parameter 0 to soft delete.
         /// 
         /// - Use parameter 1 to hard delete. </param>
-        /// <returns>Returns an HTTP 204 response if the deletion operation was successful 
+        /// <returns>Returns an HTTP 200 response if the deletion operation was successful 
         /// or an Error HTTP 400 response.</returns>
         /// 
 
-        [HttpPut("{id}")]
+        [HttpPut("delete/{id}")]
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Delete([FromRoute] int id, int parameter=0)
         {
@@ -204,7 +197,7 @@ namespace IntegratorSofttek.Controllers
                 if (workReturn != false)
                 {
                     await _unitOfWork.Complete();
-                    return ResponseFactory.CreateSuccessResponse(204, "The deletion operation was successful");
+                    return ResponseFactory.CreateSuccessResponse(209, "The deletion operation was successful");
                 }
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }

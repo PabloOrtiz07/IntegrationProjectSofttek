@@ -4,24 +4,31 @@ using IntegratorSofttek.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using System.Linq;
+using AutoMapper;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
     public class ProjectRepository : Repository<Project>, IProjectRepository // Update class and interface names
     {
-        public ProjectRepository(ContextDB contextDB) : base(contextDB)
-        {
+        private readonly IMapper _mapper;
 
+        public ProjectRepository(ContextDB contextDB, IMapper mapper) : base(contextDB)
+        {
+            _mapper = mapper;
         }
 
-        public async Task<bool> UpdateProject(Project project, int id) // Update method name
+        public async Task<bool> UpdateProject(ProjectDTO projectDTO, int id) // Update method name
         {
             try
             {
+                var project = _mapper.Map<Project>(projectDTO);
+
                 var projectFinding = await GetById(id); // Update variable name
                 if (projectFinding != null)
                 {
-                    _contextDB.Update(project);
+                    _mapper.Map(project, projectFinding);
+
+                    _contextDB.Update(projectFinding);
                     return true;
                 }
                 return false;
@@ -32,19 +39,26 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public virtual async Task<List<Project>> GetAllProjects(int parameter, int state) // Update method name
+        public virtual async Task<List<ProjectDTO>> GetAllProjects(int parameter, string state) // Update method name
         {
             try
             {
+                ProjectStatus status;
+                status = _mapper.Map<ProjectStatus>(state.ToLower());
+                int intStatus = (int)status;
+
                 var projects = await base.GetAll(); // Update variable name
                 switch (parameter)
                 {
                     case 0:
-                        return projects.Where(projects => !projects.IsDeleted).ToList();
+                        projects.Where(projects => !projects.IsDeleted).ToList();
+                        return _mapper.Map<List<ProjectDTO>>(projects);
+
                     case 1:
-                        return projects;
+                        return _mapper.Map<List<ProjectDTO>>(projects);
                     case 2:
-                        return projects.Where(projects => !projects.IsDeleted && projects.Status==(ProjectStatus)state).ToList();
+                        projects.Where(projects => !projects.IsDeleted && projects.Status == (ProjectStatus)intStatus).ToList();
+                        return _mapper.Map<List<ProjectDTO>>(projects);
                     default:
                         return null;
                 }
@@ -56,18 +70,19 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public async Task<Project> GetProjectById(int id, int parameter) // Update method name
+        public async Task<ProjectDTO> GetProjectById(int id, int parameter) // Update method name
         {
             try
             {
+
                 Project project = await base.GetById(id); // Update variable name
                 if (project.IsDeleted != true && parameter == 0)
                 {
-                    return project;
+                    return _mapper.Map<ProjectDTO>(project); ;
                 }
                 if (parameter == 1)
                 {
-                    return project;
+                    return _mapper.Map<ProjectDTO>(project); ;
                 }
                 return null;
             }
@@ -101,6 +116,13 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 return false;
             }
    
+        }
+
+        public virtual async Task<bool> InsertProject(ProjectDTO projectDTO)
+        {
+            var project = _mapper.Map<Project>(projectDTO);
+            var response = await base.Insert(project);
+            return response;
         }
     }
 }

@@ -15,7 +15,8 @@ public class ProjectProfile : Profile
         CreateMap<Project, ProjectDTO>()
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 
-
+        CreateMap<Project, Project>()
+          .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore ID property
     }
 
     private ProjectStatus MapStatusStringToEnum(string status)
