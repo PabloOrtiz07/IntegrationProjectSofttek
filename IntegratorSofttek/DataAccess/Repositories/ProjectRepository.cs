@@ -51,13 +51,13 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 switch (parameter)
                 {
                     case 0:
-                        projects.Where(projects => !projects.IsDeleted).ToList();
+                        projects=projects.Where(projects => !projects.IsDeleted).ToList();
                         return _mapper.Map<List<ProjectDTO>>(projects);
 
                     case 1:
                         return _mapper.Map<List<ProjectDTO>>(projects);
                     case 2:
-                        projects.Where(projects => !projects.IsDeleted && projects.Status == (ProjectStatus)intStatus).ToList();
+                        projects=projects.Where(projects => !projects.IsDeleted && projects.Status == (ProjectStatus)intStatus).ToList();
                         return _mapper.Map<List<ProjectDTO>>(projects);
                     default:
                         return null;
@@ -120,9 +120,16 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public virtual async Task<bool> InsertProject(ProjectDTO projectDTO)
         {
-            var project = _mapper.Map<Project>(projectDTO);
-            var response = await base.Insert(project);
-            return response;
+            try
+            {
+                var project = _mapper.Map<Project>(projectDTO);
+                var response = await base.Insert(project);
+                return response;
+            }
+            catch (Exception ex) {
+                return false;
+            }
+       
         }
     }
 }

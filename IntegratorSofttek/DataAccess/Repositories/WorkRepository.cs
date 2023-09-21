@@ -21,6 +21,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
         {
             try
             {
+
                 var work = _mapper.Map<Work>(workDTO);
                 var workFinding = await GetById(id); // Update variable name
                 if (workFinding != null)
@@ -47,7 +48,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 switch (parameter)
                 {
                     case 0:
-                        works.Where(work => !work.IsDeleted).ToList();
+                        works=works.Where(work => !work.IsDeleted).ToList();
                         return _mapper.Map<List<WorkDTO>>(works);
                     case 1:
                         return _mapper.Map<List<WorkDTO>>(works); ;
@@ -68,11 +69,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 Work work = await base.GetById(id); // Update variable name
                 if (work.IsDeleted != true && parameter == 0)
                 {
-                    _mapper.Map<WorkDTO>(work);
+                   return _mapper.Map<WorkDTO>(work);
                 }
                 if (parameter == 1)
                 {
-                    _mapper.Map<WorkDTO>(work);
+                    return _mapper.Map<WorkDTO>(work);
                 }
                 return null;
             }
@@ -109,9 +110,17 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         public virtual async Task<bool> InsertWork(WorkDTO workDTO)
         {
-            var work = _mapper.Map<Work>(workDTO);
-            var response = await base.Insert(work);
-            return response;
+            try
+            {
+                var work = _mapper.Map<Work>(workDTO);
+                var response = await base.Insert(work);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+    
         }
     }
 }

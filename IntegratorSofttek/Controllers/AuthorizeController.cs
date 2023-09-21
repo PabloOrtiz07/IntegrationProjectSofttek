@@ -1,6 +1,6 @@
-﻿using AlkemyUmsa.Infrastructure;
-using IntegratorSofttek.DTOs;
+﻿using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Helper;
+using IntegratorSofttek.Infrastructure;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,17 +28,20 @@ namespace IntegratorSofttek.Controllers
         /// <summary>
         /// Log in using email and password.
         /// </summary>
-        /// <param name="dto">
+        /// <param name="authenticateDto">
         /// **A model containing your login credentials.**</param>
-        /// <returns>Returns an "Ok" response with your data and an authorization token</returns>
-        /// 
+        /// <returns>Returns an "Ok" response with your data and an authorization token.
+        /// If the credentials are incorrect, it returns an HTTP 401 Unauthorized response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        ///  </returns>
+        ///  
 
         [HttpPost]
-        public async Task<IActionResult> Login(AuthenticateDto dto)
+        public async Task<IActionResult> Login(AuthenticateDto authenticateDto)
         {
             try
             {
-                var userCredentials = await _unitOfWork.UserRepository.AuthenticateCredentials(dto);
+                var userCredentials = await _unitOfWork.UserRepository.AuthenticateCredentials(authenticateDto);
                 if (userCredentials is null)
                 {
                     return ResponseFactory.CreateErrorResponse(401, "The credentials are incorrect");
@@ -46,7 +49,7 @@ namespace IntegratorSofttek.Controllers
 
                 if (userCredentials.IsDeleted != false)
                 {
-                    return ResponseFactory.CreateErrorResponse(401, "The user is inactive");
+                    return ResponseFactory.CreateErrorResponse(500, "The user is inactive");
                 }
                 var token = _tokenJwtHelper.GenerateToken(userCredentials);
 

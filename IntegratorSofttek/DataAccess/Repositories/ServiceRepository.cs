@@ -50,12 +50,12 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 switch (parameter)
                 {
                     case 0:
-                        services.Where(service => !service.IsDeleted).ToList();
+                        services=services.Where(service => service.IsDeleted!=true).ToList();
                         return _mapper.Map<List<ServiceDTO>>(services);
                     case 1:
                         return _mapper.Map<List<ServiceDTO>>(services);
                     case 2:
-                        services.Where(service => !service.IsDeleted && service.IsActive).ToList();
+                        services=services.Where(service => service.IsDeleted!=true && service.IsActive).ToList();
                         return _mapper.Map<List<ServiceDTO>>(services); 
                     default:
                         return null;
@@ -116,9 +116,17 @@ namespace IntegratorSofttek.DataAccess.Repositories
         }
         public virtual async Task<bool> InsertService(ServiceDTO serviceDTO)
         {
-            var service = _mapper.Map<Service>(serviceDTO);
-            var response = await base.Insert(service);
-            return response;
+            try
+            {
+                var service = _mapper.Map<Service>(serviceDTO);
+                var response = await base.Insert(service);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+      
         }
     }
 }

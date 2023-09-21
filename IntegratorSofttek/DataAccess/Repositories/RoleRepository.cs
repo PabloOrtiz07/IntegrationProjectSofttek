@@ -114,5 +114,20 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
 
         }
+
+        public virtual async Task<bool> InsertRole(RoleDTO roleDTO)
+        {
+            try
+            {
+                var role = _mapper.Map<Role>(roleDTO);
+                var response = await base.Insert(role);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
     }
 }

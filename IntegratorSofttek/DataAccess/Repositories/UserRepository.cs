@@ -62,14 +62,8 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
                 return null;
             }
-            catch (DbException ex)
-            {
-                // Log the exception using a logging framework (e.g., Serilog or Microsoft.Extensions.Logging)
-                return null;
-            }
             catch (Exception ex)
             {
-                // Handle other exceptions or log them
                 return null;
             }
 
@@ -101,15 +95,6 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 return null;
             }
         }
-
-        public virtual async Task<bool> InsertUser(UserRegisterDTO userRegisterDTO)
-        {
-            var user = _mapper.Map<User>(userRegisterDTO);
-            var response = await base.Insert(user);
-            return response;
-        }
-
-
         public  async Task<bool> DeleteUserById(int id,int parameter)
         {
 
@@ -138,7 +123,20 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         }
 
+        public virtual async Task<bool> InsertUser(UserRegisterDTO userRegisterDTO)
+        {
+            try
+            {
+                var user = _mapper.Map<User>(userRegisterDTO);
+                var response = await base.Insert(user);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
 
+        }
         public async Task<User?> AuthenticateCredentials(AuthenticateDto dto)
         {
 

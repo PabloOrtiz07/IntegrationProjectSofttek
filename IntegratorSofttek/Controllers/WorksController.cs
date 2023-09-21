@@ -1,8 +1,7 @@
-﻿using AlkemyUmsa.Infrastructure;
-using AutoMapper;
+﻿using AutoMapper;
 using IntegratorSofttek.DTOs;
-using IntegratorSofttek.Entities;
 using IntegratorSofttek.Helper;
+using IntegratorSofttek.Infrastructure;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -75,7 +74,8 @@ namespace IntegratorSofttek.Controllers
         /// - Use parameter 1 to retrieve all work without filtering.</param>
         /// <returns>
         /// Returns a HTTP 200 response with the user object matching the given ID 
-        /// if found, or a HTTP 404 response with an error message if the user is not found.
+        /// If found, or a HTTP 404 response with an error message if the user is not found.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
         /// </returns>
         /// 
 
@@ -86,6 +86,7 @@ namespace IntegratorSofttek.Controllers
 
             try
             {
+
                 var workDTO = await _unitOfWork.WorkRepository.GetWorkById(id, parameter);
 
                 if (workDTO != null)
@@ -94,7 +95,7 @@ namespace IntegratorSofttek.Controllers
                 }
                 else
                 {
-                    return ResponseFactory.CreateErrorResponse(404, "The user couldn't be found");
+                    return ResponseFactory.CreateErrorResponse(404, "The work couldn't be found");
                 }
             }
             catch (Exception ex)
@@ -111,8 +112,10 @@ namespace IntegratorSofttek.Controllers
         /// </summary>
         /// <param name="workDTO">
         /// **A model is used to fill in work information.**</param>
-        /// <returns>Returns an HTTP 201 response if the registration operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// <returns>Returns an HTTP 200 response if the registration operation was successful 
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPost]
@@ -121,11 +124,19 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
+                var projectExists = await _unitOfWork.ProjectRepository.GetById(workDTO.project);
+                var serviceExists = await _unitOfWork.ServiceRepository.GetById(workDTO.service);
+
+                if (projectExists == null || serviceExists == null)
+                {
+                    return ResponseFactory.CreateErrorResponse(400, "Invalid project or service ID.");
+                }
+
                 var result = await _unitOfWork.WorkRepository.InsertWork(workDTO);
                 if (result != false)
                 {
                     await _unitOfWork.Complete();
-                    return ResponseFactory.CreateSuccessResponse(201, "The register operation was successful");
+                    return ResponseFactory.CreateSuccessResponse(200, "The register operation was successful");
                 }
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
@@ -146,7 +157,9 @@ namespace IntegratorSofttek.Controllers
         /// <param name="workDTO">
         /// **A model is used to replace the older work data**</param>
         /// <returns>Returns an HTTP 200 response if the updating operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPut("{id}")]
@@ -155,7 +168,17 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
+
+                var projectExists = await _unitOfWork.ProjectRepository.GetById(workDTO.project);
+                var serviceExists = await _unitOfWork.ServiceRepository.GetById(workDTO.service);
+
+                if (projectExists==null || serviceExists==null)
+                {
+                    return ResponseFactory.CreateErrorResponse(400, "Invalid project or service ID.");
+                }
+
                 var result = await _unitOfWork.WorkRepository.UpdateWork(workDTO, id);
+
                 if (result != null)
                 {
                     await _unitOfWork.Complete();
@@ -183,7 +206,9 @@ namespace IntegratorSofttek.Controllers
         /// 
         /// - Use parameter 1 to hard delete. </param>
         /// <returns>Returns an HTTP 200 response if the deletion operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPut("delete/{id}")]
@@ -192,12 +217,11 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-
                 var workReturn = await _unitOfWork.WorkRepository.DeleteWorkById(id, parameter);
                 if (workReturn != false)
                 {
                     await _unitOfWork.Complete();
-                    return ResponseFactory.CreateSuccessResponse(209, "The deletion operation was successful");
+                    return ResponseFactory.CreateSuccessResponse(200, "The deletion operation was successful");
                 }
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
