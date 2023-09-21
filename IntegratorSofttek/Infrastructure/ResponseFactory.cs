@@ -1,7 +1,6 @@
-﻿using IntegratorSofttek.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AlkemyUmsa.Infrastructure
+namespace IntegratorSofttek.Infrastructure
 {
     public static class ResponseFactory
     {

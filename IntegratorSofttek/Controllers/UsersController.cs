@@ -1,8 +1,6 @@
-﻿using AlkemyUmsa.Infrastructure;
-using AutoMapper;
-using IntegratorSofttek.DTOs;
-using IntegratorSofttek.Entities;
+﻿using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Helper;
+using IntegratorSofttek.Infrastructure;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -80,6 +78,7 @@ namespace IntegratorSofttek.Controllers
         /// <returns>
         /// Returns a HTTP 200 response with the user object matching the given ID 
         /// if found, or a HTTP 404 response with an error message if the user is not found.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
         /// </returns>
         /// 
 
@@ -89,6 +88,7 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
+
                 var userDTO = await _unitOfWork.UserRepository.GetUserById(id, parameter);
 
                 if (userDTO != null)
@@ -111,11 +111,13 @@ namespace IntegratorSofttek.Controllers
         /// <summary>
         /// Register an user in the database.
         /// </summary>
-        /// <param name="userDTO">
+        /// <param name="userRegisterDTO">
         /// **A model is used to fill in user information.**
         /// </param>
         /// <returns>Returns an HTTP 201 response if the registration operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPost]
@@ -146,9 +148,11 @@ namespace IntegratorSofttek.Controllers
         /// </summary>
         /// <param name="id">**The ID is used to find an user that matches this identification.**</param>
         /// 
-        /// <param name="userDTO">**A model which will replace the older user data.**</param>
-        /// <returns>Returns an HTTP 200 response if the updating operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// <param name="userRegisterDTO">**A model which will replace the older user data.**</param>
+        /// <returns>Returns an HTTP 200 response if the updating operation was successful. 
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPut("{id}")]
@@ -186,7 +190,9 @@ namespace IntegratorSofttek.Controllers
         /// 
         /// - Use parameter 1 to hard delete.</param>
         /// <returns>Returns an HTTP 200 response if the deletion operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>        
         /// 
 
         [HttpPut("delete/{id}")]

@@ -8,10 +8,13 @@
             <summary>
             Log in using email and password.
             </summary>
-            <param name="dto">
+            <param name="authenticateDto">
             **A model containing your login credentials.**</param>
-            <returns>Returns an "Ok" response with your data and an authorization token</returns>
-            
+            <returns>Returns an "Ok" response with your data and an authorization token.
+            If the credentials are incorrect, it returns an HTTP 401 Unauthorized response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+             </returns>
+             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetAll(System.Int32,System.String,System.Int32,System.Int32)">
             <summary>
@@ -43,20 +46,22 @@
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetById(System.Int32,System.Int32)">
-            <summary>
-            Get a project.
-            </summary>
-            <param name="id">
-            **The ID used to find a project with this identication.**</param>
-            <param name="parameter">
-            **The parameter used to filter projects.**
-            - Use parameter 0 to return filtered non-deleted project.
-            
-            - Use parameter 1 to retrieve all projects without filtering.</param>
-            <returns>
-            Returns a HTTP 200 response with the user object matching the given ID 
-            if found, or a HTTP 404 response with an error message if the user is not found.
-            </returns>
+             <summary>
+             Get a project.
+             </summary>
+             <param name="id">
+             **The ID used to find a project with this identication.**</param>
+             <param name="parameter">
+             **The parameter used to filter projects.**
+             - Use parameter 0 to return filtered non-deleted project.
+             
+             - Use parameter 1 to retrieve all projects without filtering.</param>
+             <returns>
+             Returns a HTTP 200 response with the user object matching the given ID 
+             if found, or a HTTP 404 response with an error message if the user is not found.
+             If the operation was canceled, it returns Error HTTP 400 response.
+             If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+             </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ProjectsController.Register(IntegratorSofttek.DTOs.ProjectDTO)">
@@ -66,7 +71,9 @@
             <param name="projectDTO">
             **A model containing project information to be registered.**</param>
             <returns>Returns an HTTP 201 response if the registration operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ProjectsController.Update(System.Int32,IntegratorSofttek.DTOs.ProjectDTO)">
@@ -78,7 +85,9 @@
             <param name="projectDTO">
             **A model which will replace the older project data**</param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ProjectsController.Delete(System.Int32,System.Int32)">
@@ -93,7 +102,9 @@
             
             - Use parameter 1 to hard delete. </param>
             <returns>Returns an HTTP 200 response if the deletion operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ServicesController.GetAll(System.Int32,System.Int32,System.Int32)">
@@ -131,6 +142,7 @@
             <returns>
             Returns a HTTP 200 response with the service object matching the given ID 
             if found, or a HTTP 404 response with an error message if the service is not found.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
             </returns>
             
         </member>
@@ -142,7 +154,10 @@
             <param name="serviceDTO">
             **A model is used to fill in service information**</param>
             <returns>Returns an HTTP 201 response if the registration operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
+            
         </member>
         <member name="M:IntegratorSofttek.Controllers.ServicesController.Update(System.Int32,IntegratorSofttek.DTOs.ServiceDTO)">
             <summary>
@@ -153,7 +168,9 @@
             <param name="serviceDTO">
             **A model is used to replace the older service data.**</param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns> 
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ServicesController.Delete(System.Int32,System.Int32)">
@@ -168,7 +185,9 @@
             
             - Use parameter 1 to hard delete. </param>
             <returns>Returns an HTTP 200 response if the deletion operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.UsersController.GetAll(System.Int32,System.Int32,System.Int32)">
@@ -207,6 +226,7 @@
             <returns>
             Returns a HTTP 200 response with the user object matching the given ID 
             if found, or a HTTP 404 response with an error message if the user is not found.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
             </returns>
             
         </member>
@@ -214,11 +234,13 @@
             <summary>
             Register an user in the database.
             </summary>
-            <param name="userDTO">
+            <param name="userRegisterDTO">
             **A model is used to fill in user information.**
             </param>
             <returns>Returns an HTTP 201 response if the registration operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.UsersController.Update(System.Int32,UserRegisterDTO)">
@@ -227,9 +249,11 @@
             </summary>
             <param name="id">**The ID is used to find an user that matches this identification.**</param>
             
-            <param name="userDTO">**A model which will replace the older user data.**</param>
-            <returns>Returns an HTTP 200 response if the updating operation was successful 
-            or an Error HTTP 400 response.</returns>
+            <param name="userRegisterDTO">**A model which will replace the older user data.**</param>
+            <returns>Returns an HTTP 200 response if the updating operation was successful. 
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.UsersController.Delete(System.Int32,System.Int32)">
@@ -244,7 +268,9 @@
             
             - Use parameter 1 to hard delete.</param>
             <returns>Returns an HTTP 200 response if the deletion operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>        
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.WorksController.GetAll(System.Int32,System.Int32,System.Int32)">
@@ -279,7 +305,8 @@
             - Use parameter 1 to retrieve all work without filtering.</param>
             <returns>
             Returns a HTTP 200 response with the user object matching the given ID 
-            if found, or a HTTP 404 response with an error message if the user is not found.
+            If found, or a HTTP 404 response with an error message if the user is not found.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
             </returns>
             
         </member>
@@ -289,8 +316,10 @@
             </summary>
             <param name="workDTO">
             **A model is used to fill in work information.**</param>
-            <returns>Returns an HTTP 201 response if the registration operation was successful 
-            or an Error HTTP 400 response.</returns>
+            <returns>Returns an HTTP 200 response if the registration operation was successful 
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.WorksController.Update(System.Int32,IntegratorSofttek.DTOs.WorkDTO)">
@@ -302,7 +331,9 @@
             <param name="workDTO">
             **A model is used to replace the older work data**</param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.WorksController.Delete(System.Int32,System.Int32)">
@@ -317,7 +348,9 @@
             
             - Use parameter 1 to hard delete. </param>
             <returns>Returns an HTTP 200 response if the deletion operation was successful 
-            or an Error HTTP 400 response.</returns>
+            If the operation was canceled, it returns Error HTTP 400 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
     </members>

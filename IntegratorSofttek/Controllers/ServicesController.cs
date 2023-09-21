@@ -1,8 +1,6 @@
-﻿using AlkemyUmsa.Infrastructure;
-using AutoMapper;
-using IntegratorSofttek.DTOs;
-using IntegratorSofttek.Entities;
+﻿using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Helper;
+using IntegratorSofttek.Infrastructure;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -80,6 +78,7 @@ namespace IntegratorSofttek.Controllers
         /// <returns>
         /// Returns a HTTP 200 response with the service object matching the given ID 
         /// if found, or a HTTP 404 response with an error message if the service is not found.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
         /// </returns>
         /// 
 
@@ -117,7 +116,10 @@ namespace IntegratorSofttek.Controllers
         /// <param name="serviceDTO">
         /// **A model is used to fill in service information**</param>
         /// <returns>Returns an HTTP 201 response if the registration operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
+        /// 
 
         [HttpPost]
         [Authorize(Policy = "Administrator")]
@@ -129,7 +131,7 @@ namespace IntegratorSofttek.Controllers
                 if (result != false)
                 {
                     await _unitOfWork.Complete();
-                    return ResponseFactory.CreateSuccessResponse(201, "The register operation was successful");
+                    return ResponseFactory.CreateSuccessResponse(200, "The register operation was successful");
                 }
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
@@ -150,7 +152,9 @@ namespace IntegratorSofttek.Controllers
         /// <param name="serviceDTO">
         /// **A model is used to replace the older service data.**</param>
         /// <returns>Returns an HTTP 200 response if the updating operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns> 
         /// 
 
         [HttpPut("{id}")]
@@ -159,6 +163,7 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
+
                 var result = await _unitOfWork.ServiceRepository.UpdateService(serviceDTO, id); // Update repository method call
                 if (result != null)
                 {
@@ -187,7 +192,9 @@ namespace IntegratorSofttek.Controllers
         /// 
         /// - Use parameter 1 to hard delete. </param>
         /// <returns>Returns an HTTP 200 response if the deletion operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPut("delete/{id}")]

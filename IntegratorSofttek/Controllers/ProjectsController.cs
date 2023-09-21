@@ -1,8 +1,6 @@
-﻿using AlkemyUmsa.Infrastructure;
-using AutoMapper;
-using IntegratorSofttek.DTOs;
-using IntegratorSofttek.Entities;
+﻿using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Helper;
+using IntegratorSofttek.Infrastructure;
 using IntegratorSofttek.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +20,7 @@ namespace IntegratorSofttek.Controllers
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
+
         /// <summary>
         /// Gets a list of projects.
         /// </summary>
@@ -84,8 +83,10 @@ namespace IntegratorSofttek.Controllers
         /// <returns>
         /// Returns a HTTP 200 response with the user object matching the given ID 
         /// if found, or a HTTP 404 response with an error message if the user is not found.
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
         /// </returns>
-        /// 
+        ///
 
         [HttpGet("{id}")]
         [Authorize(Policy = "AdministratorAndConsultant")]
@@ -93,6 +94,7 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
+
                 var projectDTO = await _unitOfWork.ProjectRepository.GetProjectById(id, parameter);
 
                 if (projectDTO != null)
@@ -118,7 +120,9 @@ namespace IntegratorSofttek.Controllers
         /// <param name="projectDTO">
         /// **A model containing project information to be registered.**</param>
         /// <returns>Returns an HTTP 201 response if the registration operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPost]
@@ -151,7 +155,9 @@ namespace IntegratorSofttek.Controllers
         /// <param name="projectDTO">
         /// **A model which will replace the older project data**</param>
         /// <returns>Returns an HTTP 200 response if the updating operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPut("{id}")]
@@ -160,7 +166,6 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-
                 var result = await _unitOfWork.ProjectRepository.UpdateProject(projectDTO, id);
                 if (result != null)
                 {
@@ -188,7 +193,9 @@ namespace IntegratorSofttek.Controllers
         /// 
         /// - Use parameter 1 to hard delete. </param>
         /// <returns>Returns an HTTP 200 response if the deletion operation was successful 
-        /// or an Error HTTP 400 response.</returns>
+        /// If the operation was canceled, it returns Error HTTP 400 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpPut("delete/{id}")]
@@ -197,6 +204,7 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
+
                 var projectReturn = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);
                 if (projectReturn != false)
                 {
