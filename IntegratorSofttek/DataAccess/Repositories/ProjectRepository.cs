@@ -17,17 +17,22 @@ namespace IntegratorSofttek.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public async Task<bool> UpdateProject(ProjectDTO projectDTO, int id) // Update method name
+        public async Task<bool> UpdateProject(ProjectDTO projectDTO, int id, int parameter) // Update method name
         {
             try
             {
-                var project = _mapper.Map<Project>(projectDTO);
 
                 var projectFinding = await GetById(id); // Update variable name
-                if (projectFinding != null)
+                if (projectFinding != null && parameter == 0)
                 {
+                    var project = _mapper.Map<Project>(projectDTO);
                     _mapper.Map(project, projectFinding);
-
+                    _contextDB.Update(projectFinding);
+                    return true;
+                }
+                if(projectFinding != null && projectFinding.IsDeleted != false && parameter == 1) {
+                    projectFinding.IsDeleted = false;
+                    projectFinding.DeletedTimeUtc = null;
                     _contextDB.Update(projectFinding);
                     return true;
                 }
@@ -106,6 +111,8 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 }
                 if (project != null && parameter == 1)
                 {
+                    var relatedWork = _contextDB.Works.Where(work => work.Service == id).ToList();
+                    _contextDB.Works.RemoveRange(relatedWork);
                     _contextDB.Projects.Remove(project); // Update entity reference
                     return true;
                 }

@@ -139,11 +139,11 @@ namespace IntegratorSofttek.Migrations
                 columns: new[] { "work_id", "work_cost", "work_date", "work_deletedTimeUtc", "work_hourlyRate", "work_hoursQuantity", "work_isDeleted", "Project", "Service" },
                 values: new object[,]
                 {
-                    { 1, 1000.0, new DateTime(2023, 9, 21, 18, 8, 1, 415, DateTimeKind.Local).AddTicks(6817), null, 25.0, 40, false, 1, 1 },
-                    { 2, 900.0, new DateTime(2023, 9, 20, 18, 8, 1, 415, DateTimeKind.Local).AddTicks(6828), null, 30.0, 30, false, 2, 2 },
-                    { 3, 1000.0, new DateTime(2023, 9, 19, 18, 8, 1, 415, DateTimeKind.Local).AddTicks(6833), null, 20.0, 50, false, 1, 3 },
-                    { 4, 980.0, new DateTime(2023, 9, 18, 18, 8, 1, 415, DateTimeKind.Local).AddTicks(6834), null, 28.0, 35, false, 2, 1 },
-                    { 5, 990.0, new DateTime(2023, 9, 17, 18, 8, 1, 415, DateTimeKind.Local).AddTicks(6835), null, 22.0, 45, false, 3, 2 }
+                    { 1, 1000.0, new DateTime(2023, 9, 22, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8463), null, 25.0, 40, false, 1, 1 },
+                    { 2, 900.0, new DateTime(2023, 9, 21, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8473), null, 30.0, 30, false, 2, 2 },
+                    { 3, 1000.0, new DateTime(2023, 9, 20, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8478), null, 20.0, 50, false, 1, 3 },
+                    { 4, 980.0, new DateTime(2023, 9, 19, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8479), null, 28.0, 35, false, 2, 1 },
+                    { 5, 990.0, new DateTime(2023, 9, 18, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8480), null, 22.0, 45, false, 3, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -151,8 +151,8 @@ namespace IntegratorSofttek.Migrations
                 columns: new[] { "user_id", "user_deletedTimeUtc", "user_dni", "user_email", "user_firstName", "user_isDeleted", "user_lastName", "user_password", "role_id" },
                 values: new object[,]
                 {
-                    { 1, null, "1001010", "adm", "Pablo", false, "Ortiz", "3867f83d85e1f98df6a60e8a873224685c6296608845a468347e26613ee12a46", 1 },
-                    { 2, null, "213", "noAdmin", "Alice", false, "Johnson", "6f0278d02e568438e43a4a74634ed9a90f980d3acfbb0a1afdf752f924227951", 2 },
+                    { 1, null, "1001010", "adm@gmail.com", "Pablo", false, "Ortiz", "9f3d321cd0a1ccafa899226d5190f74618cb23b789aa998e1d7f741956132434", 1 },
+                    { 2, null, "213", "noadm@gmail.com", "Kevin", false, "Johnson", "a10ad3a74bccd29b56cb5ec5a213d1a27b293b6bb88797418a31f09c2a707bf4", 2 },
                     { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "214", "bob@example.com", "Bob", true, "Smith", "a10ad3a74bccd29b56cb5ec5a213d1a27b293b6bb88797418a31f09c2a707bf4", 1 },
                     { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "315", "eva@example.com", "Eva", false, "Lee", "ff192a780cb98e260d87c38683c2e155dfe48897e454e47390063fd76755651f", 2 },
                     { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "416", "john@example.com", "John", true, "Doe", "fbafa90f00f6416a6d1e8535234f9603aaf07258d7a98424ec011a5f7aa634ff", 2 }

@@ -51,6 +51,11 @@ namespace IntegratorSofttek.Controllers
                 {
                     return ResponseFactory.CreateErrorResponse(500, "The user is inactive");
                 }
+
+                if (userCredentials.Role.IsDeleted != false)
+                {
+                    return ResponseFactory.CreateErrorResponse(500, "The role is inactive");
+                }
                 var token = _tokenJwtHelper.GenerateToken(userCredentials);
 
                 var user = new UserLoginDTO()

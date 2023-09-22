@@ -17,8 +17,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     FirstName = "Pablo",
                     LastName = "Ortiz",
                     Dni = 1001010,
-                    Email = "adm", // Provide an email address
-                    Password = PasswordEncryptHelper.EncryptPassword("123","adm"),
+                    Email = "adm@gmail.com", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123", "adm@gmail.com"),
                     IsDeleted = false,
                     DeletedTimeUtc = null,
                     RoleId = 1
@@ -26,11 +26,11 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                 new User
                 {
                     Id = 2,
-                    FirstName = "Alice",
+                    FirstName = "Kevin",
                     LastName = "Johnson",
                     Dni = 213,
-                    Email = "noAdmin", // Provide an email address
-                    Password = PasswordEncryptHelper.EncryptPassword("123","noAdmin"),
+                    Email = "noadm@gmail.com", // Provide an email address
+                    Password = PasswordEncryptHelper.EncryptPassword("123", "noadm@gmail.com"),
                     IsDeleted = false,
                     DeletedTimeUtc = null,
                     RoleId = 2

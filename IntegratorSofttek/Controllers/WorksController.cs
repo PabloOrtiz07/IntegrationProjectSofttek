@@ -38,7 +38,9 @@ namespace IntegratorSofttek.Controllers
         /// <param name="pageToShow">
         /// **The pageToShow is used to indicate on which page you will be.**
         /// </param>
-        /// <returns>Returns a list of users with an HTTP 200 response.</returns>
+        /// <returns>Returns a list of users with an HTTP 200 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpGet]
@@ -95,6 +97,7 @@ namespace IntegratorSofttek.Controllers
                 }
                 else
                 {
+                    _logger.LogError("The work couldn't be found");
                     return ResponseFactory.CreateErrorResponse(404, "The work couldn't be found");
                 }
             }
@@ -124,8 +127,8 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var projectExists = await _unitOfWork.ProjectRepository.GetById(workDTO.project);
-                var serviceExists = await _unitOfWork.ServiceRepository.GetById(workDTO.service);
+                var projectExists = await _unitOfWork.ProjectRepository.GetById(workDTO.Project);
+                var serviceExists = await _unitOfWork.ServiceRepository.GetById(workDTO.Service);
 
                 if (projectExists == null || serviceExists == null)
                 {
@@ -138,6 +141,7 @@ namespace IntegratorSofttek.Controllers
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The register operation was successful");
                 }
+                _logger.LogError("The operation was canceled");
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
             catch (Exception ex)
@@ -156,6 +160,11 @@ namespace IntegratorSofttek.Controllers
         /// **The ID used to find a work that matche  this identification.**</param>
         /// <param name="workDTO">
         /// **A model is used to replace the older work data**</param>
+        /// <param name="parameter">
+        ///   This parameter is used to indicate the type of update to perform.
+        ///   - Parameter 0 is used to replace old data.
+        ///   - Parameter 1 is used to indicate that the user wants to retrieve data from soft deletions.
+        /// </param>
         /// <returns>Returns an HTTP 200 response if the updating operation was successful 
         /// If the operation was canceled, it returns Error HTTP 400 response.
         /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
@@ -164,26 +173,27 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> Update([FromRoute] int id, WorkDTO workDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, WorkDTO workDTO, int parameter=0)
         {
             try
             {
 
-                var projectExists = await _unitOfWork.ProjectRepository.GetById(workDTO.project);
-                var serviceExists = await _unitOfWork.ServiceRepository.GetById(workDTO.service);
+                var projectExists = await _unitOfWork.ProjectRepository.GetById(workDTO.Project);
+                var serviceExists = await _unitOfWork.ServiceRepository.GetById(workDTO.Service);
 
                 if (projectExists==null || serviceExists==null)
                 {
                     return ResponseFactory.CreateErrorResponse(400, "Invalid project or service ID.");
                 }
 
-                var result = await _unitOfWork.WorkRepository.UpdateWork(workDTO, id);
+                var result = await _unitOfWork.WorkRepository.UpdateWork(workDTO, id, parameter);
 
                 if (result != null)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
                 }
+                _logger.LogError("The operation was canceled");
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
             catch (Exception ex)
@@ -211,7 +221,7 @@ namespace IntegratorSofttek.Controllers
         /// </returns>
         /// 
 
-        [HttpPut("delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Delete([FromRoute] int id, int parameter=0)
         {
@@ -223,6 +233,7 @@ namespace IntegratorSofttek.Controllers
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The deletion operation was successful");
                 }
+                _logger.LogError("The operation was canceled");
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
             catch (Exception ex)

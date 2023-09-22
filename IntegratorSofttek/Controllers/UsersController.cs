@@ -37,7 +37,10 @@ namespace IntegratorSofttek.Controllers
         /// <param name="pageToShow">
         /// **The pageToShow is used to indicate on which page you will be.**
         /// </param>
-        /// <returns>Returns a list of users with an HTTP 200 response.</returns>
+        /// <returns>
+        /// Returns a list of users with an HTTP 200 response.
+        /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+        /// </returns>
         /// 
 
         [HttpGet]
@@ -76,7 +79,7 @@ namespace IntegratorSofttek.Controllers
         /// - Use parameter 1 to retrieve all users without filtering. 
         /// </param>
         /// <returns>
-        /// Returns a HTTP 200 response with the user object matching the given ID 
+        /// Returns a HTTP 200 response with the user object matching the given ID. 
         /// if found, or a HTTP 404 response with an error message if the user is not found.
         /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
         /// </returns>
@@ -97,6 +100,7 @@ namespace IntegratorSofttek.Controllers
                 }
                 else
                 {
+                    _logger.LogError("The user couldn't be found");
                     return ResponseFactory.CreateErrorResponse(404, "The user couldn't be found");
                 }
             }
@@ -134,6 +138,7 @@ namespace IntegratorSofttek.Controllers
 
 
                 }
+                _logger.LogError("The operation was canceled");
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
             catch(Exception ex)
@@ -149,7 +154,14 @@ namespace IntegratorSofttek.Controllers
         /// <param name="id">**The ID is used to find an user that matches this identification.**</param>
         /// 
         /// <param name="userRegisterDTO">**A model which will replace the older user data.**</param>
-        /// <returns>Returns an HTTP 200 response if the updating operation was successful. 
+        /// 
+        /// <param name="parameter">
+        ///   This parameter is used to indicate the type of update to perform.
+        ///   - Parameter 0 is used to replace old data.
+        ///   - Parameter 1 is used to indicate that the user wants to retrieve data from soft deletions.
+        /// </param>
+        /// <returns>
+        /// Returns an HTTP 200 response if the updating operation was successful. 
         /// If the operation was canceled, it returns Error HTTP 400 response.
         /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
         /// </returns>
@@ -157,11 +169,11 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> Update([FromRoute] int id, UserRegisterDTO userRegisterDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, UserRegisterDTO userRegisterDTO, int parameter=0)
         {
             try
             {
-                var result = await _unitOfWork.UserRepository.UpdateUser(userRegisterDTO, id);
+                var result = await _unitOfWork.UserRepository.UpdateUser(userRegisterDTO, id, parameter);
 
                 if (result != null)
                 {
@@ -169,6 +181,7 @@ namespace IntegratorSofttek.Controllers
                     return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
 
                 }
+                _logger.LogError("The operation was canceled");
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
             catch(Exception ex)
@@ -189,20 +202,20 @@ namespace IntegratorSofttek.Controllers
         /// - Use parameter 0 to soft delete.
         /// 
         /// - Use parameter 1 to hard delete.</param>
-        /// <returns>Returns an HTTP 200 response if the deletion operation was successful 
+        /// <returns>
+        /// Returns an HTTP 200 response if the deletion operation was successful. 
         /// If the operation was canceled, it returns Error HTTP 400 response.
         /// If any other error occurs, it returns an HTTP 500 Internal Server Error response.
         /// </returns>        
         /// 
 
-        [HttpPut("delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Delete([FromRoute] int id,  int parameter = 0)
         {
             try
             {
                 var userReturn = await _unitOfWork.UserRepository.DeleteUserById(id, parameter);
-
                 if (userReturn != false)
                 {
                     await _unitOfWork.Complete();
@@ -210,6 +223,7 @@ namespace IntegratorSofttek.Controllers
 
                 }
 
+                _logger.LogError("The operation was canceled");
                 return ResponseFactory.CreateErrorResponse(400, "The operation was canceled");
             }
             catch(Exception ex)

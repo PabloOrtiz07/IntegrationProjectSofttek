@@ -17,20 +17,29 @@ namespace IntegratorSofttek.DataAccess.Repositories
             _mapper=mapper;
         }
 
-        public  async Task<bool> UpdateUser(UserRegisterDTO userRegisterDTO,int id)
+        public  async Task<bool> UpdateUser(UserRegisterDTO userRegisterDTO,int id, int parameter)
         {
             try
             {
-                var user = _mapper.Map<User>(userRegisterDTO);
+
                 var userFinding = await GetById(id);
-                if (userFinding != null) {
+                if (userFinding != null && parameter == 0) {
 
+                    var user = _mapper.Map<User>(userRegisterDTO);
                     _mapper.Map(user, userFinding);
-
                     _contextDB.Update(userFinding);
                     return true;
 
                 }
+                if(userFinding != null && userFinding.IsDeleted != false && parameter == 1 )
+                {
+                    userFinding.IsDeleted = false;
+                    userFinding.DeletedTimeUtc = null;
+                    _contextDB.Update(userFinding);
+                    return true;
+
+                }
+
                 return false;
             }
             catch (Exception)

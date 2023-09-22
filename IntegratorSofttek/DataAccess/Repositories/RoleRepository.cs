@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Linq;
 using IntegratorSofttek.Helper;
 using AutoMapper;
+using System.Reflection.Metadata;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
@@ -18,17 +19,24 @@ namespace IntegratorSofttek.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public async Task<bool> UpdateRole(Role role, int id)
+        public async Task<bool> UpdateRole(Role role, int id, int parameter)
         {
             try
             {
                 var roleFinding = await GetById(id);
-                if (roleFinding != null)
+                if (roleFinding != null && parameter == 0)
                 {
                     _mapper.Map(role, roleFinding);
                     _contextDB.Update(role);
                     return true;
 
+                }
+                if (roleFinding != null && roleFinding.IsDeleted != false && parameter == 1)
+                {
+                    roleFinding.IsDeleted = false;
+                    roleFinding.DeletedTimeUtc = null;
+                    _contextDB.Update(roleFinding);
+                    return true;
                 }
                 return false;
             }
