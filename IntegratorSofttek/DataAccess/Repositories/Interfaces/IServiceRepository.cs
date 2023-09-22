@@ -8,7 +8,7 @@ namespace IntegratorSofttek.DataAccess.Repositories.Interfaces
         public Task<List<ServiceDTO>> GetAllServices(int parameter); // Update method name
         public Task<ServiceDTO> GetServiceById(int id, int parameter); // Update method name
         public Task<bool> DeleteServiceById(int id, int parameter); // Update method name
-        public Task<bool> UpdateService(ServiceDTO service, int id); // Update method name
+        public Task<bool> UpdateService(ServiceDTO service, int id, int parameter); // Update method name
         public Task<bool> InsertService(ServiceDTO serviceDTO);
 
     }

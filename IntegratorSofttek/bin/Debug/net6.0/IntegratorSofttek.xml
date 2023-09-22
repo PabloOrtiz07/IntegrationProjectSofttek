@@ -42,7 +42,9 @@
             <param name="pageToShow">
             **The pageToShow is used to indicate on which page you will be.**
             </param>
-            <returns>Returns a list of users with an HTTP 200 response.</returns>
+            <returns>Returns a list of users with an HTTP 200 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ProjectsController.GetById(System.Int32,System.Int32)">
@@ -76,7 +78,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ProjectsController.Update(System.Int32,IntegratorSofttek.DTOs.ProjectDTO)">
+        <member name="M:IntegratorSofttek.Controllers.ProjectsController.Update(System.Int32,IntegratorSofttek.DTOs.ProjectDTO,System.Int32)">
             <summary>
             Update a project.
             </summary>
@@ -84,6 +86,11 @@
             **The ID used to find a project that matches  this identification**</param>
             <param name="projectDTO">
             **A model which will replace the older project data**</param>
+            <param name="parameter">
+              This parameter is used to indicate the type of update to perform.
+              - Parameter 0 is used to replace old data.
+              - Parameter 1 is used to indicate that the user wants to retrieve data from soft deletions.
+            </param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
             If the operation was canceled, it returns Error HTTP 400 response.
             If any other error occurs, it returns an HTTP 500 Internal Server Error response.
@@ -125,7 +132,9 @@
             <param name="pageToShow">
             **The pageToShow is used to indicate on which page you will be.**
             </param>
-            <returns>Returns a list of users with an HTTP 200 response.</returns> 
+            <returns>Returns a list of users with an HTTP 200 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns> 
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.ServicesController.GetById(System.Int32,System.Int32)">
@@ -159,7 +168,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.ServicesController.Update(System.Int32,IntegratorSofttek.DTOs.ServiceDTO)">
+        <member name="M:IntegratorSofttek.Controllers.ServicesController.Update(System.Int32,IntegratorSofttek.DTOs.ServiceDTO,System.Int32)">
             <summary>
             Update a service in the database.
             </summary>
@@ -167,6 +176,11 @@
             **The ID is used to find a service that matches this identification.**</param>
             <param name="serviceDTO">
             **A model is used to replace the older service data.**</param>
+            <param name="parameter">
+              This parameter is used to indicate the type of update to perform.
+              - Parameter 0 is used to replace old data.
+              - Parameter 1 is used to indicate that the user wants to retrieve data from soft deletions.
+            </param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
             If the operation was canceled, it returns Error HTTP 400 response.
             If any other error occurs, it returns an HTTP 500 Internal Server Error response.
@@ -206,7 +220,10 @@
             <param name="pageToShow">
             **The pageToShow is used to indicate on which page you will be.**
             </param>
-            <returns>Returns a list of users with an HTTP 200 response.</returns>
+            <returns>
+            Returns a list of users with an HTTP 200 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.UsersController.GetById(System.Int32,System.Int32)">
@@ -224,7 +241,7 @@
             - Use parameter 1 to retrieve all users without filtering. 
             </param>
             <returns>
-            Returns a HTTP 200 response with the user object matching the given ID 
+            Returns a HTTP 200 response with the user object matching the given ID. 
             if found, or a HTTP 404 response with an error message if the user is not found.
             If any other error occurs, it returns an HTTP 500 Internal Server Error response.
             </returns>
@@ -243,14 +260,21 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.UsersController.Update(System.Int32,UserRegisterDTO)">
+        <member name="M:IntegratorSofttek.Controllers.UsersController.Update(System.Int32,UserRegisterDTO,System.Int32)">
             <summary>
             Update an user.
             </summary>
             <param name="id">**The ID is used to find an user that matches this identification.**</param>
             
             <param name="userRegisterDTO">**A model which will replace the older user data.**</param>
-            <returns>Returns an HTTP 200 response if the updating operation was successful. 
+            
+            <param name="parameter">
+              This parameter is used to indicate the type of update to perform.
+              - Parameter 0 is used to replace old data.
+              - Parameter 1 is used to indicate that the user wants to retrieve data from soft deletions.
+            </param>
+            <returns>
+            Returns an HTTP 200 response if the updating operation was successful. 
             If the operation was canceled, it returns Error HTTP 400 response.
             If any other error occurs, it returns an HTTP 500 Internal Server Error response.
             </returns>
@@ -267,7 +291,8 @@
             - Use parameter 0 to soft delete.
             
             - Use parameter 1 to hard delete.</param>
-            <returns>Returns an HTTP 200 response if the deletion operation was successful 
+            <returns>
+            Returns an HTTP 200 response if the deletion operation was successful. 
             If the operation was canceled, it returns Error HTTP 400 response.
             If any other error occurs, it returns an HTTP 500 Internal Server Error response.
             </returns>        
@@ -289,7 +314,9 @@
             <param name="pageToShow">
             **The pageToShow is used to indicate on which page you will be.**
             </param>
-            <returns>Returns a list of users with an HTTP 200 response.</returns>
+            <returns>Returns a list of users with an HTTP 200 response.
+            If any other error occurs, it returns an HTTP 500 Internal Server Error response.
+            </returns>
             
         </member>
         <member name="M:IntegratorSofttek.Controllers.WorksController.GetById(System.Int32,System.Int32)">
@@ -322,7 +349,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.Update(System.Int32,IntegratorSofttek.DTOs.WorkDTO)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.Update(System.Int32,IntegratorSofttek.DTOs.WorkDTO,System.Int32)">
             <summary>
             Update a work.
             </summary>
@@ -330,6 +357,11 @@
             **The ID used to find a work that matche  this identification.**</param>
             <param name="workDTO">
             **A model is used to replace the older work data**</param>
+            <param name="parameter">
+              This parameter is used to indicate the type of update to perform.
+              - Parameter 0 is used to replace old data.
+              - Parameter 1 is used to indicate that the user wants to retrieve data from soft deletions.
+            </param>
             <returns>Returns an HTTP 200 response if the updating operation was successful 
             If the operation was canceled, it returns Error HTTP 400 response.
             If any other error occurs, it returns an HTTP 500 Internal Server Error response.

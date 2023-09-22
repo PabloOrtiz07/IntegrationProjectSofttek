@@ -8,7 +8,7 @@ namespace IntegratorSofttek.DataAccess.Repositories.Interfaces
         public Task<List<ProjectDTO>> GetAllProjects(int parameter,string state); // Update method name
         public Task<ProjectDTO> GetProjectById(int id, int parameter); // Update method name
         public Task<bool> DeleteProjectById(int id, int parameter); // Update method name
-        public Task<bool> UpdateProject(ProjectDTO projectDTO, int id); // Update method name
+        public Task<bool> UpdateProject(ProjectDTO projectDTO, int id, int parameter); // Update method name
 
         public Task<bool> InsertProject(ProjectDTO projectDTO);
 

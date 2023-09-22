@@ -17,19 +17,26 @@ namespace IntegratorSofttek.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public async Task<bool> UpdateWork(WorkDTO workDTO, int id) // Update method name
+        public async Task<bool> UpdateWork(WorkDTO workDTO, int id, int parameter) // Update method name
         {
             try
             {
 
-                var work = _mapper.Map<Work>(workDTO);
                 var workFinding = await GetById(id); // Update variable name
-                if (workFinding != null)
+                if (workFinding != null && parameter == 0)
                 {
+                    var work = _mapper.Map<Work>(workDTO);
                     _mapper.Map(work, workFinding);
-
                     _contextDB.Update(workFinding);
                     return true;
+                }
+                if (workFinding != null && workFinding.IsDeleted !=false && parameter == 1)
+                {
+                    workFinding.IsDeleted = false;
+                    workFinding.DeletedTimeUtc = null;
+                    _contextDB.Update(workFinding);
+                    return true;
+
                 }
                 return false;
             }

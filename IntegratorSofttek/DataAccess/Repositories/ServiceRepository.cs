@@ -20,17 +20,22 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
         }
 
-        public async Task<bool> UpdateService(ServiceDTO serviceDTO, int id) // Update method name
+        public async Task<bool> UpdateService(ServiceDTO serviceDTO, int id, int parameter) // Update method name
         {
             try
             {
-                var service= _mapper.Map<Service>(serviceDTO);
 
                 var serviceFinding = await GetById(id);
-                if (serviceFinding != null)
+                if (serviceFinding != null && parameter==0)
                 {
+                    var service = _mapper.Map<Service>(serviceDTO);
                     _mapper.Map(service, serviceFinding); 
-
+                    _contextDB.Update(serviceFinding);
+                    return true;
+                }
+                if(serviceFinding != null && serviceFinding.IsDeleted !=false && parameter ==1) {
+                    serviceFinding.IsDeleted = false;
+                    serviceFinding.DeletedTimeUtc = null;
                     _contextDB.Update(serviceFinding);
                     return true;
                 }
@@ -103,7 +108,9 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 }
                 if (service != null && parameter == 1)
                 {
-                    _contextDB.Services.Remove(service); // Update entity reference
+                    var relatedWork = _contextDB.Works.Where(work => work.Service == id).ToList();
+                    _contextDB.Works.RemoveRange(relatedWork);
+                    _contextDB.Services.Remove(service);
                     return true;
                 }
                 return false;

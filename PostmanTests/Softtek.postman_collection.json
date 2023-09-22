@@ -1,0 +1,1828 @@
+{
+	"info": {
+		"_postman_id": "79eb2d8d-8bde-4573-a55f-468428a3cd68",
+		"name": "Softtek",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29301178"
+	},
+	"item": [
+		{
+			"name": "Adminstrator",
+			"item": [
+				{
+					"name": "Work",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Works?parameter=0&pageSize=10&pageToShow=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "pageToShow",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Works/4?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"date\": \"2023-10-21T20:20:32.638Z\",\r\n  \"hoursQuantity\": 0,\r\n  \"hourlyRate\": 0,\r\n  \"cost\": 20,\r\n  \"project\": 10,\r\n  \"service\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Works",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"date\": \"2024-09-21T20:25:23.897Z\",\r\n  \"hoursQuantity\": 0,\r\n  \"hourlyRate\": 0,\r\n  \"cost\": 200,\r\n  \"project\": 1,\r\n  \"service\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Works/4?parameter=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Works/4?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Projects",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Projects?parameter=1&state=Pending&pageSize=10&pageToShow=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										},
+										{
+											"key": "state",
+											"value": "Pending"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "pageToShow",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Projects/2?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Projecto Test\",\r\n  \"address\": \"test 123\",\r\n  \"status\": \"Pendinge\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Projects",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Test update\",\r\n  \"address\": \"test 123\",\r\n  \"status\": \"Confirmed\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Projects/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Projects/2?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Services",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Services?parameter=0&pageSize=10&pageToShow=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "pageToShow",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Services/1?parameter=0\n",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services",
+										"1"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0\n"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"description\": \"NewService\",\r\n  \"isActive\": true,\r\n  \"hourlyRate\": 4.5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Services",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"description\": \"NewServicesTest\",\r\n  \"isActive\": true,\r\n  \"hourlyRate\": 25\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Services/4?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Services/4?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authorize",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"adm@gmail.com\",\r\n  \"password\": \"123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Authorize",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Authorize"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "GetAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Users?parameter=0&pageSize=10&pageToShow=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "pageToShow",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Users/1?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users",
+										"1"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstName\": \"Kevin\",\r\n  \"lastName\": \"Ortiz\",\r\n  \"dni\": 0,\r\n  \"password\": \"123\",\r\n  \"email\": \"kevinortiz02@gmail.com\",\r\n  \"roleId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Users",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstName\": \"Eliel\",\r\n  \"lastName\": \"Correa\",\r\n  \"dni\": 0,\r\n  \"password\": \"123\",\r\n  \"email\": \"eliel@gmail.com\",\r\n  \"roleId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Users/2?parameter=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenAdmistrator}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Users/2?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Consultant",
+			"item": [
+				{
+					"name": "Work",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Works?parameter=0&pageSize=10&pageToShow=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "pageToShow",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Works/1?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works",
+										"1"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"date\": \"2023-10-21T20:20:32.638Z\",\r\n  \"hoursQuantity\": 0,\r\n  \"hourlyRate\": 0,\r\n  \"cost\": 20,\r\n  \"project\": 1,\r\n  \"service\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Works",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"date\": \"2024-09-21T20:25:23.897Z\",\r\n  \"hoursQuantity\": 0,\r\n  \"hourlyRate\": 0,\r\n  \"cost\": 200,\r\n  \"project\": 10,\r\n  \"service\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Works/4?parameter=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Works/2?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Works",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Projects",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Projects?parameter=1&state=Pending&pageSize=10&pageToShow=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										},
+										{
+											"key": "state",
+											"value": "Pending"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "pageToShow",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Projects/2?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Projecto Test\",\r\n  \"address\": \"test 123\",\r\n  \"status\": \"Pendinge\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Projects",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Test update\",\r\n  \"address\": \"test 123\",\r\n  \"status\": \"Confirmed\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Projects/4?parameter=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Projects/2?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Projects",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Services",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Services?parameter=1&pageSize=10&pageToShow=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "pageToShow",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Services/1?parameter=1\n",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services",
+										"1"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1\n"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"description\": \"NewService\",\r\n  \"isActive\": true,\r\n  \"hourlyRate\": 4.5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Services",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"description\": \"Prueba2\",\r\n  \"isActive\": true,\r\n  \"hourlyRate\": 25\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Services/4?parameter=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Services/2?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Services",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authorize",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"noadm@gmail.com\",\r\n  \"password\": \"123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Authorize",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Authorize"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "GetAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Users?parameter=1&pageSize=10&pageToShow=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "pageToShow",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7056/api/Users/1?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users",
+										"1"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstName\": \"Kevin\",\r\n  \"lastName\": \"Ortiz\",\r\n  \"dni\": 0,\r\n  \"password\": \"123\",\r\n  \"email\": \"kevinortiz02@gmail.com\",\r\n  \"roleId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Users",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstName\": \"ELiel\",\r\n  \"lastName\": \"Correa\",\r\n  \"dni\": 0,\r\n  \"password\": \"123\",\r\n  \"email\": \"eliel@gmail.com\",\r\n  \"roleId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Users/4?parameter=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users",
+										"4"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenConsultant}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7056/api/Users/2?parameter=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7056",
+									"path": [
+										"api",
+										"Users",
+										"2"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "tokenAdmistrator",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3ZWJBcGlTdWJqZWN0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IjEiLCJleHAiOjE2OTUzOTgxMzh9.Y_rH6cZ17JyCl2QwF2EAZRTjLzpYuRNX6KdnYbmE_t0",
+			"type": "string"
+		},
+		{
+			"key": "tokenConsultant",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3ZWJBcGlTdWJqZWN0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibm9hZG1AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiMiIsImV4cCI6MTY5NTM5ODE3OH0.SlGaZDHtuN02ezC5lUUQg0art5zZmoRx3Is4D1SZlSk",
+			"type": "string"
+		}
+	]
+}
