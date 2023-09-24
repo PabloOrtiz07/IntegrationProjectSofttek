@@ -16,14 +16,15 @@ namespace IntegratorSofttek.Entities
         [Column("work_date")]
         public DateTime Date { get; set; }
 
+
+        [Column("service_id")]
         [ForeignKey("ServiceId")]
         public int ServiceId { get; set; }
-
         public Service Service { get; set; }
 
+        [Column("project_id")]
         [ForeignKey("ProjectId")]
         public int ProjectId { get; set; }
-
         public Project Project { get; set; }
 
         [Required]
