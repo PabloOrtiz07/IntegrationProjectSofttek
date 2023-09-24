@@ -45,6 +45,7 @@ namespace IntegratorSofttek.Entities
 
         [Required]
         [Column("role_id")]
+        [ForeignKey("RoleId")]
         public int RoleId { get; set; }
         public Role? Role { get; set; }
 

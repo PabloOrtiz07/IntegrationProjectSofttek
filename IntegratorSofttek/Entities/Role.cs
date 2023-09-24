@@ -3,10 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntegratorSofttek.Entities
 {
+    [Table("roles")]
+
     public class Role
     {
+
         [Key]
-        [Required]
         [Column("role_id")]
         public int Id { get; set; }
 

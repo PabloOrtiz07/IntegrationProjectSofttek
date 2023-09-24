@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntegratorSofttek.Migrations
 {
     [DbContext(typeof(ContextDB))]
-    [Migration("20230922145509_MyFirstMigration")]
+    [Migration("20230924132834_MyFirstMigration")]
     partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,62 @@ namespace IntegratorSofttek.Migrations
                             IsDeleted = false,
                             Name = "Project 3",
                             Status = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "101 Pine St",
+                            IsDeleted = false,
+                            Name = "Project 4",
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "222 Cedar St",
+                            IsDeleted = false,
+                            Name = "Project 5",
+                            Status = 0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = "333 Oak St",
+                            IsDeleted = false,
+                            Name = "Project 6",
+                            Status = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Address = "444 Elm St",
+                            IsDeleted = false,
+                            Name = "Project 7",
+                            Status = 0
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Address = "555 Maple St",
+                            IsDeleted = false,
+                            Name = "Project 8",
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Address = "666 Birch St",
+                            IsDeleted = false,
+                            Name = "Project 9",
+                            Status = 0
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Address = "777 Walnut St",
+                            IsDeleted = false,
+                            Name = "Project 10",
+                            Status = 0
                         });
                 });
 
@@ -115,7 +171,7 @@ namespace IntegratorSofttek.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles");
 
                     b.HasData(
                         new
@@ -344,13 +400,17 @@ namespace IntegratorSofttek.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("work_isDeleted");
 
-                    b.Property<int>("Project")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Service")
+                    b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ServiceId");
 
                     b.ToTable("works");
 
@@ -359,56 +419,56 @@ namespace IntegratorSofttek.Migrations
                         {
                             Id = 1,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 22, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8463),
+                            Date = new DateTime(2023, 9, 24, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2561),
                             HourlyRate = 25.0,
                             HoursQuantity = 40,
                             IsDeleted = false,
-                            Project = 1,
-                            Service = 1
+                            ProjectId = 1,
+                            ServiceId = 1
                         },
                         new
                         {
                             Id = 2,
                             Cost = 900.0,
-                            Date = new DateTime(2023, 9, 21, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8473),
+                            Date = new DateTime(2023, 9, 23, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2571),
                             HourlyRate = 30.0,
                             HoursQuantity = 30,
                             IsDeleted = false,
-                            Project = 2,
-                            Service = 2
+                            ProjectId = 2,
+                            ServiceId = 2
                         },
                         new
                         {
                             Id = 3,
                             Cost = 1000.0,
-                            Date = new DateTime(2023, 9, 20, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8478),
+                            Date = new DateTime(2023, 9, 22, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2576),
                             HourlyRate = 20.0,
                             HoursQuantity = 50,
                             IsDeleted = false,
-                            Project = 1,
-                            Service = 3
+                            ProjectId = 1,
+                            ServiceId = 3
                         },
                         new
                         {
                             Id = 4,
                             Cost = 980.0,
-                            Date = new DateTime(2023, 9, 19, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8479),
+                            Date = new DateTime(2023, 9, 21, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2577),
                             HourlyRate = 28.0,
                             HoursQuantity = 35,
                             IsDeleted = false,
-                            Project = 2,
-                            Service = 1
+                            ProjectId = 2,
+                            ServiceId = 1
                         },
                         new
                         {
                             Id = 5,
                             Cost = 990.0,
-                            Date = new DateTime(2023, 9, 18, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8480),
+                            Date = new DateTime(2023, 9, 20, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2578),
                             HourlyRate = 22.0,
                             HoursQuantity = 45,
                             IsDeleted = false,
-                            Project = 3,
-                            Service = 2
+                            ProjectId = 3,
+                            ServiceId = 2
                         });
                 });
 
@@ -421,6 +481,25 @@ namespace IntegratorSofttek.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("IntegratorSofttek.Entities.Work", b =>
+                {
+                    b.HasOne("IntegratorSofttek.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IntegratorSofttek.Entities.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Service");
                 });
 #pragma warning restore 612, 618
         }

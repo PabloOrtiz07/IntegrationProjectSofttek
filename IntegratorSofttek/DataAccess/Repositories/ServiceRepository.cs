@@ -26,14 +26,18 @@ namespace IntegratorSofttek.DataAccess.Repositories
             {
 
                 var serviceFinding = await GetById(id);
-                if (serviceFinding != null && parameter==0)
+                if (serviceFinding == null)
+                {
+                    return false;
+                }
+                if (parameter==0)
                 {
                     var service = _mapper.Map<Service>(serviceDTO);
                     _mapper.Map(service, serviceFinding); 
                     _contextDB.Update(serviceFinding);
                     return true;
                 }
-                if(serviceFinding != null && serviceFinding.IsDeleted !=false && parameter ==1) {
+                if(serviceFinding.IsDeleted !=false && parameter ==1) {
                     serviceFinding.IsDeleted = false;
                     serviceFinding.DeletedTimeUtc = null;
                     _contextDB.Update(serviceFinding);
@@ -76,14 +80,18 @@ namespace IntegratorSofttek.DataAccess.Repositories
         {
             try
             {
-                Service service = await base.GetById(id);
-                if (service.IsDeleted != true && parameter == 0)
+                Service serviceFinding = await base.GetById(id);
+                if (serviceFinding == null)
                 {
-                    return _mapper.Map<ServiceDTO>(service);
+                    return null;
+                }
+                if (serviceFinding.IsDeleted != true && parameter == 0)
+                {
+                    return _mapper.Map<ServiceDTO>(serviceFinding);
                 }
                 if (parameter == 1)
                 {
-                    return _mapper.Map<ServiceDTO>(service);
+                    return _mapper.Map<ServiceDTO>(serviceFinding);
                 }
                 return null;
             }
@@ -94,23 +102,27 @@ namespace IntegratorSofttek.DataAccess.Repositories
         }
 
 
-        public async Task<bool> DeleteServiceById(int id, int parameter) // Update method name
+        public async Task<bool> DeleteServiceById(int id, int parameter)
         {
 
             try
             {
-                Service service = await GetById(id); // Update variable name
-                if (service != null && parameter == 0)
+                Service serviceFinding = await GetById(id);
+                if (serviceFinding == null)
                 {
-                    service.IsDeleted = true;
-                    service.DeletedTimeUtc = DateTime.UtcNow;
+                    return false;
+                }
+                if (parameter == 0)
+                {
+                    serviceFinding.IsDeleted = true;
+                    serviceFinding.DeletedTimeUtc = DateTime.UtcNow;
                     return true;
                 }
-                if (service != null && parameter == 1)
+                if (parameter == 1)
                 {
-                    var relatedWork = _contextDB.Works.Where(work => work.Service == id).ToList();
+                    var relatedWork = _contextDB.Works.Where(work => work.ServiceId == id).ToList();
                     _contextDB.Works.RemoveRange(relatedWork);
-                    _contextDB.Services.Remove(service);
+                    _contextDB.Services.Remove(serviceFinding);
                     return true;
                 }
                 return false;

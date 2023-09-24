@@ -16,8 +16,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     HoursQuantity = 40,
                     HourlyRate = 25.0,
                     Cost = 1000.0,
-                    Project = 1, 
-                    Service = 1   
+                    ProjectId = 1, 
+                    ServiceId = 1   
                 },
                 new Work
                 {
@@ -26,8 +26,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     HoursQuantity = 30,
                     HourlyRate = 30.0,
                     Cost = 900.0,
-                    Project = 2, 
-                    Service = 2   
+                    ProjectId = 2, 
+                    ServiceId = 2   
                 },
                 new Work
                 {
@@ -36,8 +36,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     HoursQuantity = 50,
                     HourlyRate = 20.0,
                     Cost = 1000.0,
-                    Project = 1, 
-                    Service = 3   
+                    ProjectId = 1, 
+                    ServiceId = 3   
                 },
                 new Work
                 {
@@ -46,8 +46,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     HoursQuantity = 35,
                     HourlyRate = 28.0,
                     Cost = 980.0,
-                    Project = 2, 
-                    Service = 1   
+                    ProjectId = 2, 
+                    ServiceId = 1   
                 },
                 new Work
                 {
@@ -56,8 +56,8 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     HoursQuantity = 45,
                     HourlyRate = 22.0,
                     Cost = 990.0,
-                    Project = 3,
-                    Service = 2   
+                    ProjectId = 3,
+                    ServiceId = 2   
                 }
             );
         }

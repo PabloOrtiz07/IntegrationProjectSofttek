@@ -1,6 +1,9 @@
-﻿namespace IntegratorSofttek.DTOs
+﻿using IntegratorSofttek.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace IntegratorSofttek.DTOs
 {
-    public class WorkDTO
+    public class WorkRegisterDTO
     {
         public DateTime Date { get; set; }
 
@@ -11,9 +14,8 @@
         public double Cost { get; set; }
 
         public int ProjectId { get; set; }
-        public ProjectDTO? ProjectDTO { get; set; }
 
         public int ServiceId { get; set; }
-        public ServiceDTO? ServiceDTO { get; set; }
+
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using System.Linq;
 using AutoMapper;
+using System.Collections.Generic;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
@@ -17,20 +18,24 @@ namespace IntegratorSofttek.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public async Task<bool> UpdateWork(WorkDTO workDTO, int id, int parameter) // Update method name
+        public async Task<bool> UpdateWork(WorkRegisterDTO workRegisterDTO, int id, int parameter)
         {
             try
             {
 
-                var workFinding = await GetById(id); // Update variable name
-                if (workFinding != null && parameter == 0)
+                var workFinding = await GetById(id);
+                if (workFinding == null)
                 {
-                    var work = _mapper.Map<Work>(workDTO);
+                    return false;
+                }
+                if (parameter == 0)
+                {
+                    var work = _mapper.Map<Work>(workRegisterDTO);
                     _mapper.Map(work, workFinding);
                     _contextDB.Update(workFinding);
                     return true;
                 }
-                if (workFinding != null && workFinding.IsDeleted !=false && parameter == 1)
+                if (workFinding.IsDeleted !=false && parameter == 1)
                 {
                     workFinding.IsDeleted = false;
                     workFinding.DeletedTimeUtc = null;
@@ -51,7 +56,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
 
-                var works = await base.GetAll(); // Update variable name
+                List<Work> works = await _contextDB.Works
+                    .Include(work => work.Service)
+                    .Include(work => work.Project)
+                    .ToListAsync();
+
                 switch (parameter)
                 {
                     case 0:
@@ -69,18 +78,28 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public async Task<WorkDTO> GetWorkById(int id, int parameter) // Update method name
+        public async Task<WorkDTO> GetWorkById(int id, int parameter)
         {
             try
             {
-                Work work = await base.GetById(id); // Update variable name
-                if (work.IsDeleted != true && parameter == 0)
+                Work workFinding = await _contextDB.Works
+                    .Include(work => work.Service)
+                    .Include(work => work.Project)
+                    .Where(u => u.Id == id)
+                    .FirstOrDefaultAsync();
+
+                if (workFinding == null)
                 {
-                   return _mapper.Map<WorkDTO>(work);
+                    return null;
+                }
+
+                if (workFinding.IsDeleted != true && parameter == 0)
+                {
+                   return _mapper.Map<WorkDTO>(workFinding);
                 }
                 if (parameter == 1)
                 {
-                    return _mapper.Map<WorkDTO>(work);
+                    return _mapper.Map<WorkDTO>(workFinding);
                 }
                 return null;
             }
@@ -90,20 +109,24 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public async Task<bool> DeleteWorkById(int id, int parameter) // Update method name
+        public async Task<bool> DeleteWorkById(int id, int parameter)
         {
             try
             {
-                Work work = await GetById(id); // Update variable name
-                if (work != null && parameter == 0)
+                Work workFinding = await GetById(id);
+                if (workFinding == null)
                 {
-                    work.IsDeleted = true;
-                    work.DeletedTimeUtc = DateTime.UtcNow;
+                    return false;
+                }
+                if (parameter == 0)
+                {
+                    workFinding.IsDeleted = true;
+                    workFinding.DeletedTimeUtc = DateTime.UtcNow;
                     return true;
                 }
-                if (work != null && parameter == 1)
+                if (parameter == 1)
                 {
-                    _contextDB.Works.Remove(work); // Update entity reference
+                    _contextDB.Works.Remove(workFinding);
                     return true;
                 }
                 return false;
@@ -115,11 +138,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
   
         }
 
-        public virtual async Task<bool> InsertWork(WorkDTO workDTO)
+        public virtual async Task<bool> InsertWork(WorkRegisterDTO workRegisterDTO)
         {
             try
             {
-                var work = _mapper.Map<Work>(workDTO);
+                var work = _mapper.Map<Work>(workRegisterDTO);
                 var response = await base.Insert(work);
                 return response;
             }

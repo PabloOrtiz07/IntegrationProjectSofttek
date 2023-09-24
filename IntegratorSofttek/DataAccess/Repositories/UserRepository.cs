@@ -23,7 +23,13 @@ namespace IntegratorSofttek.DataAccess.Repositories
             {
 
                 var userFinding = await GetById(id);
-                if (userFinding != null && parameter == 0) {
+
+                if (userFinding == null) {
+
+                    return false;
+
+                }
+                if (parameter == 0) {
 
                     var user = _mapper.Map<User>(userRegisterDTO);
                     _mapper.Map(user, userFinding);
@@ -31,7 +37,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                     return true;
 
                 }
-                if(userFinding != null && userFinding.IsDeleted != false && parameter == 1 )
+                if(userFinding.IsDeleted != false && parameter == 1 )
                 {
                     userFinding.IsDeleted = false;
                     userFinding.DeletedTimeUtc = null;
@@ -88,6 +94,11 @@ namespace IntegratorSofttek.DataAccess.Repositories
                             .Where(u => u.Id == id)
                             .FirstOrDefaultAsync();
 
+                if(user == null)
+                {
+                    return null;
+                }
+
                 if (user.IsDeleted != true && parameter == 0)
                 {
                     return _mapper.Map<UserDTO>(user);
@@ -109,18 +120,24 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
             try
             {
-                User user = await base.GetById(id);
-                if (user != null && parameter == 0)
+                User userFinding = await base.GetById(id);
+
+                if (userFinding == null)
                 {
-                    user.IsDeleted = true;
-                    user.DeletedTimeUtc = DateTime.UtcNow;
-                    _contextDB.Update(user);
+                    return false;
+                }
+
+                if (parameter == 0)
+                {
+                    userFinding.IsDeleted = true;
+                    userFinding.DeletedTimeUtc = DateTime.UtcNow;
+                    _contextDB.Update(userFinding);
 
                     return true;
                 }
-                if (user != null && parameter == 1)
+                if (parameter == 1)
                 {
-                    _contextDB.Users.Remove(user);
+                    _contextDB.Users.Remove(userFinding);
                     return true;
                 }
 

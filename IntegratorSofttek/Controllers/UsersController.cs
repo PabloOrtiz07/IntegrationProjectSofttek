@@ -10,7 +10,6 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -175,7 +174,7 @@ namespace IntegratorSofttek.Controllers
             {
                 var result = await _unitOfWork.UserRepository.UpdateUser(userRegisterDTO, id, parameter);
 
-                if (result != null)
+                if (result != false)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
@@ -215,8 +214,8 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var userReturn = await _unitOfWork.UserRepository.DeleteUserById(id, parameter);
-                if (userReturn != false)
+                var result = await _unitOfWork.UserRepository.DeleteUserById(id, parameter);
+                if (result != false)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The deletion operation was successful");

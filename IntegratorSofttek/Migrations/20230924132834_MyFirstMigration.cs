@@ -27,7 +27,7 @@ namespace IntegratorSofttek.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "roles",
                 columns: table => new
                 {
                     role_id = table.Column<int>(type: "int", nullable: false)
@@ -39,7 +39,7 @@ namespace IntegratorSofttek.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.role_id);
+                    table.PrimaryKey("PK_roles", x => x.role_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,26 +57,6 @@ namespace IntegratorSofttek.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_services", x => x.service_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "works",
-                columns: table => new
-                {
-                    work_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    work_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Project = table.Column<int>(type: "int", nullable: false),
-                    Service = table.Column<int>(type: "int", nullable: false),
-                    work_hoursQuantity = table.Column<int>(type: "int", nullable: false),
-                    work_hourlyRate = table.Column<double>(type: "float", nullable: false),
-                    work_cost = table.Column<double>(type: "float", nullable: false),
-                    work_isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    work_deletedTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_works", x => x.work_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,20 +78,43 @@ namespace IntegratorSofttek.Migrations
                 {
                     table.PrimaryKey("PK_users", x => x.user_id);
                     table.ForeignKey(
-                        name: "FK_users_Roles_role_id",
+                        name: "FK_users_roles_role_id",
                         column: x => x.role_id,
-                        principalTable: "Roles",
+                        principalTable: "roles",
                         principalColumn: "role_id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "role_id", "role_deletedTimeUtc", "role_description", "role_isDeleted", "role_name" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "works",
+                columns: table => new
                 {
-                    { 1, null, "Administrator", false, "Administrator" },
-                    { 2, null, "Consultant", false, "Consultant" }
+                    work_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    work_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    work_hoursQuantity = table.Column<int>(type: "int", nullable: false),
+                    work_hourlyRate = table.Column<double>(type: "float", nullable: false),
+                    work_cost = table.Column<double>(type: "float", nullable: false),
+                    work_isDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    work_deletedTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_works", x => x.work_id);
+                    table.ForeignKey(
+                        name: "FK_works_projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "projects",
+                        principalColumn: "project_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_works_services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "services",
+                        principalColumn: "service_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -121,7 +124,23 @@ namespace IntegratorSofttek.Migrations
                 {
                     { 1, "123 Main St", null, false, "Project 1", 0 },
                     { 2, "456 Elm St", null, false, "Project 2", 1 },
-                    { 3, "789 Oak St", null, false, "Project 3", 0 }
+                    { 3, "789 Oak St", null, false, "Project 3", 0 },
+                    { 4, "101 Pine St", null, false, "Project 4", 1 },
+                    { 5, "222 Cedar St", null, false, "Project 5", 0 },
+                    { 6, "333 Oak St", null, false, "Project 6", 2 },
+                    { 7, "444 Elm St", null, false, "Project 7", 0 },
+                    { 8, "555 Maple St", null, false, "Project 8", 1 },
+                    { 9, "666 Birch St", null, false, "Project 9", 0 },
+                    { 10, "777 Walnut St", null, false, "Project 10", 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "roles",
+                columns: new[] { "role_id", "role_deletedTimeUtc", "role_description", "role_isDeleted", "role_name" },
+                values: new object[,]
+                {
+                    { 1, null, "Administrator", false, "Administrator" },
+                    { 2, null, "Consultant", false, "Consultant" }
                 });
 
             migrationBuilder.InsertData(
@@ -132,18 +151,6 @@ namespace IntegratorSofttek.Migrations
                     { 1, null, "Service 1", 25.0, true, false },
                     { 2, null, "Service 2", 30.0, true, false },
                     { 3, null, "Service 3", 20.0, false, false }
-                });
-
-            migrationBuilder.InsertData(
-                table: "works",
-                columns: new[] { "work_id", "work_cost", "work_date", "work_deletedTimeUtc", "work_hourlyRate", "work_hoursQuantity", "work_isDeleted", "Project", "Service" },
-                values: new object[,]
-                {
-                    { 1, 1000.0, new DateTime(2023, 9, 22, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8463), null, 25.0, 40, false, 1, 1 },
-                    { 2, 900.0, new DateTime(2023, 9, 21, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8473), null, 30.0, 30, false, 2, 2 },
-                    { 3, 1000.0, new DateTime(2023, 9, 20, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8478), null, 20.0, 50, false, 1, 3 },
-                    { 4, 980.0, new DateTime(2023, 9, 19, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8479), null, 28.0, 35, false, 2, 1 },
-                    { 5, 990.0, new DateTime(2023, 9, 18, 11, 55, 9, 382, DateTimeKind.Local).AddTicks(8480), null, 22.0, 45, false, 3, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -158,6 +165,18 @@ namespace IntegratorSofttek.Migrations
                     { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "416", "john@example.com", "John", true, "Doe", "fbafa90f00f6416a6d1e8535234f9603aaf07258d7a98424ec011a5f7aa634ff", 2 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "works",
+                columns: new[] { "work_id", "work_cost", "work_date", "work_deletedTimeUtc", "work_hourlyRate", "work_hoursQuantity", "work_isDeleted", "ProjectId", "ServiceId" },
+                values: new object[,]
+                {
+                    { 1, 1000.0, new DateTime(2023, 9, 24, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2561), null, 25.0, 40, false, 1, 1 },
+                    { 2, 900.0, new DateTime(2023, 9, 23, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2571), null, 30.0, 30, false, 2, 2 },
+                    { 3, 1000.0, new DateTime(2023, 9, 22, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2576), null, 20.0, 50, false, 1, 3 },
+                    { 4, 980.0, new DateTime(2023, 9, 21, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2577), null, 28.0, 35, false, 2, 1 },
+                    { 5, 990.0, new DateTime(2023, 9, 20, 10, 28, 34, 1, DateTimeKind.Local).AddTicks(2578), null, 22.0, 45, false, 3, 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_users_role_id",
                 table: "users",
@@ -168,16 +187,20 @@ namespace IntegratorSofttek.Migrations
                 table: "users",
                 column: "user_email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_works_ProjectId",
+                table: "works",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_works_ServiceId",
+                table: "works",
+                column: "ServiceId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "projects");
-
-            migrationBuilder.DropTable(
-                name: "services");
-
             migrationBuilder.DropTable(
                 name: "users");
 
@@ -185,7 +208,13 @@ namespace IntegratorSofttek.Migrations
                 name: "works");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "roles");
+
+            migrationBuilder.DropTable(
+                name: "projects");
+
+            migrationBuilder.DropTable(
+                name: "services");
         }
     }
 }
