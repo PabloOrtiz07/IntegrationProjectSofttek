@@ -2,7 +2,6 @@
 using IntegratorSofttek.DTOs;
 using IntegratorSofttek.Entities;
 using IntegratorSofttek.Helper;
-using IntegratorSofttek.Logic;
 
 public class UserProfile : Profile
 {
@@ -21,9 +20,9 @@ public class UserProfile : Profile
         CreateMap<UserRegisterDTO, User>()
         .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false))
         .ForMember(dest => dest.DeletedTimeUtc, opt => opt.MapFrom(src => (DateTime?)null))
-        .BeforeMap((src, dest) => dest.Password = PasswordEncryptHelper.EncryptPassword(src.Password, src.Email))
-        .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
-        .ForMember(dest => dest.Role, opt => opt.MapFrom<RoleResolver>());
+        .AfterMap((src, dest) => dest.Password = PasswordEncryptHelper.EncryptPassword(src.Password, src.Email))
+        .AfterMap((src, dest) => dest.RoleId = src.RoleId);
+
 
         CreateMap<User, User>()
                   .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore ID property

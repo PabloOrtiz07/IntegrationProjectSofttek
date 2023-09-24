@@ -10,7 +10,6 @@ namespace IntegratorSofttek.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class WorksController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -123,19 +122,11 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPost]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> Register(WorkDTO workDTO)
+        public async Task<IActionResult> Register(WorkRegisterDTO workRegisterDTO)
         {
             try
             {
-                var projectExists = await _unitOfWork.ProjectRepository.GetById(workDTO.Project);
-                var serviceExists = await _unitOfWork.ServiceRepository.GetById(workDTO.Service);
-
-                if (projectExists == null || serviceExists == null)
-                {
-                    return ResponseFactory.CreateErrorResponse(400, "Invalid project or service ID.");
-                }
-
-                var result = await _unitOfWork.WorkRepository.InsertWork(workDTO);
+                var result = await _unitOfWork.WorkRepository.InsertWork(workRegisterDTO);
                 if (result != false)
                 {
                     await _unitOfWork.Complete();
@@ -173,22 +164,13 @@ namespace IntegratorSofttek.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Administrator")]
-        public async Task<IActionResult> Update([FromRoute] int id, WorkDTO workDTO, int parameter=0)
+        public async Task<IActionResult> Update([FromRoute] int id, WorkRegisterDTO workRegisterDTO, int parameter=0)
         {
             try
             {
+                var result = await _unitOfWork.WorkRepository.UpdateWork(workRegisterDTO, id, parameter);
 
-                var projectExists = await _unitOfWork.ProjectRepository.GetById(workDTO.Project);
-                var serviceExists = await _unitOfWork.ServiceRepository.GetById(workDTO.Service);
-
-                if (projectExists==null || serviceExists==null)
-                {
-                    return ResponseFactory.CreateErrorResponse(400, "Invalid project or service ID.");
-                }
-
-                var result = await _unitOfWork.WorkRepository.UpdateWork(workDTO, id, parameter);
-
-                if (result != null)
+                if (result != false)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
@@ -227,8 +209,8 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var workReturn = await _unitOfWork.WorkRepository.DeleteWorkById(id, parameter);
-                if (workReturn != false)
+                var result = await _unitOfWork.WorkRepository.DeleteWorkById(id, parameter);
+                if (result != false)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The deletion operation was successful");

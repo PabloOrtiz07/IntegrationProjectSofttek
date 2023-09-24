@@ -337,7 +337,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.Register(IntegratorSofttek.DTOs.WorkDTO)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.Register(IntegratorSofttek.DTOs.WorkRegisterDTO)">
             <summary>
             Register a work.
             </summary>
@@ -349,7 +349,7 @@
             </returns>
             
         </member>
-        <member name="M:IntegratorSofttek.Controllers.WorksController.Update(System.Int32,IntegratorSofttek.DTOs.WorkDTO,System.Int32)">
+        <member name="M:IntegratorSofttek.Controllers.WorksController.Update(System.Int32,IntegratorSofttek.DTOs.WorkRegisterDTO,System.Int32)">
             <summary>
             Update a work.
             </summary>

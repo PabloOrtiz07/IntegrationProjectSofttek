@@ -176,7 +176,7 @@ namespace IntegratorSofttek.Controllers
             try
             {
                 var result = await _unitOfWork.ProjectRepository.UpdateProject(projectDTO, id, parameter);
-                if (result != null)
+                if (result != false)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
@@ -214,8 +214,8 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var projectReturn = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);
-                if (projectReturn != false)
+                var result = await _unitOfWork.ProjectRepository.DeleteProjectById(id, parameter);
+                if (result != false)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The deletion operation was successful");

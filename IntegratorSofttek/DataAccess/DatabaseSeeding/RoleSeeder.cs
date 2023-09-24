@@ -14,6 +14,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                     Name = "Administrator",
                     Description = "Administrator",
                     IsDeleted = false,
+                    DeletedTimeUtc = null,
 
                 },
                  new Role
@@ -22,6 +23,7 @@ namespace IntegratorSofttek.DataAccess.DatabaseSeeding
                      Name = "Consultant",
                      Description = "Consultant",
                      IsDeleted = false,
+                     DeletedTimeUtc = null,
                  });
         }
     }

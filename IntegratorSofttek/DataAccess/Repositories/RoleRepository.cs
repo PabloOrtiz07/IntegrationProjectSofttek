@@ -24,14 +24,17 @@ namespace IntegratorSofttek.DataAccess.Repositories
             try
             {
                 var roleFinding = await GetById(id);
-                if (roleFinding != null && parameter == 0)
+                if (roleFinding == null) {
+                    return false;
+                }
+                if (parameter == 0)
                 {
                     _mapper.Map(role, roleFinding);
                     _contextDB.Update(role);
                     return true;
 
                 }
-                if (roleFinding != null && roleFinding.IsDeleted != false && parameter == 1)
+                if (roleFinding.IsDeleted != false && parameter == 1)
                 {
                     roleFinding.IsDeleted = false;
                     roleFinding.DeletedTimeUtc = null;
@@ -77,14 +80,18 @@ namespace IntegratorSofttek.DataAccess.Repositories
         {
             try
             {
-                Role role = await base.GetById(id);
-                if (role.IsDeleted != true && parameter == 0)
+                Role roleFinding = await base.GetById(id);
+                if (roleFinding == null)
                 {
-                    return role;
+                    return null;
+                }
+                if (roleFinding.IsDeleted != true && parameter == 0)
+                {
+                    return roleFinding;
                 }
                 if (parameter == 1)
                 {
-                    return role;
+                    return roleFinding;
                 }
                 return null;
 
@@ -100,17 +107,21 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
             try
             {
-                Role role = await GetById(id);
-                if (role != null && parameter == 0)
+                Role roleFinding = await GetById(id);
+                if (roleFinding == null)
                 {
-                    role.IsDeleted = true;
-                    role.DeletedTimeUtc = DateTime.UtcNow;
+                    return false;
+                }
+                if (roleFinding != null && parameter == 0)
+                {
+                    roleFinding.IsDeleted = true;
+                    roleFinding.DeletedTimeUtc = DateTime.UtcNow;
 
                     return true;
                 }
-                if (role != null && parameter == 1)
+                if (roleFinding != null && parameter == 1)
                 {
-                    _contextDB.Roles.Remove(role);
+                    _contextDB.Roles.Remove(roleFinding);
                     return true;
                 }
 

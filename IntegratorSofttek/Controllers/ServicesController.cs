@@ -174,7 +174,7 @@ namespace IntegratorSofttek.Controllers
             {
 
                 var result = await _unitOfWork.ServiceRepository.UpdateService(serviceDTO, id, parameter); // Update repository method call
-                if (result != null)
+                if (result != false)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The updating operation was successful");
@@ -213,8 +213,8 @@ namespace IntegratorSofttek.Controllers
         {
             try
             {
-                var serviceReturn = await _unitOfWork.ServiceRepository.DeleteServiceById(id, parameter); // Update repository method call
-                if (serviceReturn != false)
+                var result = await _unitOfWork.ServiceRepository.DeleteServiceById(id, parameter); // Update repository method call
+                if (result != false)
                 {
                     await _unitOfWork.Complete();
                     return ResponseFactory.CreateSuccessResponse(200, "The deletion operation was successful");

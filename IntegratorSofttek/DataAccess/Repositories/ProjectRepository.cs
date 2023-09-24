@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace IntegratorSofttek.DataAccess.Repositories
 {
-    public class ProjectRepository : Repository<Project>, IProjectRepository // Update class and interface names
+    public class ProjectRepository : Repository<Project>, IProjectRepository
     {
         private readonly IMapper _mapper;
 
@@ -17,20 +17,24 @@ namespace IntegratorSofttek.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public async Task<bool> UpdateProject(ProjectDTO projectDTO, int id, int parameter) // Update method name
+        public async Task<bool> UpdateProject(ProjectDTO projectDTO, int id, int parameter)
         {
             try
             {
 
-                var projectFinding = await GetById(id); // Update variable name
-                if (projectFinding != null && parameter == 0)
+                var projectFinding = await GetById(id);
+                if (projectFinding == null)
+                {
+                    return false;
+                }
+                if (parameter == 0)
                 {
                     var project = _mapper.Map<Project>(projectDTO);
                     _mapper.Map(project, projectFinding);
                     _contextDB.Update(projectFinding);
                     return true;
                 }
-                if(projectFinding != null && projectFinding.IsDeleted != false && parameter == 1) {
+                if(projectFinding.IsDeleted != false && parameter == 1) {
                     projectFinding.IsDeleted = false;
                     projectFinding.DeletedTimeUtc = null;
                     _contextDB.Update(projectFinding);
@@ -75,19 +79,23 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public async Task<ProjectDTO> GetProjectById(int id, int parameter) // Update method name
+        public async Task<ProjectDTO> GetProjectById(int id, int parameter)
         {
             try
             {
 
-                Project project = await base.GetById(id); // Update variable name
-                if (project.IsDeleted != true && parameter == 0)
+                Project projectFinding = await base.GetById(id);
+                if (projectFinding == null)
                 {
-                    return _mapper.Map<ProjectDTO>(project); ;
+                    return null;
+                }
+                if (projectFinding.IsDeleted != true && parameter == 0)
+                {
+                    return _mapper.Map<ProjectDTO>(projectFinding); ;
                 }
                 if (parameter == 1)
                 {
-                    return _mapper.Map<ProjectDTO>(project); ;
+                    return _mapper.Map<ProjectDTO>(projectFinding); ;
                 }
                 return null;
             }
@@ -97,23 +105,28 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public async Task<bool> DeleteProjectById(int id, int parameter) // Update method name
+        public async Task<bool> DeleteProjectById(int id, int parameter)
         {
 
             try
             {
-                Project project = await GetById(id); // Update variable name
-                if (project != null && parameter == 0)
+                Project projectFinding = await GetById(id);
+                if (projectFinding == null)
                 {
-                    project.IsDeleted = true;
-                    project.DeletedTimeUtc = DateTime.UtcNow;
+                    return false;
+                }
+
+                if (parameter == 0)
+                {
+                    projectFinding.IsDeleted = true;
+                    projectFinding.DeletedTimeUtc = DateTime.UtcNow;
                     return true;
                 }
-                if (project != null && parameter == 1)
+                if (parameter == 1)
                 {
-                    var relatedWork = _contextDB.Works.Where(work => work.Service == id).ToList();
+                    var relatedWork = _contextDB.Works.Where(work => work.ProjectId == id).ToList();
                     _contextDB.Works.RemoveRange(relatedWork);
-                    _contextDB.Projects.Remove(project); // Update entity reference
+                    _contextDB.Projects.Remove(projectFinding); // Update entity reference
                     return true;
                 }
                 return false;

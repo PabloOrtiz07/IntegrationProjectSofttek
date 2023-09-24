@@ -20,6 +20,9 @@ namespace IntegratorSofttek.DataAccess
         public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+     
+                 
+
             var seeders = new List<IEntitySeeder>
             {
                 new RoleSeeder(),

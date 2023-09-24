@@ -10,7 +10,6 @@ namespace IntegratorSofttek.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [AllowAnonymous]
-
     public class AuthorizeController : ControllerBase
     {
         private TokenJwtHelper _tokenJwtHelper;
