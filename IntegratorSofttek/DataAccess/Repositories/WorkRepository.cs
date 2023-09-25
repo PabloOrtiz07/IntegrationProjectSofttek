@@ -51,7 +51,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public virtual async Task<List<WorkDTO>> GetAllWorks(int parameter) // Update method name
+        public virtual async Task<List<WorkDTO>> GetAllWorks(int parameter)
         {
             try
             {
@@ -146,7 +146,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 var response = await base.Insert(work);
                 return response;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

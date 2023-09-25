@@ -77,7 +77,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
 
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -157,7 +157,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 var response = await base.Insert(user);
                 return response;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

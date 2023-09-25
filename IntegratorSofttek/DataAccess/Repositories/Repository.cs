@@ -87,16 +87,5 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
    
         }
-
-        public virtual async Task<bool> DeleteById(int id)
-        {
-            throw new NotImplementedException();
-
-        }
-
-        public Task<bool> Update(T entity, int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

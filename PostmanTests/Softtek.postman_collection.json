@@ -13,7 +13,7 @@
 					"name": "The correct way",
 					"item": [
 						{
-							"name": "Work",
+							"name": "Works",
 							"item": [
 								{
 									"name": "GetAll",
@@ -31,7 +31,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://localhost:7056/api/Works?parameter=0&pageSize=10&pageToShow=1",
+											"raw": "https://localhost:7056/api/Works?parameter=1&pageSize=10&pageToShow=1",
 											"protocol": "https",
 											"host": [
 												"localhost"
@@ -44,7 +44,7 @@
 											"query": [
 												{
 													"key": "parameter",
-													"value": "0"
+													"value": "1"
 												},
 												{
 													"key": "pageSize",
@@ -160,7 +160,7 @@
 											}
 										},
 										"url": {
-											"raw": "https://localhost:7056/api/Works/1?parameter=0",
+											"raw": "https://localhost:7056/api/Works/1?parameter=1",
 											"protocol": "https",
 											"host": [
 												"localhost"
@@ -174,7 +174,7 @@
 											"query": [
 												{
 													"key": "parameter",
-													"value": "0"
+													"value": "1"
 												}
 											]
 										}
@@ -875,7 +875,7 @@
 					"name": "The wrong way",
 					"item": [
 						{
-							"name": "Work",
+							"name": "Works",
 							"item": [
 								{
 									"name": "GetAll",
@@ -1742,7 +1742,7 @@
 					"name": "The correct way",
 					"item": [
 						{
-							"name": "Work",
+							"name": "Works",
 							"item": [
 								{
 									"name": "GetAll",
@@ -2107,7 +2107,7 @@
 					"name": "The wrong way",
 					"item": [
 						{
-							"name": "Work",
+							"name": "Works",
 							"item": [
 								{
 									"name": "Register",
@@ -2628,7 +2628,7 @@
 			]
 		},
 		{
-			"name": "Anonymous User",
+			"name": "Anonymous User Account",
 			"item": [
 				{
 					"name": "The correct way",
@@ -2768,12 +2768,12 @@
 	"variable": [
 		{
 			"key": "tokenAdmistrator",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3ZWJBcGlTdWJqZWN0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IjEiLCJleHAiOjE2OTU1NjcyMjd9.8WGWLPy33bmzWwIMl1nAJLQXE0hC6-zCZoe2WSm0hCA",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3ZWJBcGlTdWJqZWN0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IjEiLCJleHAiOjE2OTU2NjE5MjJ9.CCQVANFiGa7op4iXZx9p97uzEW6CBiamw_DNltQxaiY",
 			"type": "string"
 		},
 		{
 			"key": "tokenConsultant",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3ZWJBcGlTdWJqZWN0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibm9hZG1AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiMiIsImV4cCI6MTY5NTU2NTg3M30.IUGL5aAgPmm8e7vdcejsgrBNcsxGp6DiRnro5PjcrL8",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3ZWJBcGlTdWJqZWN0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibm9hZG1AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiMiIsImV4cCI6MTY5NTY1NzM2M30.dr4n_D_BV_gtP3YQTDzHEfMeZ16JHZ8hfMtpjyoO0fk",
 			"type": "string"
 		}
 	]
