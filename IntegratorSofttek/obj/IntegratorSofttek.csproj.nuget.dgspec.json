@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pablo\\Desktop\\IntegratorSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj": {}
+    "C:\\Users\\Pablo\\Desktop\\IntegrationProjectSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pablo\\Desktop\\IntegratorSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj": {
+    "C:\\Users\\Pablo\\Desktop\\IntegrationProjectSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pablo\\Desktop\\IntegratorSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj",
+        "projectUniqueName": "C:\\Users\\Pablo\\Desktop\\IntegrationProjectSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj",
         "projectName": "IntegratorSofttek",
-        "projectPath": "C:\\Users\\Pablo\\Desktop\\IntegratorSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj",
+        "projectPath": "C:\\Users\\Pablo\\Desktop\\IntegrationProjectSofttek\\IntegratorSofttek\\IntegratorSofttek.csproj",
         "packagesPath": "C:\\Users\\Pablo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pablo\\Desktop\\IntegratorSofttek\\IntegratorSofttek\\obj\\",
+        "outputPath": "C:\\Users\\Pablo\\Desktop\\IntegrationProjectSofttek\\IntegratorSofttek\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",

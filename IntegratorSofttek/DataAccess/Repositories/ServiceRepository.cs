@@ -141,7 +141,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 var response = await base.Insert(service);
                 return response;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

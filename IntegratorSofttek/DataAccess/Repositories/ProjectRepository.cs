@@ -48,7 +48,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
             }
         }
 
-        public virtual async Task<List<ProjectDTO>> GetAllProjects(int parameter, string state) // Update method name
+        public virtual async Task<List<ProjectDTO>> GetAllProjects(int parameter, string state)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 status = _mapper.Map<ProjectStatus>(state.ToLower());
                 int intStatus = (int)status;
 
-                var projects = await base.GetAll(); // Update variable name
+                var projects = await base.GetAll();
                 switch (parameter)
                 {
                     case 0:
@@ -73,8 +73,9 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 }
 
             }
-            catch (Exception)
+            catch (ArgumentException ex)
             {
+                Console.WriteLine($"An ArgumentException occurred: {ex.Message}");
                 return null;
             }
         }
@@ -126,7 +127,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 {
                     var relatedWork = _contextDB.Works.Where(work => work.ProjectId == id).ToList();
                     _contextDB.Works.RemoveRange(relatedWork);
-                    _contextDB.Projects.Remove(projectFinding); // Update entity reference
+                    _contextDB.Projects.Remove(projectFinding);
                     return true;
                 }
                 return false;
@@ -146,7 +147,7 @@ namespace IntegratorSofttek.DataAccess.Repositories
                 var response = await base.Insert(project);
                 return response;
             }
-            catch (Exception ex) {
+            catch (Exception) {
                 return false;
             }
        
