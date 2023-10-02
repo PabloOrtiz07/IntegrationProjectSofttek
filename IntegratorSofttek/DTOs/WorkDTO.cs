@@ -2,6 +2,8 @@
 {
     public class WorkDTO
     {
+        public int Id { get; set; }
+
         public DateTime Date { get; set; }
 
         public int HoursQuantity { get; set; }
