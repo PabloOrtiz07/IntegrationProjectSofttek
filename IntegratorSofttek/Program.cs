@@ -13,6 +13,17 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Add Cors
+var AllowSpecificOrigins = "";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowSpecificOrigins, policy =>
+    {
+        policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -102,6 +113,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(AllowSpecificOrigins);
 
 
 app.MapControllers();
